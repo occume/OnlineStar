@@ -1,0 +1,14 @@
+header{background-color: #F7F7F7;}
+.title .logo img{width: 120px; height:65px;}
+.curr-location{font-family: "Î¢ÈíÑÅºÚ"; color:#9F9FA0;  font-size: 21px;font-weight: bold;}
+.pure-menu-item{border-bottom: 1px dotted #999;}
+.intro .content{border-radius: 0.6em;-webkit-border-radius:0.6em;}
+.intro ul li img{width: 48px; height: 48px; margin:5px 15px 0 5px;}
+
+.pure-u{height:100%;}
+.food-name{margin: 5px 0 0 0 ;}
+.food-price{margin: 0;}
+.food-buy-button{text-align: center;line-height: 3.7em;}
+.pricing-table-list li:nth-child(even) .food-buy-button {background: #E1F2FA;}
+.pricing-table-list li:nth-child(odd) .food-buy-button {background: #D3EDA3;}
+

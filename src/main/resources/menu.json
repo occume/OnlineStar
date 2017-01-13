@@ -1,0 +1,29 @@
+{
+    "button":[
+        {
+            "type":"click",
+            "name":"小额贷款",
+            "key":"PETTY_LOAN"
+        },
+        {
+            "name":"爱吃夜宵",
+            "sub_button":[
+                {
+                    "type":"view",
+                    "name":"今日菜单",
+                    "url":"http://112.124.115.136/mycity/food"
+                },
+                {
+                    "type":"view",
+                    "name":"订单",
+                    "url":"http://www.soso.com/"
+                }
+            ]
+        },
+        {
+            "type":"view",
+            "name":"帮助 ",
+            "url":"http://112.124.115.136/mycity"
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+.label {
+    border-radius: 0.25em;
+    color: #FFFFFF;
+    display: inline;
+    font-size: 120%;
+    font-weight: 700;
+    line-height: 1;
+    padding: 0.2em 0.6em 0.3em;
+    text-align: center;
+    white-space: nowrap;
+}
+.label-success {background-color: #5CB85C;}
+.label-info {background-color: #5BC0DE;}
+.label-warning {background-color: #F0AD4E;}
+.label-danger {background-color: #D9534F;}
+
+.custom-menu-brand img{width: 150px;height: 81px;}
+.hd-wrp,#main{margin: 0 auto;width: 1220px;}
+.hd{margin-bottom: 1.3em;background-color: #526A74;}
+a.pure-menu-heading{padding: 0;}
+div.left-area{background: #F8F8F8;float: left;display: block;/**chrome 高度自动伸缩*/height:100%;overflow: visible;}
+.pure-menu-link:hover {background-color: #81AB87;}
+.left-area .pure-menu-heading{border-left: 3px solid #F39818;color:#777;background: #F3F3F3;font-family: "微软雅黑"}
+.left-area .pure-menu-link{padding-left: 30px;color: #444; border-left: 3px solid #526A74;font-family: "微软雅黑"}
+.middle-area-top {margin: 0 1.2em 0.8em;}
+.info-box {padding: 0.5em 1em;margin: 0 1.2em 1.2em;min-height: 100px;background: #F8F8F8;}
+.info-item {padding: 1em 1em; border-bottom: 1px solid #ddd;border-left: 6px solid transparent;}
+.info-avatar {border-radius: 3px;margin-right: 0.5em;}
+.info-name,.info-subject {margin: 0 0 0.5em 0;}
+.info-name{text-transform: uppercase;color: #999;}
+.info-desc {font-size: 80%;margin: 0.4em 0;}
+.right-area{min-height: 300px;background: #fff;height:100%;overflow: auto;}

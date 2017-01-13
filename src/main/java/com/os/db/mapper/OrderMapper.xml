@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.os.db.mapper.OrderMapper">
+
+  <cache />
+
+  <select id="getArticleByDocid" parameterType="string" resultType="Article">
+    SELECT
+          *
+    FROM wx_article
+    WHERE doc_id = #{docId}
+  </select>
+  
+  <select id="getArticles" parameterType="string" resultType="Article">
+    SELECT a.title, a.content,  a.source_name as sourcename, b.img as imglink
+    FROM wx_article a LEFT JOIN wx_gzh b ON a.gzh = b.en_name 
+    GROUP BY b.en_name LIMIT 10
+  </select>
+
+  <insert id="insertOrder" parameterType="Order">
+    INSERT INTO wx_order
+      (order_id, user_id, open_id, price, statu, pay_statu, address, order_time)
+    VALUES
+      (#{orderId}, #{userId}, #{openId}, #{price}, #{statu}, #{payStatu}, #{address}, #{orderTime})
+  </insert>
+
+</mapper>

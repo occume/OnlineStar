@@ -1,0 +1,30 @@
+{
+    "button":[
+       
+        {
+            "name":"dota",
+            "sub_button":[
+                {
+                    "type":"view",
+                    "name":"视屏列表",
+                    "url":"http://112.124.115.136/mycity/wx/sport/auth"
+                },
+                {
+                    "type":"view",
+                    "name":"直播列表",
+                    "url":"http://www.soso.com/"
+                }
+            ]
+        },
+        {
+            "type":"view",
+            "name":"dota2",
+            "url":"http://112.124.115.136/mycity"
+        },
+         {
+            "type":"炉石",
+            "name":"使用指南",
+            "key":"GUIDE"
+        },
+    ]
+}

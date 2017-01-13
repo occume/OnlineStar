@@ -1,0 +1,161 @@
+body {
+    color: #526066;
+}
+a{text-decoration: none; color: #526066;}
+a on:LINK{}
+/*
+ * -- MENU STYLES --
+ * Make the menu have a very faint box-shadow.
+ */
+.pure-menu {
+    box-shadow: 0 1px 1px rgba(0,0,0, 0.10);
+}
+
+header{background-color: #F7F7F7;}
+.title .logo img{width: 120px; height:65px;}
+.curr-location{font-family: "Î¢ÈíÑÅºÚ";color: #9F9FA0;font-size: 1.2em;font-weight: bold;line-height: 1.6em;}
+
+.food-list-wrp div:nth-child(even).pure-g{
+	line-height: 21px;
+    background: #f7f7f7;
+}
+
+.f-item-1 img{width: 48px; height: 48px; margin:5px 15px 0 5px;}
+.f-item-2{margin: 10px 0 0 0;}
+.f-item-2 a{display: inline-block;}
+.f-item-2 span{display: block;}
+.f-item-2 span:nth-child(1){margin-bottom: 5px; font-size: 1.1em;}
+.f-item-2 span:nth-child(2){font-size: 0.9em;color:#9F9FA0;}
+.f-item-3{text-align: center; line-height: 2em; font-size: 2em;}
+.f-item-4{text-align: center; line-height: 3.4em;}
+.food-list-wrp div:nth-child(even) .f-item-3 {background: #E7E7E7;}
+.food-list-wrp div:nth-child(odd) .f-item-3 {background: #FFFAE5;}
+.main-wrap{margin-bottom: 5em;}
+.food-info-wrp{margin: 0 auto;}
+/*
+ * -- PRICING TABLE WRAPPER --
+ * This element wraps up all the pricing table elements
+ */
+ .pricing-tables,
+ .information {
+    max-width: 980px;
+    margin: 0 auto;
+ }
+.pricing-tables {
+    margin-bottom: 3.125em;
+    text-align: center;
+}
+/*
+ * -- PRICING TABLE  --
+ * Every pricing table has the .pricing-table class
+ */
+.pricing-table {
+    padding: 0 0 3em;
+}
+
+/*
+ * -- PRICING TABLE HEADER COLORS --
+ * Choose a different color based on the type of pricing table.
+ */
+
+
+/*
+ * -- PRICING TABLE HEADER --
+ * By default, a header is black/white, and has some styles for its <h2> name.
+ */
+.pricing-table-header{height: 100%;}
+.pricing-table-header img{
+	width: 300px;
+	height: 160px;
+}
+    .pricing-table-header h2 {
+        margin: 0;
+        padding-top: 2em;
+        font-size: 1em;
+        font-weight: normal;
+    }
+
+
+/*
+ * -- PRICING TABLE PRICE --
+ * Styles for the price and the corresponding <span>per month</span>
+ */
+.pricing-table-price {
+    font-size: 6em;
+    margin: 0.2em 0 0;
+    font-weight: 100;
+}
+    .pricing-table-price span {
+        display: block;
+        text-transform: uppercase;
+        font-size: 0.2em;
+        padding-bottom: 2em;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.5);
+        *color: #fff;
+    }
+
+/*
+ * -- PRICING TABLE LIST --
+ * Each pricing table has a <ul> which is denoted by the .pricing-table-list class
+ */
+.pricing-table-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    margin-top: -5px;
+    text-align: center;
+}
+
+.pricing-table-list li {
+    background: none repeat scroll 0 0 #F7F7F7;
+    border-bottom: 1px solid #E7E7E7;
+    padding: 0.8em 0;
+}
+/*
+ * -- PRICING TABLE LIST ELEMENTS --
+ * Styles for the individual list elements within each pricing table
+ */
+.pricing-table-list li:nth-child(even){
+	line-height: 21px;
+    background: #f7f7f7;
+    
+}
+/*
+ * -- PRICING TABLE BUTTON --
+ * Styles for the "Choose" button at the bottom of a pricing table.
+ * This inherits from Pure Button.
+ */
+.button-choose {
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #333;
+    border-radius: 2em;
+    font-weight: bold;
+    position: relative;
+    bottom: -1em;
+}
+
+.information-head {
+    color: black;
+    font-weight: 500;
+}
+
+.cart-info{text-align: center;}
+
+.pure-table{width: 100%; text-align: center;}
+.pure-table thead{text-align: center;}
+.pure-table thead th{padding: 0.8em 1em;}
+.pure-table td{padding: 0.8em 1em;}
+
+td.cart-item-count{padding: 0;}
+#mc-cart .pure-g{width: 100%;  line-height: 2.7em;}
+#mc-cart .cart-inc, #mc-cart .cart-dec{background: #F7F7F7; font-weight: bold; font-size: 1.8em;}
+.cart-info .cart-summary{text-align: right; padding: 0.8em 1em; border-bottom: 1px solid #E7E7E7;vertical-align: baseline;}
+#cart-total-count{font-size: 1.3em; color: #0084C5;margin-right: 0.3em;}
+#cart-total-price{font-size: 1.8em; color: #E97500;}
+
+.pure-bottom-nav{position: fixed;z-index: 3;bottom: 0;width: 100%; border-top:1px solid #E7E7E7; background: #F7F7F7;}
+.pure-bottom-nav  .bottom-nav-item{text-align: center;padding: 1em 0; margin-right: -1px; border-right: 1px solid #E7E7E7;}
+.pure-bottom-nav  #cart-count{border-radius: 1em; padding: 0.2em 0.5em 0.1em; background: #CA3C3C; color: #E7E7E7; font-size: 0.7em;}
+#dialog{position: fixed; padding: 1em 0; text-align: center; top: -200px; width: 100%; background: #5EB95E; color: #e7e7e7; font-weight: bold;}
