@@ -6,14 +6,14 @@
 
   <cache />
 
-  <select id="getArticleByDocid" parameterType="string" resultType="Article">
+  <select id="getArticleByDocid" parameterType="string" resultType="OnlineStar">
     SELECT
           *
     FROM wx_article
     WHERE doc_id = #{docId}
   </select>
   
-  <select id="getArticles" parameterType="string" resultType="Article">
+  <select id="getArticles" parameterType="string" resultType="OnlineStar">
     SELECT a.title, a.content,  a.source_name as sourcename, b.img as imglink
     FROM wx_article a LEFT JOIN wx_gzh b ON a.gzh = b.en_name 
     GROUP BY b.en_name LIMIT 10

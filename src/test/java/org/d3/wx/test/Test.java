@@ -9,11 +9,11 @@ import com.os.util.TimeUtil;
 public class Test {
 
 	public static void main(String[] args) {
-//		String jsapiToken = Base.getJsapiToken();
-//		System.out.println(jsapiToken);
-//		System.out.println(UUID.randomUUID().toString());
+		String jsapiToken = Base.getJsapiToken();
+		System.out.println(jsapiToken);
+		System.out.println(UUID.randomUUID().toString());
 		
-//		generateSignature();
+		generateSignature();
 		
 //		System.out.println(Integer.valueOf(null));
 		

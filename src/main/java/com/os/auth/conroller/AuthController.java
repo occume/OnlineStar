@@ -1,37 +1,49 @@
-package com.os.conroller;
+package com.os.auth.conroller;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.loader.WebappClassLoader;
-import org.d3.wx.util.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.common.base.Strings;
+import com.os.auth.service.AuthService;
+import com.os.db.domain.OnlineStar;
+import com.os.db.domain.Result;
+import com.os.validator.Validator;
 
 @Controller
-public class MainController {
+@RequestMapping("/auth")
+public class AuthController {
 	
 	private static final String JSON = "application/json;charset=UTF-8";
 	private static final String TEXT = "application/json;charset=UTF-8";
 	
-	private static final Logger log = LoggerFactory.getLogger(MainController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AuthController.class);
 
+	@Autowired
+	private AuthService authService;
 	
-    @RequestMapping(value="/records", produces=TEXT)
-    public 
-    String wanjia() {
-    	
-    	return "h4/index";
+	@RequestMapping(value = "/reg", produces = TEXT, method = RequestMethod.POST)
+	@ResponseBody
+    public Object regitster(HttpServletRequest request, HttpServletResponse response,
+    		@RequestBody User, Map<String, Object> model){
+		
+//		OnlineStar os = Validator.validateOnlineStar(request);
+//		authService.save(os);
+		
+		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+
+    	return Result.OK;
     }
 //   
 //    @RequestMapping(value="/opinions/all", produces=TEXT)
