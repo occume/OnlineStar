@@ -20,6 +20,7 @@
 	<mvc:resources location="/static/css/" mapping="/css/**" />
 	<mvc:resources location="/static/js/"  mapping="/js/**" />
 	
+	<!-- 
 	<bean id="exceptionResolver"
       class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 	  <property name="exceptionMappings">
@@ -27,7 +28,7 @@
 	      <prop key="PermissionDeniedException">          
 	        rescues/permissionDenied
 	      </prop>
-	      <!-- ... set other exception/view mappings as <prop>s here ... -->
+	      
 	    </props>
 	  </property>
 	  <property name="defaultErrorView" value="rescues/general" />
@@ -39,7 +40,7 @@
 	  <property name="prefix" value="/WEB-INF/views/" />
 	  <property name="suffix" value=".jsp" />
 	</bean>
-	
+ -->	
 
 	<bean id="findJsp"
 		class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
@@ -71,7 +72,10 @@
 		</property>
 	</bean>
 
-	<bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"></bean>
+	<bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="prefixJson" value="false"/>
+    	<property name="supportedMediaTypes" value="application/json"/>
+	</bean>
 	
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
 		<property name="messageConverters">

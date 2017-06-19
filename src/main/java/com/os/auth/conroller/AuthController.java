@@ -4,18 +4,26 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.os.auth.domain.Account;
+import com.os.auth.domain.Auth;
 import com.os.auth.service.AuthService;
 import com.os.db.domain.OnlineStar;
 import com.os.db.domain.Result;
@@ -35,22 +43,21 @@ public class AuthController {
 	
 	@RequestMapping(value = "/reg", produces = TEXT, method = RequestMethod.POST)
 	@ResponseBody
-    public Object regitster(HttpServletRequest request, HttpServletResponse response,
-    		@RequestBody User, Map<String, Object> model){
-		
-//		OnlineStar os = Validator.validateOnlineStar(request);
-//		authService.save(os);
-		
-		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-
+    public Object regitster(HttpServletRequest request, @Valid @ModelAttribute Auth auth){
+		//authService.save(auth);
+		System.out.println("register");
     	return Result.OK;
     }
-//   
-//    @RequestMapping(value="/opinions/all", produces=TEXT)
-//    public @ResponseBody
-//    List<Article> opinionsAll(){
-//    	return articleService.getArticles();
-//    }
+	
+	@RequestMapping(value = "/account/update", produces = TEXT, method = RequestMethod.POST)
+	@ResponseBody
+    public Object profileUpdate(HttpServletRequest request, @Valid @ModelAttribute Account acc){
+		authService.save(acc);
+    	return Result.OK;
+  }
+	
+	
+
     public static void main(String...strings){
 //    	121.36436,31.225824
 //    	121.36470393469,31.225998529817
