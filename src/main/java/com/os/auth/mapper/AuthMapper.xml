@@ -9,11 +9,6 @@
     VALUES   
     (#{phone}, #{password})  
   </insert>
-  
-  <insert id="save" parameterType="Account">  
-    INSERT INTO os_account (phone, password)  
-    VALUES   
-    (#{phone}, #{password})  
-  </insert>
+
   
 </mapper>
