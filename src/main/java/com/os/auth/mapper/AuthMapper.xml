@@ -8,8 +8,11 @@
     INSERT INTO auth (phone, password) VALUES (#{phone}, #{password})
   </insert>
   
-  <select id="getAuth" parameterType="String" resultType="Auth">  
+  <select id="getAuthByPhone" parameterType="String" resultType="Auth">  
     select * from auth where phone = #{phone} group by phone
   </select>
 
+	<select id="getAuth" resultType="Auth">  
+    select * from auth where phone = #{phone} and password = #{password} group by phone
+  </select>
 </mapper>

@@ -3,19 +3,26 @@ package com.os.auth.domain;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Account {
 	
 	@Id
 	@GeneratedValue
 	private long id;
-	@Pattern(regexp = "^1\\d{10}", message = "Invalid phone number")
-	private String phone;
+	
 	@NotNull
-	@Size(min=1, max=20)
+	//@Size(min=1, max=20)
 	private String name;
+	
+	@JsonProperty("province_id")
+	private int provinceId;
+	
+	@JsonProperty("city_id")
+	private int cityId;
+	private byte gender;
 	
 	public long getId() {
 		return id;
@@ -23,21 +30,36 @@ public class Account {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getPhone() {
-		return phone;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+	
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
+	public int getProvinceId() {
+		return provinceId;
+	}
+	public void setProvinceId(int provinceId) {
+		this.provinceId = provinceId;
+	}
+	public int getCityId() {
+		return cityId;
+	}
+	public void setCityId(int cityId) {
+		this.cityId = cityId;
+	}
+	public byte getGender() {
+		return gender;
+	}
+	public void setGender(byte gender) {
+		this.gender = gender;
+	}
 	@Override
 	public String toString() {
-		return "Account [id=" + id + ", phone=" + phone + ", name=" + name
+		return "Account [id=" + id + ", name=" + name + ", provinceId="
+				+ provinceId + ", cityId=" + cityId + ", gender=" + gender
 				+ "]";
 	}
+	
 }

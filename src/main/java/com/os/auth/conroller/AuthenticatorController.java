@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.os.db.domain.Result;
+import com.os.exception.NoSignInException;
 
 @ControllerAdvice
 public class AuthenticatorController {
@@ -79,7 +80,11 @@ public class AuthenticatorController {
 	@ResponseBody
 	public Object errorHandle(Exception e){
 		System.out.println("-- errorHandle");
-		e.printStackTrace();
-		return e.getMessage();
+		//e.printStackTrace();
+		if(e instanceof NoSignInException){
+			return Result.fail(e.getMessage());
+		}
+		System.out.println(e.getMessage());
+		return Result.fail("Oh, programmer is ran!");
 	}
 }

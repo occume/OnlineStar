@@ -19,15 +19,15 @@ public class AuthService {
 	}
 	
 	public Auth getAuth(String phone){
-		return authMapper.getAuth(phone);
+		return authMapper.getAuthByPhone(phone);
 	}
 	
 	public Auth getAuth(String phone, String password){
-		return authMapper.getAuth(phone);
+		return authMapper.getAuth(phone, password);
 	}
 	
 	public boolean exist(String phone){
-		return authMapper.getAuth(phone) != null;
+		return authMapper.getAuthByPhone(phone) != null;
 	}
 	
 	public boolean exist(Auth auth){

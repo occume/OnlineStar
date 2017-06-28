@@ -29,22 +29,26 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.os.auth.domain.Account;
 import com.os.auth.domain.Auth;
+import com.os.auth.service.AccountService;
 import com.os.auth.service.AuthService;
 import com.os.db.domain.OnlineStar;
 import com.os.db.domain.Result;
+import com.os.exception.NoSignInException;
 import com.os.validator.Validator;
 
 @Controller
-@RequestMapping("/auth")
-public class AuthController {
+@RequestMapping("/account")
+public class AccountController {
 	
 	private static final String JSON = "application/json;charset=UTF-8";
 	private static final String TEXT = "application/json;charset=UTF-8";
 	
-	private static final Logger LOG = LoggerFactory.getLogger(AuthController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AccountController.class);
 
 	@Autowired
 	private AuthService authService;
+	@Autowired
+	private AccountService accService;
 	
 	@RequestMapping(value = "/reg", produces = TEXT, method = RequestMethod.POST)
 	@ResponseBody
@@ -61,56 +65,24 @@ public class AuthController {
 	
 	@RequestMapping(value = "/info", produces = TEXT, method = RequestMethod.POST)
 	@ResponseBody
-    public Object info(@RequestBody Phone p){
-		
-		System.out.println("phone: " + p.getPhone());
-		System.out.println(authService.exist(p.phone));
-		Auth auth = authService.getAuth(p.getPhone());
-    	return Result.ok(auth);
+    public Object info(HttpSession session, @RequestBody Phone p){
+		checkAuth(session);
+    	return Result.OK;
     }
 	
-	@RequestMapping(value = "/sign-in", produces = TEXT, method = RequestMethod.POST)
+	@RequestMapping(value = "/update", produces = TEXT, method = RequestMethod.POST)
 	@ResponseBody
-    public Object auth(HttpSession session, @Valid @RequestBody Auth auth){
-		Result result;
-		Auth auth1 = authService.getAuth(auth.getPhone(), auth.getPassword());
-		if(auth1 == null){
-			result = Result.fail("Not exist phone");
-		}
-		else{
-			result = Result.ok(auth1);
-			System.out.println("acc = " + session.getAttribute("acc"));
-			session.setAttribute("acc", auth1);
-		}
-    	return result;
-    }
-	
-	@RequestMapping(value = "/account/update", produces = TEXT, method = RequestMethod.POST)
-	@ResponseBody
-    public Object profileUpdate(HttpServletRequest request, @Valid @ModelAttribute Account acc){
+    public Object profileUpdate(HttpServletRequest request, @Valid @RequestBody Account acc){
 //		authService.save(acc);
+		System.out.println(acc);
+		accService.save(acc);
     	return Result.OK;
 	}
 	
-	
-	
-    public static void main(String...strings){
-//    	121.36436,31.225824
-//    	121.36470393469,31.225998529817
-//    	double dis = Distance.getShortDistance(121.36436, 31.225824, 121.36470393469, 31.225998529817);
-//    	System.out.println(dis);
-    }
-}
-class Phone{
-	
-	String phone;
-
-	public String getPhone() {
-		return phone;
+	private void checkAuth(HttpSession session){
+		Auth auth = (Auth)session.getAttribute("acc");
+		if(auth == null){
+			throw new NoSignInException("Not sign in");
+		}
 	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-	
 }

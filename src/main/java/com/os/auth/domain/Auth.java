@@ -7,12 +7,15 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class Auth {
+	
 	@Id
 	@GeneratedValue
 	private long id;
+	
 	@NotNull
 	@Pattern(regexp = "^1\\d{10}", message = "Invalid phone number")
 	private String phone;
+	
 	@NotNull
 	@Size(min=6, max=20)
 	private String password;
