@@ -17,4 +17,21 @@ public class AuthService {
 	public void save(Auth auth){
 		authMapper.save(auth);
 	}
+	
+	public Auth getAuth(String phone){
+		return authMapper.getAuth(phone);
+	}
+	
+	public Auth getAuth(String phone, String password){
+		return authMapper.getAuth(phone);
+	}
+	
+	public boolean exist(String phone){
+		return authMapper.getAuth(phone) != null;
+	}
+	
+	public boolean exist(Auth auth){
+		authMapper.save(auth);
+		return true;
+	}
 }

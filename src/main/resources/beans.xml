@@ -32,7 +32,7 @@
 <!--	<property name="jdbcUrl"><value>jdbc:mysql://d3gameserver.mysql.rds.aliyuncs.com:3306/d3_mycity</value></property>
 		<property name="user"><value>occume</value></property>
 		<property name="password"><value>5651403</value></property> -->
- 		<property name="jdbcUrl"><value>jdbc:mysql://127.0.0.1/hrt</value></property>
+ 		<property name="jdbcUrl"><value>jdbc:mysql://127.0.0.1/online_star</value></property>
 		<property name="user"><value>root</value></property>
 		<property name="password"><value>5651403</value></property>
 	 </bean>

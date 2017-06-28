@@ -3,27 +3,53 @@ package com.os.db.domain;
 public class Result {
 	
 	public static Result OK = new Result(0, "OK");
+	
+	public static Result ok(Object data){
+		return new Result(0, "OK", data);
+	}
+	
+	public static Result fail(String errMessage){
+		return new Result(1, errMessage);
+	}
 
-	private int err;
-	private String desc;
+	private int errCode;
+	private String errMessage;
+	private Object data;
 	
 	public Result(){}
 	
-	public Result(int err, String desc){
-		this.err = err;
-		this.desc = desc;
+	public Result(int errCode, String errMessage){
+		this(errCode, errMessage, null);
 	}
 	
-	public int getErr() {
-		return err;
+	public Result(int errCode, String errMessage, Object data){
+		this.errCode = errCode;
+		this.errMessage = errMessage;
+		this.data = data;
 	}
-	public void setErr(int err) {
-		this.err = err;
+
+	public int getErrCode() {
+		return errCode;
 	}
-	public String getDesc() {
-		return desc;
+
+	public void setErrCode(int errCode) {
+		this.errCode = errCode;
 	}
-	public void setDesc(String desc) {
-		this.desc = desc;
+
+	public String getErrMessage() {
+		return errMessage;
 	}
+
+	public void setErrMessage(String errMessage) {
+		this.errMessage = errMessage;
+	}
+
+	public Object getData() {
+		return data;
+	}
+
+	public void setData(Object data) {
+		this.data = data;
+	}
+	
 }

@@ -10,6 +10,7 @@ public class Auth {
 	@Id
 	@GeneratedValue
 	private long id;
+	@NotNull
 	@Pattern(regexp = "^1\\d{10}", message = "Invalid phone number")
 	private String phone;
 	@NotNull
@@ -37,7 +38,7 @@ public class Auth {
 	}
 	@Override
 	public String toString() {
-		return "Account [id=" + id + ", phone=" + phone + ", password=" + password
+		return "Auth [id=" + id + ", phone=" + phone + ", password=" + password
 				+ "]";
 	}
 }

@@ -63,7 +63,24 @@
 	<mvc:default-servlet-handler />
 
 	<!-- <mvc:resources location="/uikit-2.3.1/" mapping="/uikit-2.3.1/**" /> -->
-
+	<!--
+	<bean id="contentNegotiationManager"
+         class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+	    <property name="favorPathExtension" value="false" />
+	    <property name="favorParameter" value="true" />
+	    <property name="parameterName" value="mediaType" />
+	    <property name="ignoreAcceptHeader" value="true"/>
+	    <property name="useJaf" value="false"/>
+	    <property name="defaultContentType" value="application/json" />
+	
+	    <property name="mediaTypes">
+	        <map>
+	            <entry key="json" value="application/json" />
+	            <entry key="xml" value="application/xml" />
+	       </map>
+	    </property>
+	</bean>
+-->
 	<bean id="stringConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
 		<property name="supportedMediaTypes">
 			<list>
@@ -71,19 +88,45 @@
 			</list>
 		</property>
 	</bean>
-
+	
+	<bean id="mappingJacksonHttpMessageConverter"
+          class="com.os.spring.CustomerMappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/html;charset=UTF-8</value>
+                <value>application/json;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="mappingJacksonHttpMessageConverter"/>
+               
+            </list>
+        </property>
+    </bean> 
+    
+<!-- 
 	<bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 		<property name="prefixJson" value="false"/>
     	<property name="supportedMediaTypes" value="application/json"/>
 	</bean>
+	 -->
 	
-	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-		<property name="messageConverters">
-			<list>
-				<ref bean="jsonConverter" />
-				<ref bean="stringConverter" />
-			</list>
-		</property>
+	
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+	    
+	    <property name="defaultErrorView" value="uncaughtException" />
+	    <property name="exceptionMappings">
+	        <props>
+	            
+	            <prop key=".NullPointerException">NullPointerException</prop>
+	            <prop key="java.io.IOException">IOException</prop>
+	        </props>
+	    </property>
 	</bean>
 
 </beans>

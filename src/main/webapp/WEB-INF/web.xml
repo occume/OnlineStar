@@ -50,4 +50,8 @@ xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.co
     <error-code>500</error-code>
     <location>/500.html</location>
   </error-page>
+  <error-page>
+    <exception-type>java.lang.Exception</exception-type>
+    <location>/uncaughtException</location>
+</error-page>
 </web-app>

@@ -5,10 +5,11 @@
 <mapper namespace="com.os.auth.mapper.AuthMapper">
 
   <insert id="save" parameterType="Auth">  
-    INSERT INTO os_auth (phone, password)  
-    VALUES   
-    (#{phone}, #{password})  
+    INSERT INTO auth (phone, password) VALUES (#{phone}, #{password})
   </insert>
-
   
+  <select id="getAuth" parameterType="String" resultType="Auth">  
+    select * from auth where phone = #{phone} group by phone
+  </select>
+
 </mapper>
