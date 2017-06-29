@@ -20,4 +20,7 @@ public class AccountService {
 		accMapper.save(acc);
 	}
 	
+	public Account get(long authId){
+		return accMapper.get(authId);
+	}
 }

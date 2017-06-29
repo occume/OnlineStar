@@ -1,5 +1,6 @@
 package com.os.auth.domain;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
@@ -13,10 +14,13 @@ public class Account {
 	@GeneratedValue
 	private long id;
 	
+	private long authId;
+	
 	@NotNull
 	//@Size(min=1, max=20)
 	private String name;
 	
+	@Column(name = "province_id")
 	@JsonProperty("province_id")
 	private int provinceId;
 	
@@ -54,6 +58,13 @@ public class Account {
 	}
 	public void setGender(byte gender) {
 		this.gender = gender;
+	}
+	
+	public long getAuthId() {
+		return authId;
+	}
+	public void setAuthId(long authId) {
+		this.authId = authId;
 	}
 	@Override
 	public String toString() {

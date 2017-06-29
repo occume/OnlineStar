@@ -3,9 +3,22 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.os.auth.mapper.AccountMapper">
+	
+	<resultMap id="accResultMap" type="Account">   
+        <id property="id" column="id"/>   
+        <result property="provinceId" column="province_id"/>   
+		<result property="cityId" column="city_id"/>   
+	</resultMap> 
 
-  <insert id="save" parameterType="Account">  
-    INSERT INTO account (name, city_id, province_id, gender) VALUES (#{name}, #{cityId}, #{provinceId}, #{gender})
-  </insert>
+	<insert id="save" parameterType="Account">  
+		INSERT INTO account (name, city_id, province_id, gender) VALUES (#{name}, #{cityId}, #{provinceId}, #{gender})
+	</insert>
+  
+	<select id="get" parameterType="long" resultType="Account" resultMap="accResultMap">  
+		select * from account where auth_id = #{authId}
+	</select>
 
+	<select id="get" parameterType="long" resultType="Account" resultMap="accResultMap">  
+		select * from account where auth_id = #{authId}
+	</select>
 </mapper>

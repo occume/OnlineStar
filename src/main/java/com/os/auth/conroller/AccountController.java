@@ -31,6 +31,7 @@ import com.os.auth.domain.Account;
 import com.os.auth.domain.Auth;
 import com.os.auth.service.AccountService;
 import com.os.auth.service.AuthService;
+import com.os.conroller.BaseController;
 import com.os.db.domain.OnlineStar;
 import com.os.db.domain.Result;
 import com.os.exception.NoSignInException;
@@ -38,7 +39,7 @@ import com.os.validator.Validator;
 
 @Controller
 @RequestMapping("/account")
-public class AccountController {
+public class AccountController extends BaseController{
 	
 	private static final String JSON = "application/json;charset=UTF-8";
 	private static final String TEXT = "application/json;charset=UTF-8";
@@ -50,39 +51,29 @@ public class AccountController {
 	@Autowired
 	private AccountService accService;
 	
-	@RequestMapping(value = "/reg", produces = TEXT, method = RequestMethod.POST)
-	@ResponseBody
-    public Result regitster(@Valid @RequestBody Auth auth){
-		Result r;
-		if(authService.exist(auth.getPhone())){
-			r = Result.fail("Exist phone");
-		}else{
-			authService.save(auth);
-			r = Result.OK;
-		}
-    	return r;
-    }
-	
 	@RequestMapping(value = "/info", produces = TEXT, method = RequestMethod.POST)
 	@ResponseBody
     public Object info(HttpSession session, @RequestBody Phone p){
-		checkAuth(session);
-    	return Result.OK;
+		Auth auth = checkAndGetAuth(session);
+		Account account = accService.get(auth.getId());
+    	return Result.ok(account);
     }
 	
 	@RequestMapping(value = "/update", produces = TEXT, method = RequestMethod.POST)
 	@ResponseBody
-    public Object profileUpdate(HttpServletRequest request, @Valid @RequestBody Account acc){
-//		authService.save(acc);
-		System.out.println(acc);
+    public Object profileUpdate(HttpSession session, @Valid @RequestBody Account acc){
+		Auth auth = checkAndGetAuth(session);
+		acc.setAuthId(auth.getId());
 		accService.save(acc);
     	return Result.OK;
 	}
 	
-	private void checkAuth(HttpSession session){
-		Auth auth = (Auth)session.getAttribute("acc");
-		if(auth == null){
-			throw new NoSignInException("Not sign in");
-		}
+	@RequestMapping(value = "/group/select", produces = TEXT, method = RequestMethod.POST)
+	@ResponseBody
+    public Object selectGroup(HttpSession session, @Valid @RequestBody Account acc){
+		Auth auth = checkAndGetAuth(session);
+		acc.setAuthId(auth.getId());
+		accService.save(acc);
+    	return Result.OK;
 	}
 }

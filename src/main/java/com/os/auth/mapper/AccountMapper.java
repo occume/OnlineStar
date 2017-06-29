@@ -8,4 +8,6 @@ import com.os.auth.domain.Auth;
 public interface AccountMapper {
 
 	void save(Account account);
+	
+	Account get(long authId);
 }

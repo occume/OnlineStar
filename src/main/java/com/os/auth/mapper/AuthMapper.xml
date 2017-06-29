@@ -4,15 +4,15 @@
 
 <mapper namespace="com.os.auth.mapper.AuthMapper">
 
-  <insert id="save" parameterType="Auth">  
-    INSERT INTO auth (phone, password) VALUES (#{phone}, #{password})
-  </insert>
+	<insert id="save" parameterType="Auth">  
+		INSERT INTO auth (phone, password) VALUES (#{phone}, #{password})
+	</insert>
   
-  <select id="getAuthByPhone" parameterType="String" resultType="Auth">  
-    select * from auth where phone = #{phone} group by phone
-  </select>
+	<select id="getAuthByPhone" parameterType="String" resultType="Auth">  
+		select * from auth where phone = #{phone} group by phone
+	</select>
 
 	<select id="getAuth" resultType="Auth">  
-    select * from auth where phone = #{phone} and password = #{password} group by phone
-  </select>
+    	select * from auth where phone = #{phone} and password = #{password} group by phone
+  	</select>
 </mapper>
