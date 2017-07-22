@@ -22,7 +22,7 @@ agent {
 > 1. [省列表](#province-list) ![]
 > 1. [市列表](#city-list) ![]
 
-1. 锚点
+锚点
     ```
     POST {host}/api/auth/verification-code
 
