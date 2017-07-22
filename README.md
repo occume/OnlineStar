@@ -16,13 +16,11 @@ agent {
     6: ios.b
 }
 ```
-> 1. [锚点](#锚点)
 > 1. [发送验证码](#verification-code)![](https://www.duliday.com/api/public/img/build-passing.svg)
-> 1. [注册](#passport-reg) ![]
-> 1. [省列表](#province-list) ![]
-> 1. [市列表](#city-list) ![]
-
-锚点
+> 1. [注册](#passport-reg)![](https://www.duliday.com/api/public/img/build-passing.svg)
+> 1. [省列表](#province-list)![](https://www.duliday.com/api/public/img/build-passing.svg)
+> 1. [市列表](#city-list)![](https://www.duliday.com/api/public/img/build-passing.svg)
+1. <span id='verification-code'>发送验证码</span>![](https://www.duliday.com/api/public/img/build-passing.svg)
     ```
     POST {host}/api/auth/verification-code
 
@@ -30,15 +28,7 @@ agent {
         "phone": "15901778405"
     }
     ```
-1. <span id='verification-code'>发送验证码</span> ![](https://www.duliday.com/api/public/img/build-passing.svg)
-    ```
-    POST {host}/api/auth/verification-code
-
-    {
-        "phone": "15901778405"
-    }
-    ```
-1. <span id='passport-reg'>注册</span> 
+1. <span id='passport-reg'>注册</span>![](https://www.duliday.com/api/public/img/build-passing.svg)
     ```
     POST {host}/hrz/passport/v1/reg
 
@@ -55,7 +45,7 @@ agent {
 	    "data": null
 	}
     ```    
-1. <span id='province-list'>省列表</span> ![]
+1. <span id='province-list'>省列表</span>![](https://www.duliday.com/api/public/img/build-passing.svg)
     ```
     GET {host}/hrz/common/provinces
     
@@ -72,7 +62,7 @@ agent {
 	    ]
     }
     ```
-1. <span id='city-list'>市列表</span> ![]
+1. <span id='city-list'>市列表</span>![](https://www.duliday.com/api/public/img/build-passing.svg)
     ```
     GET {host}/hrz/common/cities/{provinceId}
     
