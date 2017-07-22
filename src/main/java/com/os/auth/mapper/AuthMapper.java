@@ -2,7 +2,7 @@ package com.os.auth.mapper;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.os.auth.domain.Auth;
+import com.os.auth.model.Auth;
 
 public interface AuthMapper {
 

@@ -3,10 +3,10 @@ package com.os.auth.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.os.auth.domain.Auth;
 import com.os.auth.mapper.AuthMapper;
-import com.os.db.domain.OnlineStar;
-import com.os.db.mapper.OnlineStarMapper;
+import com.os.auth.model.Auth;
+import com.os.mapper.OnlineStarMapper;
+import com.os.model.OnlineStar;
 
 @Service
 public class AuthService {

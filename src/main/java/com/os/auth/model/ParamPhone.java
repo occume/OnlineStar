@@ -1,4 +1,4 @@
-package com.os.auth.domain;
+package com.os.auth.model;
 
 public class ParamPhone{
 	

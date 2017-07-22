@@ -27,14 +27,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.os.auth.domain.Account;
-import com.os.auth.domain.Auth;
+import com.os.Constant.GroupType;
+import com.os.auth.model.Account;
+import com.os.auth.model.Auth;
 import com.os.auth.service.AccountService;
 import com.os.auth.service.AuthService;
 import com.os.conroller.BaseController;
-import com.os.db.domain.OnlineStar;
-import com.os.db.domain.Result;
 import com.os.exception.NoSignInException;
+import com.os.model.OnlineStar;
+import com.os.model.Result;
+import com.os.service.OnlineStarService;
 import com.os.validator.Validator;
 
 @Controller
@@ -50,10 +52,12 @@ public class AccountController extends BaseController{
 	private AuthService authService;
 	@Autowired
 	private AccountService accService;
+	@Autowired
+	private OnlineStarService osService;
 	
 	@RequestMapping(value = "/info", produces = TEXT, method = RequestMethod.POST)
 	@ResponseBody
-    public Object info(HttpSession session, @RequestBody Phone p){
+    public Object info(HttpSession session){
 		Auth auth = checkAndGetAuth(session);
 		Account account = accService.get(auth.getId());
     	return Result.ok(account);
@@ -68,12 +72,18 @@ public class AccountController extends BaseController{
     	return Result.OK;
 	}
 	
-	@RequestMapping(value = "/group/select", produces = TEXT, method = RequestMethod.POST)
+	@RequestMapping(value = "/group/select", produces = TEXT, method = RequestMethod.POST, consumes = "application/json")
 	@ResponseBody
-    public Object selectGroup(HttpSession session, @Valid @RequestBody Account acc){
+    public Object selectGroup(HttpSession session, @RequestBody Map<String, Integer> map){
 		Auth auth = checkAndGetAuth(session);
-		acc.setAuthId(auth.getId());
-		accService.save(acc);
+		System.out.println(map.get("group_id"));
+		int groupId = map.get("group_id");
+		accService.selectGroup(auth.getId(), groupId);
+		if(groupId == GroupType.ONLINE_STAR){
+			OnlineStar os = new OnlineStar();
+			os.setAuthId(auth.getId());
+			osService.insert(os);
+		}
     	return Result.OK;
 	}
 }

@@ -18,7 +18,7 @@
 		select * from account where auth_id = #{authId}
 	</select>
 
-	<select id="get" parameterType="long" resultType="Account" resultMap="accResultMap">  
-		select * from account where auth_id = #{authId}
-	</select>
+	<update id="setGroup" >  
+		update account set group_id = #{groupId} where auth_id = #{authId}
+	</update>
 </mapper>

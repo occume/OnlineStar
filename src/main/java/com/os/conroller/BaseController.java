@@ -3,10 +3,13 @@ package com.os.conroller;
 import javax.servlet.http.HttpSession;
 
 import com.os.Constant.SessionKey;
-import com.os.auth.domain.Auth;
+import com.os.auth.model.Auth;
 import com.os.exception.NoSignInException;
 
 public class BaseController {
+	
+	protected static final String JSON = "application/json;charset=UTF-8";
+	protected static final String TEXT = "application/json;charset=UTF-8";
 	
 	protected void checkAuth(HttpSession session){
 		Auth auth = (Auth)session.getAttribute(SessionKey.ACCOUNT);

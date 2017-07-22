@@ -32,7 +32,7 @@
 <!--	<property name="jdbcUrl"><value>jdbc:mysql://d3gameserver.mysql.rds.aliyuncs.com:3306/d3_mycity</value></property>
 		<property name="user"><value>occume</value></property>
 		<property name="password"><value>5651403</value></property> -->
- 		<property name="jdbcUrl"><value>jdbc:mysql://127.0.0.1/online_star</value></property>
+ 		<property name="jdbcUrl"><value>jdbc:mysql://127.0.0.1/hrz</value></property>
 		<property name="user"><value>root</value></property>
 		<property name="password"><value>5651403</value></property>
 	 </bean>
@@ -46,10 +46,10 @@
 
      <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="typeAliasesPackage" value="com.os.auth.domain" />
+        <property name="typeAliasesPackage" value="com.os.auth.model" />
     </bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.os.auth.mapper" />
+        <property name="basePackage" value="com.os.auth.mapper,com.os.mapper" />
     </bean>
 </beans>

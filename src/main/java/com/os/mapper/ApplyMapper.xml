@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.os.mapper.ApplyMapper">
+
+	<!-- Result Map -->
+  <resultMap id="BaseResultMap" type="com.os.model.Apply">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="job_id" jdbcType="BIGINT" property="jobId" />
+    <result column="os_id" jdbcType="BIGINT" property="osId" />
+    <result column="apply_status_id" jdbcType="INTEGER" property="applyStatusId" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+  </resultMap>
+  
+  <resultMap id="ApplyWithOnlineStar" type="com.os.model.ApplyWithOnlineStar">
+    <result column="name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+  <sql id="Base_Column_List">
+    id, job_id, os_id, apply_status_id, reason
+  </sql>
+  
+  <select id="selectWithOnlineStar" parameterType="java.lang.Long" resultMap="ApplyWithOnlineStar">
+    select acc.name from apply a
+    	left join online_star o on o.id = a.os_id
+    	left join account acc on acc.auth_id = o.auth_id
+    	where a.job_id = 1
+  </select>
+  
+  <select id="selectByJobOnlineStar" resultMap="BaseResultMap">
+    select * from apply where job_id = #{jobId} and os_id = #{osId}
+  </select>
+  
+  <select id="selectByExample" parameterType="com.os.model.ApplyExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from apply
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from apply
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from apply
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.os.model.ApplyExample">
+    delete from apply
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.os.model.Apply">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into apply (job_id, os_id, apply_status_id, 
+      reason)
+    values (#{jobId,jdbcType=BIGINT}, #{osId,jdbcType=BIGINT}, #{applyStatusId,jdbcType=INTEGER}, 
+      #{reason,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.os.model.Apply">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into apply
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="jobId != null">
+        job_id,
+      </if>
+      <if test="osId != null">
+        os_id,
+      </if>
+      <if test="applyStatusId != null">
+        apply_status_id,
+      </if>
+      <if test="reason != null">
+        reason,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="jobId != null">
+        #{jobId,jdbcType=BIGINT},
+      </if>
+      <if test="osId != null">
+        #{osId,jdbcType=BIGINT},
+      </if>
+      <if test="applyStatusId != null">
+        #{applyStatusId,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.os.model.ApplyExample" resultType="java.lang.Long">
+    select count(*) from apply
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update apply
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.jobId != null">
+        job_id = #{record.jobId,jdbcType=BIGINT},
+      </if>
+      <if test="record.osId != null">
+        os_id = #{record.osId,jdbcType=BIGINT},
+      </if>
+      <if test="record.applyStatusId != null">
+        apply_status_id = #{record.applyStatusId,jdbcType=INTEGER},
+      </if>
+      <if test="record.reason != null">
+        reason = #{record.reason,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update apply
+    set id = #{record.id,jdbcType=BIGINT},
+      job_id = #{record.jobId,jdbcType=BIGINT},
+      os_id = #{record.osId,jdbcType=BIGINT},
+      apply_status_id = #{record.applyStatusId,jdbcType=INTEGER},
+      reason = #{record.reason,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.os.model.Apply">
+    update apply
+    <set>
+      <if test="jobId != null">
+        job_id = #{jobId,jdbcType=BIGINT},
+      </if>
+      <if test="osId != null">
+        os_id = #{osId,jdbcType=BIGINT},
+      </if>
+      <if test="applyStatusId != null">
+        apply_status_id = #{applyStatusId,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null">
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.os.model.Apply">
+    update apply
+    set job_id = #{jobId,jdbcType=BIGINT},
+      os_id = #{osId,jdbcType=BIGINT},
+      apply_status_id = #{applyStatusId,jdbcType=INTEGER},
+      reason = #{reason,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

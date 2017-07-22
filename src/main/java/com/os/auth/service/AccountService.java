@@ -3,12 +3,10 @@ package com.os.auth.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.os.auth.domain.Account;
-import com.os.auth.domain.Auth;
 import com.os.auth.mapper.AccountMapper;
 import com.os.auth.mapper.AuthMapper;
-import com.os.db.domain.OnlineStar;
-import com.os.db.mapper.OnlineStarMapper;
+import com.os.auth.model.Account;
+import com.os.auth.model.Auth;
 
 @Service
 public class AccountService {
@@ -22,5 +20,9 @@ public class AccountService {
 	
 	public Account get(long authId){
 		return accMapper.get(authId);
+	}
+	
+	public void selectGroup(long authId, int groupId){
+		accMapper.setGroup(groupId, authId);
 	}
 }

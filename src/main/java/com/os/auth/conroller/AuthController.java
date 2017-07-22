@@ -27,11 +27,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.os.auth.domain.Account;
-import com.os.auth.domain.Auth;
+import com.os.auth.model.Account;
+import com.os.auth.model.Auth;
 import com.os.auth.service.AuthService;
-import com.os.db.domain.OnlineStar;
-import com.os.db.domain.Result;
+import com.os.model.OnlineStar;
+import com.os.model.Result;
 import com.os.validator.Validator;
 
 @Controller
@@ -61,11 +61,11 @@ public class AuthController {
 	
 	@RequestMapping(value = "/info", produces = TEXT, method = RequestMethod.POST)
 	@ResponseBody
-    public Object info(@RequestBody Phone p){
-		
-		System.out.println("phone: " + p.getPhone());
-		System.out.println(authService.exist(p.phone));
-		Auth auth = authService.getAuth(p.getPhone());
+    public Object info(@RequestBody Map<String, String> map){
+		String phone = map.get("phone");
+		System.out.println("phone: " + phone);
+		System.out.println(authService.exist(phone));
+		Auth auth = authService.getAuth(phone);
     	return Result.ok(auth);
     }
 	
@@ -79,7 +79,7 @@ public class AuthController {
 		}
 		else{
 			result = Result.ok(auth1);
-			System.out.println("acc = " + session.getAttribute("acc"));
+			LOG.info("Sign-in: {}", auth1);
 			session.setAttribute("acc", auth1);
 		}
     	return result;
@@ -91,26 +91,4 @@ public class AuthController {
 //		authService.save(acc);
     	return Result.OK;
 	}
-	
-	
-	
-    public static void main(String...strings){
-//    	121.36436,31.225824
-//    	121.36470393469,31.225998529817
-//    	double dis = Distance.getShortDistance(121.36436, 31.225824, 121.36470393469, 31.225998529817);
-//    	System.out.println(dis);
-    }
-}
-class Phone{
-	
-	String phone;
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-	
 }

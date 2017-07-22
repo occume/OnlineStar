@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.os.db.domain.Result;
 import com.os.exception.NoSignInException;
+import com.os.model.Result;
 
 @ControllerAdvice
 public class AuthenticatorController {

@@ -2,8 +2,8 @@ package com.os.validator;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.os.db.domain.Mission;
-import com.os.db.domain.OnlineStar;
+import com.os.model.Mission;
+import com.os.model.OnlineStar;
 
 public class Validator {
 

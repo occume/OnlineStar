@@ -1,4 +1,4 @@
-package com.os.db.domain;
+package com.os.model;
 
 public class Result {
 	

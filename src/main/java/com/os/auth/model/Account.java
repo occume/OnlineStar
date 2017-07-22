@@ -1,4 +1,4 @@
-package com.os.auth.domain;
+package com.os.auth.model;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;

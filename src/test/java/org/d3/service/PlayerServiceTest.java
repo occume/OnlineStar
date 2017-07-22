@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.os.db.domain.Follow;
-import com.os.db.domain.Player;
-import com.os.db.domain.Tag;
+import com.os.model.Follow;
+import com.os.model.Player;
+import com.os.model.Tag;
 import com.os.service.NarraterService;
 import com.os.service.PlayerService;
 

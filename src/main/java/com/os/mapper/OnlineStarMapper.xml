@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.os.mapper.OnlineStarMapper">
+  <resultMap id="BaseResultMap" type="com.os.model.OnlineStar">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="auth_id" jdbcType="BIGINT" property="authId" />
+    <result column="online_live_price" jdbcType="REAL" property="onlineLivePrice" />
+    <result column="offline_live_price" jdbcType="REAL" property="offlineLivePrice" />
+    <result column="brand_spoke_price" jdbcType="REAL" property="brandSpokePrice" />
+    <result column="platform" jdbcType="VARCHAR" property="platform" />
+    <result column="platform_name" jdbcType="VARCHAR" property="platformName" />
+    <result column="fans_count" jdbcType="INTEGER" property="fansCount" />
+    <result column="gift_to_money" jdbcType="REAL" property="giftToMoney" />
+    <result column="height" jdbcType="REAL" property="height" />
+    <result column="weight" jdbcType="REAL" property="weight" />
+    <result column="breast" jdbcType="REAL" property="breast" />
+    <result column="waistline" jdbcType="REAL" property="waistline" />
+    <result column="hipline" jdbcType="REAL" property="hipline" />
+    <result column="expierence" jdbcType="VARCHAR" property="expierence" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, auth_id, online_live_price, offline_live_price, brand_spoke_price, platform, 
+    platform_name, fans_count, gift_to_money, height, weight, breast, waistline, hipline, 
+    expierence
+  </sql>
+  <select id="selectByExample" parameterType="com.os.model.OnlineStarExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from online_star
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from online_star
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from online_star
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.os.model.OnlineStarExample">
+    delete from online_star
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.os.model.OnlineStar">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into online_star (auth_id, online_live_price, offline_live_price, 
+      brand_spoke_price, platform, platform_name, 
+      fans_count, gift_to_money, height, 
+      weight, breast, waistline, hipline, 
+      expierence)
+    values (#{authId,jdbcType=BIGINT}, #{onlineLivePrice,jdbcType=REAL}, #{offlineLivePrice,jdbcType=REAL}, 
+      #{brandSpokePrice,jdbcType=REAL}, #{platform,jdbcType=VARCHAR}, #{platformName,jdbcType=VARCHAR}, 
+      #{fansCount,jdbcType=INTEGER}, #{giftToMoney,jdbcType=REAL}, #{height,jdbcType=REAL}, 
+      #{weight,jdbcType=REAL}, #{breast,jdbcType=REAL}, #{waistline,jdbcType=REAL}, #{hipline,jdbcType=REAL}, 
+      #{expierence,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.os.model.OnlineStar">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into online_star
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="authId != null">
+        auth_id,
+      </if>
+      <if test="onlineLivePrice != null">
+        online_live_price,
+      </if>
+      <if test="offlineLivePrice != null">
+        offline_live_price,
+      </if>
+      <if test="brandSpokePrice != null">
+        brand_spoke_price,
+      </if>
+      <if test="platform != null">
+        platform,
+      </if>
+      <if test="platformName != null">
+        platform_name,
+      </if>
+      <if test="fansCount != null">
+        fans_count,
+      </if>
+      <if test="giftToMoney != null">
+        gift_to_money,
+      </if>
+      <if test="height != null">
+        height,
+      </if>
+      <if test="weight != null">
+        weight,
+      </if>
+      <if test="breast != null">
+        breast,
+      </if>
+      <if test="waistline != null">
+        waistline,
+      </if>
+      <if test="hipline != null">
+        hipline,
+      </if>
+      <if test="expierence != null">
+        expierence,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="authId != null">
+        #{authId,jdbcType=BIGINT},
+      </if>
+      <if test="onlineLivePrice != null">
+        #{onlineLivePrice,jdbcType=REAL},
+      </if>
+      <if test="offlineLivePrice != null">
+        #{offlineLivePrice,jdbcType=REAL},
+      </if>
+      <if test="brandSpokePrice != null">
+        #{brandSpokePrice,jdbcType=REAL},
+      </if>
+      <if test="platform != null">
+        #{platform,jdbcType=VARCHAR},
+      </if>
+      <if test="platformName != null">
+        #{platformName,jdbcType=VARCHAR},
+      </if>
+      <if test="fansCount != null">
+        #{fansCount,jdbcType=INTEGER},
+      </if>
+      <if test="giftToMoney != null">
+        #{giftToMoney,jdbcType=REAL},
+      </if>
+      <if test="height != null">
+        #{height,jdbcType=REAL},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=REAL},
+      </if>
+      <if test="breast != null">
+        #{breast,jdbcType=REAL},
+      </if>
+      <if test="waistline != null">
+        #{waistline,jdbcType=REAL},
+      </if>
+      <if test="hipline != null">
+        #{hipline,jdbcType=REAL},
+      </if>
+      <if test="expierence != null">
+        #{expierence,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.os.model.OnlineStarExample" resultType="java.lang.Long">
+    select count(*) from online_star
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update online_star
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.authId != null">
+        auth_id = #{record.authId,jdbcType=BIGINT},
+      </if>
+      <if test="record.onlineLivePrice != null">
+        online_live_price = #{record.onlineLivePrice,jdbcType=REAL},
+      </if>
+      <if test="record.offlineLivePrice != null">
+        offline_live_price = #{record.offlineLivePrice,jdbcType=REAL},
+      </if>
+      <if test="record.brandSpokePrice != null">
+        brand_spoke_price = #{record.brandSpokePrice,jdbcType=REAL},
+      </if>
+      <if test="record.platform != null">
+        platform = #{record.platform,jdbcType=VARCHAR},
+      </if>
+      <if test="record.platformName != null">
+        platform_name = #{record.platformName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fansCount != null">
+        fans_count = #{record.fansCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.giftToMoney != null">
+        gift_to_money = #{record.giftToMoney,jdbcType=REAL},
+      </if>
+      <if test="record.height != null">
+        height = #{record.height,jdbcType=REAL},
+      </if>
+      <if test="record.weight != null">
+        weight = #{record.weight,jdbcType=REAL},
+      </if>
+      <if test="record.breast != null">
+        breast = #{record.breast,jdbcType=REAL},
+      </if>
+      <if test="record.waistline != null">
+        waistline = #{record.waistline,jdbcType=REAL},
+      </if>
+      <if test="record.hipline != null">
+        hipline = #{record.hipline,jdbcType=REAL},
+      </if>
+      <if test="record.expierence != null">
+        expierence = #{record.expierence,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update online_star
+    set id = #{record.id,jdbcType=BIGINT},
+      auth_id = #{record.authId,jdbcType=BIGINT},
+      online_live_price = #{record.onlineLivePrice,jdbcType=REAL},
+      offline_live_price = #{record.offlineLivePrice,jdbcType=REAL},
+      brand_spoke_price = #{record.brandSpokePrice,jdbcType=REAL},
+      platform = #{record.platform,jdbcType=VARCHAR},
+      platform_name = #{record.platformName,jdbcType=VARCHAR},
+      fans_count = #{record.fansCount,jdbcType=INTEGER},
+      gift_to_money = #{record.giftToMoney,jdbcType=REAL},
+      height = #{record.height,jdbcType=REAL},
+      weight = #{record.weight,jdbcType=REAL},
+      breast = #{record.breast,jdbcType=REAL},
+      waistline = #{record.waistline,jdbcType=REAL},
+      hipline = #{record.hipline,jdbcType=REAL},
+      expierence = #{record.expierence,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.os.model.OnlineStar">
+    update online_star
+    <set>
+      <if test="authId != null">
+        auth_id = #{authId,jdbcType=BIGINT},
+      </if>
+      <if test="onlineLivePrice != null">
+        online_live_price = #{onlineLivePrice,jdbcType=REAL},
+      </if>
+      <if test="offlineLivePrice != null">
+        offline_live_price = #{offlineLivePrice,jdbcType=REAL},
+      </if>
+      <if test="brandSpokePrice != null">
+        brand_spoke_price = #{brandSpokePrice,jdbcType=REAL},
+      </if>
+      <if test="platform != null">
+        platform = #{platform,jdbcType=VARCHAR},
+      </if>
+      <if test="platformName != null">
+        platform_name = #{platformName,jdbcType=VARCHAR},
+      </if>
+      <if test="fansCount != null">
+        fans_count = #{fansCount,jdbcType=INTEGER},
+      </if>
+      <if test="giftToMoney != null">
+        gift_to_money = #{giftToMoney,jdbcType=REAL},
+      </if>
+      <if test="height != null">
+        height = #{height,jdbcType=REAL},
+      </if>
+      <if test="weight != null">
+        weight = #{weight,jdbcType=REAL},
+      </if>
+      <if test="breast != null">
+        breast = #{breast,jdbcType=REAL},
+      </if>
+      <if test="waistline != null">
+        waistline = #{waistline,jdbcType=REAL},
+      </if>
+      <if test="hipline != null">
+        hipline = #{hipline,jdbcType=REAL},
+      </if>
+      <if test="expierence != null">
+        expierence = #{expierence,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.os.model.OnlineStar">
+    update online_star
+    set auth_id = #{authId,jdbcType=BIGINT},
+      online_live_price = #{onlineLivePrice,jdbcType=REAL},
+      offline_live_price = #{offlineLivePrice,jdbcType=REAL},
+      brand_spoke_price = #{brandSpokePrice,jdbcType=REAL},
+      platform = #{platform,jdbcType=VARCHAR},
+      platform_name = #{platformName,jdbcType=VARCHAR},
+      fans_count = #{fansCount,jdbcType=INTEGER},
+      gift_to_money = #{giftToMoney,jdbcType=REAL},
+      height = #{height,jdbcType=REAL},
+      weight = #{weight,jdbcType=REAL},
+      breast = #{breast,jdbcType=REAL},
+      waistline = #{waistline,jdbcType=REAL},
+      hipline = #{hipline,jdbcType=REAL},
+      expierence = #{expierence,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
