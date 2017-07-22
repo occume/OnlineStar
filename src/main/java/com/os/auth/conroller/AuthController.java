@@ -35,7 +35,7 @@ import com.os.model.Result;
 import com.os.validator.Validator;
 
 @Controller
-@RequestMapping("/auth")
+@RequestMapping("/passport/v1")
 public class AuthController {
 	
 	private static final String JSON = "application/json;charset=UTF-8";
@@ -59,7 +59,7 @@ public class AuthController {
     	return r;
     }
 	
-	@RequestMapping(value = "/info", produces = TEXT, method = RequestMethod.POST)
+	@RequestMapping(value = "/info1", produces = TEXT, method = RequestMethod.POST)
 	@ResponseBody
     public Object info(@RequestBody Map<String, String> map){
 		String phone = map.get("phone");

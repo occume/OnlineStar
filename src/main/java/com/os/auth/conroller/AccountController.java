@@ -40,7 +40,7 @@ import com.os.service.OnlineStarService;
 import com.os.validator.Validator;
 
 @Controller
-@RequestMapping("/account")
+@RequestMapping("/passport/v1")
 public class AccountController extends BaseController{
 	
 	private static final String JSON = "application/json;charset=UTF-8";
@@ -67,8 +67,14 @@ public class AccountController extends BaseController{
 	@ResponseBody
     public Object profileUpdate(HttpSession session, @Valid @RequestBody Account acc){
 		Auth auth = checkAndGetAuth(session);
-		acc.setAuthId(auth.getId());
-		accService.save(acc);
+		Account account = accService.get(auth.getId());
+		if(account == null){
+			acc.setAuthId(auth.getId());
+			accService.save(acc);
+		}
+		else{
+			accService.update(acc);
+		}
     	return Result.OK;
 	}
 	

@@ -18,6 +18,9 @@ agent {
 ```
 
 > 1. [发送验证码](#verification-code) ![]
+> 1. [注册](#passport-reg) ![]
+> 1. [省列表](#province-list) ![]
+> 1. [市列表](#city-list) ![]
 
 1. <span id='verification-code'>发送验证码</span> ![]
     ```
@@ -27,17 +30,54 @@ agent {
         "phone": "15901778405"
     }
     ```
-1. <span id='account-create'>创建账户</span> ![]
+1. <span id='passport-reg'>注册</span> ![]
     ```
-    POST {host}/api/auth/sign-up
+    POST {host}/hrz/passport/v1/reg
 
     {
-        "phone": "15901778405",
-        "passwd": "123456",
-        "verification_code": "123456"
+		"phone": <string>,
+		"password": <string>
+	}
+	
+	200 OK
+	
+	{
+	    "errCode": 0,
+	    "errMessage": "OK",
+	    "data": null
+	}
+    ```    
+1. <span id='province-list'>省列表</span> ![]
+    ```
+    GET {host}/hrz/common/provinces
+    
+    200 OK
+
+    {
+	    "errCode": 0,
+	    "errMessage": "OK",
+	    "data": [
+	        {
+	            "id": <int>,
+	            "name": <string>
+	        }
+	    ]
     }
     ```
+1. <span id='city-list'>市列表</span> ![]
     ```
-    passwd: 密码(优先)
-    verification_code: 验证码
+    GET {host}/hrz/common/cities/{provinceId}
+    
+    200 OK
+
+    {
+	    "errCode": 0,
+	    "errMessage": "OK",
+	    "data": [
+	        {
+	            "id": <int>,
+	            "name": <string>
+	        }
+	    ]
+    }
     ```

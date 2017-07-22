@@ -18,6 +18,10 @@ public class AccountService {
 		accMapper.save(acc);
 	}
 	
+	public void update(Account acc){
+		accMapper.updateByPrimaryKey(acc);
+	}
+	
 	public Account get(long authId){
 		return accMapper.get(authId);
 	}

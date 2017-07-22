@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.os.mapper.CommonMapper">
+  
+	<select id="cityList" resultType="City">  
+		select * from city
+	</select>
+	
+	<select id="cityListByProvinceId" parameterType="int" resultType="City">  
+		select * from city where province_id = #{provinceId}
+	</select>
+	
+	<select id="provinceList" resultType="Province">  
+		select * from province
+	</select>
+
+	<update id="setGroup" >  
+		update account set group_id = #{groupId} where auth_id = #{authId}
+	</update>
+	
+	
+</mapper>
