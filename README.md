@@ -22,7 +22,7 @@ agent {
 > 1. [省列表](#province-list) ![]
 > 1. [市列表](#city-list) ![]
 
-1. <span id='verification-code'>发送验证码</span> ![]
+1. <span id='verification-code'>发送验证码</span> 
     ```
     POST {host}/api/auth/verification-code
 
@@ -30,7 +30,7 @@ agent {
         "phone": "15901778405"
     }
     ```
-1. <span id='passport-reg'>注册</span> ![]
+1. <span id='passport-reg'>注册</span> 
     ```
     POST {host}/hrz/passport/v1/reg
 
