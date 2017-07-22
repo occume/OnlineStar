@@ -16,12 +16,20 @@ agent {
     6: ios.b
 }
 ```
-
+> 1. [锚点](#锚点)
 > 1. [发送验证码](#verification-code) ![]
 > 1. [注册](#passport-reg) ![]
 > 1. [省列表](#province-list) ![]
 > 1. [市列表](#city-list) ![]
 
+1. 锚点
+    ```
+    POST {host}/api/auth/verification-code
+
+    {
+        "phone": "15901778405"
+    }
+    ```
 1. <span id='verification-code'>发送验证码</span> 
     ```
     POST {host}/api/auth/verification-code
