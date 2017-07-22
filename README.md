@@ -17,7 +17,7 @@ agent {
 }
 ```
 > 1. [锚点](#锚点)
-> 1. [发送验证码](#verification-code) ![]
+> 1. [发送验证码](#verification-code)![](https://www.duliday.com/api/public/img/build-passing.svg)
 > 1. [注册](#passport-reg) ![]
 > 1. [省列表](#province-list) ![]
 > 1. [市列表](#city-list) ![]
@@ -30,7 +30,7 @@ agent {
         "phone": "15901778405"
     }
     ```
-1. <span id='verification-code'>发送验证码</span> 
+1. <span id='verification-code'>发送验证码</span> ![](https://www.duliday.com/api/public/img/build-passing.svg)
     ```
     POST {host}/api/auth/verification-code
 
