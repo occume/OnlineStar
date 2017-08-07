@@ -28,7 +28,7 @@ import com.os.service.JobService;
 import com.os.service.OnlineStarService;
 
 @Controller
-@RequestMapping("/job")
+@RequestMapping("/job/v1")
 public class JobController extends BaseController{
 	
 	private static final Logger log = LoggerFactory.getLogger(JobController.class);
@@ -44,12 +44,22 @@ public class JobController extends BaseController{
     	return Result.OK;
 	}
 
-	@RequestMapping(value = "/list", produces = TEXT, method = RequestMethod.POST)
+	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
     public Object jobList(HttpSession session, @RequestBody Map<String, Object> map){
 		//checkAndGetAuth(session);
 		System.out.println(map);
 		List<Job> data = jobService.jobList(map);
+    	return Result.ok(data);
+	}
+	
+	@RequestMapping(value = "/detail", method = RequestMethod.POST)
+	@ResponseBody
+    public Object jobDetail(HttpSession session, @RequestBody Map<String, Object> map){
+		//checkAndGetAuth(session);
+		System.out.println(map);
+		long id = (long) map.get("id");
+		Job data = jobService.getById(id);
     	return Result.ok(data);
 	}
 }

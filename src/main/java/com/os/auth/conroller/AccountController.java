@@ -34,9 +34,14 @@ import com.os.auth.service.AccountService;
 import com.os.auth.service.AuthService;
 import com.os.conroller.BaseController;
 import com.os.exception.NoSignInException;
+import com.os.model.Merchant;
 import com.os.model.OnlineStar;
 import com.os.model.Result;
+import com.os.model.Wallet;
+import com.os.service.CommonService;
+import com.os.service.MerchantService;
 import com.os.service.OnlineStarService;
+import com.os.service.WalletService;
 import com.os.validator.Validator;
 
 @Controller
@@ -49,11 +54,17 @@ public class AccountController extends BaseController{
 	private static final Logger LOG = LoggerFactory.getLogger(AccountController.class);
 
 	@Autowired
+	private CommonService commonService;
+	@Autowired
 	private AuthService authService;
 	@Autowired
 	private AccountService accService;
 	@Autowired
 	private OnlineStarService osService;
+	@Autowired
+	private WalletService walletService;
+	@Autowired
+	private MerchantService merchantService;
 	
 	@RequestMapping(value = "/info", produces = TEXT, method = RequestMethod.POST)
 	@ResponseBody
@@ -63,7 +74,7 @@ public class AccountController extends BaseController{
     	return Result.ok(account);
     }
 	
-	@RequestMapping(value = "/update", produces = TEXT, method = RequestMethod.POST)
+	@RequestMapping(value = "/profile/complete", method = RequestMethod.POST)
 	@ResponseBody
     public Object profileUpdate(HttpSession session, @Valid @RequestBody Account acc){
 		Auth auth = checkAndGetAuth(session);
@@ -78,17 +89,33 @@ public class AccountController extends BaseController{
     	return Result.OK;
 	}
 	
-	@RequestMapping(value = "/group/select", produces = TEXT, method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value = "/group/select", method = RequestMethod.POST, consumes = "application/json")
 	@ResponseBody
     public Object selectGroup(HttpSession session, @RequestBody Map<String, Integer> map){
 		Auth auth = checkAndGetAuth(session);
-		System.out.println(map.get("group_id"));
 		int groupId = map.get("group_id");
 		accService.selectGroup(auth.getId(), groupId);
 		if(groupId == GroupType.ONLINE_STAR){
+			/**
+			 * Create OnlineStar
+			 */
 			OnlineStar os = new OnlineStar();
 			os.setAuthId(auth.getId());
 			osService.insert(os);
+			/**
+			 * Create Wallet
+			 */
+			Wallet wallet = new Wallet();
+			wallet.setOsId(os.getId());
+			walletService.insert(wallet);
+		}
+		else if(groupId == GroupType.MERCHANT){
+			/**
+			 * Create Merchant
+			 */
+			Merchant merchant = new Merchant();
+			merchant.setAuthId(auth.getId());
+			merchantService.insert(merchant);
 		}
     	return Result.OK;
 	}

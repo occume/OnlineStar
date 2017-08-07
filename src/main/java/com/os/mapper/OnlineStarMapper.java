@@ -19,6 +19,8 @@ public interface OnlineStarMapper {
     List<OnlineStar> selectByExample(OnlineStarExample example);
 
     OnlineStar selectByPrimaryKey(Long id);
+    
+    OnlineStar selectByAuthId(Long authId);
 
     int updateByExampleSelective(@Param("record") OnlineStar record, @Param("example") OnlineStarExample example);
 

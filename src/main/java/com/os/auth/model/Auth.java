@@ -20,6 +20,8 @@ public class Auth {
 	@Size(min=6, max=20)
 	private String password;
 	
+	private int vcode;
+	
 	public long getId() {
 		return id;
 	}
@@ -39,9 +41,16 @@ public class Auth {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public int getVcode() {
+		return vcode;
+	}
+	public void setVcode(int vcode) {
+		this.vcode = vcode;
+	}
 	@Override
 	public String toString() {
 		return "Auth [id=" + id + ", phone=" + phone + ", password=" + password
-				+ "]";
+				+ ", vcode=" + vcode + "]";
 	}
 }

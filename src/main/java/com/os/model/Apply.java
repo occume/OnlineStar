@@ -23,6 +23,11 @@ public class Apply {
     	this.osId = osId;
     	this.applyStatusId = 1;
     }
+    
+    public Apply(long id, int applyStatusId){
+    	this.id = id;
+    	this.applyStatusId = applyStatusId;
+    }
 
     public Long getId() {
         return id;

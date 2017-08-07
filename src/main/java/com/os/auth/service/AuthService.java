@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 
 import com.os.auth.mapper.AuthMapper;
 import com.os.auth.model.Auth;
-import com.os.mapper.OnlineStarMapper;
-import com.os.model.OnlineStar;
 
 @Service
 public class AuthService {
@@ -16,6 +14,10 @@ public class AuthService {
 	
 	public void save(Auth auth){
 		authMapper.save(auth);
+	}
+	
+	public void resetPassword(Auth auth){
+		authMapper.resetPassword(auth);
 	}
 	
 	public Auth getAuth(String phone){

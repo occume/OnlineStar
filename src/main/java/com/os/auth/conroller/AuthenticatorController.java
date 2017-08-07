@@ -21,7 +21,7 @@ public class AuthenticatorController {
 	
 	@InitBinder
 	public void initBinder(){
-		System.out.println("Init binder");
+		
 	}
 	
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -84,7 +84,7 @@ public class AuthenticatorController {
 		if(e instanceof NoSignInException){
 			return Result.fail(e.getMessage());
 		}
-		System.out.println(e.getMessage());
+		e.printStackTrace();
 		return Result.fail("Oh, programmer is ran!");
 	}
 }

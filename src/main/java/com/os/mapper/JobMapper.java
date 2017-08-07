@@ -2,7 +2,10 @@ package com.os.mapper;
 
 import com.os.model.Job;
 import com.os.model.JobExample;
+import com.os.model.JobWithMerchant;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface JobMapper {
@@ -19,6 +22,8 @@ public interface JobMapper {
     List<Job> selectByExample(JobExample example);
 
     Job selectByPrimaryKey(Long id);
+    
+    JobWithMerchant selectWithMerchant(@Param("id")Long id);
 
     int updateByExampleSelective(@Param("record") Job record, @Param("example") JobExample example);
 

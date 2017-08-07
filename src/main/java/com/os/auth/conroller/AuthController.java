@@ -1,6 +1,7 @@
 package com.os.auth.conroller;
 
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.os.Constant;
+import com.os.Constant.SessionKey;
 import com.os.auth.model.Account;
 import com.os.auth.model.Auth;
 import com.os.auth.service.AuthService;
@@ -35,7 +38,7 @@ import com.os.model.Result;
 import com.os.validator.Validator;
 
 @Controller
-@RequestMapping("/passport/v1")
+@RequestMapping("/passport/v" + Constant.API_VERSION)
 public class AuthController {
 	
 	private static final String JSON = "application/json;charset=UTF-8";
@@ -46,6 +49,20 @@ public class AuthController {
 	@Autowired
 	private AuthService authService;
 	
+	@RequestMapping(value = "/v-code", produces = TEXT, method = RequestMethod.POST)
+	@ResponseBody
+    public Result vcode(HttpSession session, @RequestBody Map<String, Integer> map){
+		int code = genVcode();
+		session.setAttribute(SessionKey.VCODE, code);
+    	return Result.OK;
+    }
+	
+	private int genVcode() {
+		int start = 100000;
+		int end = 999999;
+		return start + new Random().nextInt((end - start) + 1);
+	}
+	
 	@RequestMapping(value = "/reg", produces = TEXT, method = RequestMethod.POST)
 	@ResponseBody
     public Result regitster(@Valid @RequestBody Auth auth){
@@ -55,6 +72,31 @@ public class AuthController {
 		}else{
 			authService.save(auth);
 			r = Result.OK;
+		}
+    	return r;
+    }
+	
+	@RequestMapping(value = "/password/reset", produces = TEXT, method = RequestMethod.POST)
+	@ResponseBody
+    public Result resetPassword(HttpSession session, @Valid @RequestBody Auth auth){
+		Result r;
+		if(authService.exist(auth.getPhone())){
+			if(session.getAttribute(SessionKey.VCODE) == null){
+				r = Result.fail("Please get v-code first");
+			}
+			else{
+				int vcode = (int) session.getAttribute(SessionKey.VCODE);
+				if(vcode == auth.getVcode()){
+					authService.resetPassword(auth);
+					r = Result.OK;
+				}
+				else{
+					r = Result.fail("V-code is incorrect");
+				}
+			}
+			
+		}else{
+			r = Result.fail("Not exist phone");
 		}
     	return r;
     }

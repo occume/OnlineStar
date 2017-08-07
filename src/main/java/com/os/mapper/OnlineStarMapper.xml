@@ -95,12 +95,21 @@
       order by ${orderByClause}
     </if>
   </select>
+  
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from online_star
     where id = #{id,jdbcType=BIGINT}
   </select>
+  
+  <select id="selectByAuthId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from online_star
+    where auth_id = #{authId,jdbcType=BIGINT}
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from online_star
     where id = #{id,jdbcType=BIGINT}

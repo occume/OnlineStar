@@ -23,7 +23,7 @@ public class OnlineStarService {
 		return osMapper.updateByPrimaryKeySelective(os);
 	}
 	
-	public OnlineStar get(long authId){
+	public OnlineStar getByAuthId(long authId){
 		OnlineStarExample example = new OnlineStarExample();
 		example.createCriteria().andAuthIdEqualTo(authId);
 		List<OnlineStar> list = osMapper.selectByExample(example);

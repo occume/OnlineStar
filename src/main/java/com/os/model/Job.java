@@ -2,31 +2,41 @@ package com.os.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Job {
     private Long id;
+
+    @JsonProperty("merchant_id")
+    private Long merchantId;
 
     private String title;
 
     private String content;
 
+    @JsonProperty("job_type_id")
     private Integer jobTypeId;
 
     private Integer cityId;
-
+    @JsonProperty("start_time")
     private Date startTime;
-
+    
+    @JsonProperty("end_time")
     private Date endTime;
 
     private String address;
 
+    @JsonProperty("expect_count")
     private Integer expectCount;
 
     private Float price;
 
+    @JsonProperty("gender_id")
     private Integer genderId;
 
     private String phone;
 
+    @JsonProperty("status_id")
     private Integer statusId;
 
     public Long getId() {
@@ -35,6 +45,14 @@ public class Job {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(Long merchantId) {
+        this.merchantId = merchantId;
     }
 
     public String getTitle() {

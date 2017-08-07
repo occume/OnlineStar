@@ -21,9 +21,9 @@
 	
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 	 	<property name="driverClass"><value>org.gjt.mm.mysql.Driver</value></property>
-	 	<property name="initialPoolSize" 	value="10"></property>
-	 	<property name="maxPoolSize" 		value="90"></property>
-		<property name="minPoolSize" 		value="10"></property>
+	 	<property name="initialPoolSize" 	value="1"></property>
+	 	<property name="maxPoolSize" 		value="10"></property>
+		<property name="minPoolSize" 		value="1"></property>
 		<property name="autoCommitOnClose" 	value="true"></property>
 		<property name="maxStatements" 		value="0"/>
 		<property name="maxIdleTime" 		value="1800"/>
@@ -31,10 +31,14 @@
 		<property name="idleConnectionTestPeriod" value="1800"/>
 <!--	<property name="jdbcUrl"><value>jdbc:mysql://d3gameserver.mysql.rds.aliyuncs.com:3306/d3_mycity</value></property>
 		<property name="user"><value>occume</value></property>
-		<property name="password"><value>5651403</value></property> -->
+		<property name="password"><value>5651403</value></property> 
  		<property name="jdbcUrl"><value>jdbc:mysql://127.0.0.1/hrz</value></property>
 		<property name="user"><value>root</value></property>
 		<property name="password"><value>5651403</value></property>
+		-->
+		<property name="jdbcUrl"><value>jdbc:mysql://rm-bp1olsbs0n02l14t3o.mysql.rds.aliyuncs.com/hrz</value></property>
+		<property name="user"><value>root</value></property>
+		<property name="password"><value>hrz_5651403</value></property>
 	 </bean>
 
     <!-- transaction manager, use JtaTransactionManager for global tx -->

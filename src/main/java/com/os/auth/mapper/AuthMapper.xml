@@ -7,6 +7,10 @@
 	<insert id="save" parameterType="Auth">  
 		INSERT INTO auth (phone, password) VALUES (#{phone}, #{password})
 	</insert>
+	
+	<update id="resetPassword" parameterType="Auth">
+		update auth set password = #{password} where phone = #{phone}
+	</update>
   
 	<select id="getAuthByPhone" parameterType="String" resultType="Auth">  
 		select * from auth where phone = #{phone} group by phone

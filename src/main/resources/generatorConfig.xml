@@ -27,9 +27,9 @@
         </jdbcConnection>
          -->
          <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/online_star"
+                        connectionURL="jdbc:mysql://rm-bp1olsbs0n02l14t3o.mysql.rds.aliyuncs.com/hrz"
                         userId="root"
-                        password="5651403">
+                        password="hrz_5651403">
         </jdbcConnection>
         
         <!--默认false
@@ -54,7 +54,7 @@
         </javaClientGenerator>
 		
         <!--对应数据库表 mysql可以加入主键自增 字段命名 忽略某字段等-->
-        <table tableName="job" domainObjectName="Job">
+        <table tableName="online_star_work" domainObjectName="OnlineStarWork">
         	<generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
         	<ignoreColumn column="create_at"/>
         	<ignoreColumn column="update_at"/>

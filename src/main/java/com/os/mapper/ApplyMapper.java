@@ -2,6 +2,7 @@ package com.os.mapper;
 
 import com.os.model.Apply;
 import com.os.model.ApplyExample;
+import com.os.model.ApplyWithJob;
 import com.os.model.ApplyWithOnlineStar;
 
 import java.util.List;
@@ -25,7 +26,9 @@ public interface ApplyMapper {
     
     Apply selectByJobOnlineStar(@Param("jobId")Long jobId, @Param("osId")Long osId);
     
-    List<ApplyWithOnlineStar> selectWithOnlineStar(Long jobId);
+    List<ApplyWithOnlineStar> selectWithOnlineStar(@Param("jobId")Long jobId);
+    
+    List<ApplyWithJob> selectWithJob(Long osId);
 
     int updateByExampleSelective(@Param("record") Apply record, @Param("example") ApplyExample example);
 

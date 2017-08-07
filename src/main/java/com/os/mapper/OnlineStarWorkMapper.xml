@@ -1,32 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.os.mapper.ApplyMapper">
-
-	<!-- Result Map -->
-  <resultMap id="BaseResultMap" type="com.os.model.Apply">
+<mapper namespace="com.os.mapper.OnlineStarWorkMapper">
+  <resultMap id="BaseResultMap" type="com.os.model.OnlineStarWork">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="job_id" jdbcType="BIGINT" property="jobId" />
     <result column="os_id" jdbcType="BIGINT" property="osId" />
-    <result column="apply_status_id" jdbcType="INTEGER" property="applyStatusId" />
-    <result column="reason" jdbcType="VARCHAR" property="reason" />
-  </resultMap>
-  
-  <resultMap id="ApplyWithOnlineStar" type="com.os.model.ApplyWithOnlineStar">
-  	<result column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="gender_id" jdbcType="INTEGER" property="genderId" />
-    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="original_name" jdbcType="VARCHAR" property="originalName" />
+    <result column="content_type" jdbcType="VARCHAR" property="contentType" />
+    <result column="size" jdbcType="BIGINT" property="size" />
   </resultMap>
-  
-  <resultMap id="ApplyWithJob" type="com.os.model.ApplyWithJob">
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="price" jdbcType="FLOAT" property="price" />
-    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
-    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
-    <result column="type_name" jdbcType="VARCHAR" property="typeName" />
-    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
-  </resultMap>
-  
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -85,37 +67,16 @@
       </foreach>
     </where>
   </sql>
-  
   <sql id="Base_Column_List">
-    id, job_id, os_id, apply_status_id, reason
+    id, os_id, name, original_name, content_type, size
   </sql>
-  
-  <select id="selectWithOnlineStar" parameterType="java.lang.Long" resultMap="ApplyWithOnlineStar">
-    select a.id, acc.name, acc.gender_id, acc.avatar from apply a
-    	left join online_star o on o.id = a.os_id
-    	left join account acc on acc.auth_id = o.auth_id
-    	where a.job_id = #{jobId}
-  </select>
-  
-  <select id="selectWithJob" parameterType="java.lang.Long" resultMap="ApplyWithJob">
-    select j.title, j.price, j.start_time, j.end_time, jt.name as type_name, c.name as city_name from apply a
-    	left join job j on j.id = a.job_id
-    	left join job_type jt on jt.id = j.job_type_id
-    	left join city c on c.id = j.city_id
-    	where a.os_id = #{osId}
-  </select>
-  
-  <select id="selectByJobOnlineStar" resultMap="BaseResultMap">
-    select * from apply where job_id = #{jobId} and os_id = #{osId}
-  </select>
-  
-  <select id="selectByExample" parameterType="com.os.model.ApplyExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.os.model.OnlineStarWorkExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from apply
+    from online_star_work
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -126,85 +87,94 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from apply
+    from online_star_work
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from apply
+    delete from online_star_work
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.os.model.ApplyExample">
-    delete from apply
+  <delete id="deleteByExample" parameterType="com.os.model.OnlineStarWorkExample">
+    delete from online_star_work
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.os.model.Apply">
+  <insert id="insert" parameterType="com.os.model.OnlineStarWork">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into apply (job_id, os_id, apply_status_id, 
-      reason)
-    values (#{jobId,jdbcType=BIGINT}, #{osId,jdbcType=BIGINT}, #{applyStatusId,jdbcType=INTEGER}, 
-      #{reason,jdbcType=VARCHAR})
+    insert into online_star_work (os_id, name, original_name, 
+      content_type, size)
+    values (#{osId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{originalName,jdbcType=VARCHAR}, 
+      #{contentType,jdbcType=VARCHAR}, #{size,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.os.model.Apply">
+  <insert id="insertSelective" parameterType="com.os.model.OnlineStarWork">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into apply
+    insert into online_star_work
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="jobId != null">
-        job_id,
-      </if>
       <if test="osId != null">
         os_id,
       </if>
-      <if test="applyStatusId != null">
-        apply_status_id,
+      <if test="name != null">
+        name,
       </if>
-      <if test="reason != null">
-        reason,
+      <if test="originalName != null">
+        original_name,
+      </if>
+      <if test="contentType != null">
+        content_type,
+      </if>
+      <if test="size != null">
+        size,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="jobId != null">
-        #{jobId,jdbcType=BIGINT},
-      </if>
       <if test="osId != null">
         #{osId,jdbcType=BIGINT},
       </if>
-      <if test="applyStatusId != null">
-        #{applyStatusId,jdbcType=INTEGER},
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
       </if>
-      <if test="reason != null">
-        #{reason,jdbcType=VARCHAR},
+      <if test="originalName != null">
+        #{originalName,jdbcType=VARCHAR},
+      </if>
+      <if test="contentType != null">
+        #{contentType,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        #{size,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.os.model.ApplyExample" resultType="java.lang.Long">
-    select count(*) from apply
+  <select id="countByExample" parameterType="com.os.model.OnlineStarWorkExample" resultType="java.lang.Long">
+    select count(*) from online_star_work
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update apply
+    update online_star_work
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.jobId != null">
-        job_id = #{record.jobId,jdbcType=BIGINT},
-      </if>
       <if test="record.osId != null">
         os_id = #{record.osId,jdbcType=BIGINT},
       </if>
-      <if test="record.applyStatusId != null">
-        apply_status_id = #{record.applyStatusId,jdbcType=INTEGER},
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.reason != null">
-        reason = #{record.reason,jdbcType=VARCHAR},
+      <if test="record.originalName != null">
+        original_name = #{record.originalName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contentType != null">
+        content_type = #{record.contentType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.size != null">
+        size = #{record.size,jdbcType=BIGINT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -212,40 +182,45 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update apply
+    update online_star_work
     set id = #{record.id,jdbcType=BIGINT},
-      job_id = #{record.jobId,jdbcType=BIGINT},
       os_id = #{record.osId,jdbcType=BIGINT},
-      apply_status_id = #{record.applyStatusId,jdbcType=INTEGER},
-      reason = #{record.reason,jdbcType=VARCHAR}
+      name = #{record.name,jdbcType=VARCHAR},
+      original_name = #{record.originalName,jdbcType=VARCHAR},
+      content_type = #{record.contentType,jdbcType=VARCHAR},
+      size = #{record.size,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.os.model.Apply">
-    update apply
+  <update id="updateByPrimaryKeySelective" parameterType="com.os.model.OnlineStarWork">
+    update online_star_work
     <set>
-      <if test="jobId != null">
-        job_id = #{jobId,jdbcType=BIGINT},
-      </if>
       <if test="osId != null">
         os_id = #{osId,jdbcType=BIGINT},
       </if>
-      <if test="applyStatusId != null">
-        apply_status_id = #{applyStatusId,jdbcType=INTEGER},
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="reason != null">
-        reason = #{reason,jdbcType=VARCHAR},
+      <if test="originalName != null">
+        original_name = #{originalName,jdbcType=VARCHAR},
+      </if>
+      <if test="contentType != null">
+        content_type = #{contentType,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        size = #{size,jdbcType=BIGINT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.os.model.Apply">
-    update apply
-    set job_id = #{jobId,jdbcType=BIGINT},
-      os_id = #{osId,jdbcType=BIGINT},
-      apply_status_id = #{applyStatusId,jdbcType=INTEGER},
-      reason = #{reason,jdbcType=VARCHAR}
+  <update id="updateByPrimaryKey" parameterType="com.os.model.OnlineStarWork">
+    update online_star_work
+    set os_id = #{osId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      original_name = #{originalName,jdbcType=VARCHAR},
+      content_type = #{contentType,jdbcType=VARCHAR},
+      size = #{size,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

@@ -8,13 +8,10 @@ public interface AuthMapper {
 
 	void save(Auth auth);
 	
+	void resetPassword(Auth auth);
+	
 	Auth getAuthByPhone(String phone);
 	
 	Auth getAuth(@Param(value="phone")String phone, 
 	  		 @Param(value="password")String password);
-//	void exist(Account account);
-//	
-//	void save(Account account);
-//	
-//	void update(Account account);
 }
