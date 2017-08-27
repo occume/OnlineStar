@@ -1,9 +1,5 @@
 package com.os.conroller;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -17,13 +13,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.google.common.collect.Lists;
+import com.os.Constant;
 import com.os.auth.model.Auth;
 import com.os.model.Apply;
+import com.os.model.ApplyWithJob;
 import com.os.model.Job;
 import com.os.model.JobWithMerchant;
 import com.os.model.OnlineStar;
@@ -56,8 +51,13 @@ public class OnlineStarController extends BaseController{
 	private OnlineStar getProfile(Auth auth){
 		return osService.getByAuthId(auth.getId());
 	}
-	
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	/**
+	 * 个人中心更新
+	 * @param session
+	 * @param os
+	 * @return
+	 */
+	@RequestMapping(value = "/profile/update", method = RequestMethod.POST)
 	@ResponseBody
     public Object profileUpdate(HttpSession session, @Valid @RequestBody OnlineStar os){
 		checkAndGetAuth(session);
@@ -65,42 +65,50 @@ public class OnlineStarController extends BaseController{
     	return Result.OK;
 	}
 	
-	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	@RequestMapping(value = "/profile", method = RequestMethod.POST)
 	@ResponseBody
-    public Object profile(HttpSession session){
+    public Object profile(HttpSession session, @RequestBody Map<String, Object> map){
 		Auth auth = checkAndGetAuth(session);
-		OnlineStar os = osService.getByAuthId(auth.getId());
+		int osId = getParamInt("os_id", map);
+		OnlineStar os;
+		if(osId == 0)
+			os = osService.getByAuthId(auth.getId());
+		else
+			os = osService.getByOsId(osId);
     	return Result.ok(os);
 	}
-
-	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	
+	/**
+	 * 上传作品
+	 * @param session
+	 * @param workList
+	 * @return
+	 */
+	@RequestMapping(value = "/work/add", method = RequestMethod.POST)
 	@ResponseBody
-    public Object uploadFile(HttpSession session, @RequestParam("file") MultipartFile[] files){
-//		Auth auth = checkAndGetAuth(session);
-//		OnlineStar os = osService.getByAuthId(auth.getId());
-//		if(os == null) Result.fail("Group is not selected");
-		long osId = 99;
-		List<OnlineStarWork> works = Lists.newArrayList();
-		for(MultipartFile file: files){
-			OnlineStarWork work = new OnlineStarWork();
-			work.setOsId(osId);
-			work.setOriginalName(file.getOriginalFilename());
-			work.setContentType(file.getContentType());
-			work.setSize(file.getSize());
-			String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().indexOf('.'));
-			String name = "work_" + osId + System.currentTimeMillis() + suffix;
-			work.setName(name);
-			
-			try {
-				Files.write(Paths.get("/tmp/work/" + name), file.getBytes());
-				commonService.saveFile(work);
-				works.add(work);
-			} catch (IOException e) {
-				LOG.error("", e);
-			}
-			
+    public Object workAdd(HttpSession session, @RequestBody List<OnlineStarWork> workList){
+		Auth auth = checkAndGetAuth(session);
+		OnlineStar os = getProfile(auth);
+		if(os == null) return Result.fail("Group is not selected");
+		
+		for(OnlineStarWork work: workList){
+			work.setOsId(os.getId());
+			osService.save(work);
 		}
-    	return Result.ok(works);
+    	return Result.OK;
+	}
+	
+	@RequestMapping(value = "/work/list", method = RequestMethod.POST)
+	@ResponseBody
+    public Object workList(HttpSession session, @RequestBody Map<String, Object> map){
+		Auth auth = checkAndGetAuth(session);
+		OnlineStar os = getProfile(auth);
+		if(os == null) Result.fail("Group is not selected");
+		
+		int typeId = getParamInt("type_id", map);
+		List<OnlineStarWork> data = osService.getWorkList(os.getId(), typeId);
+		
+    	return Result.ok(data);
 	}
 	
 	@RequestMapping(value = "/job/list", method = RequestMethod.POST)
@@ -130,7 +138,7 @@ public class OnlineStarController extends BaseController{
 			long jobId = map.get("job_id");
 			Apply apply = Apply.newApply(jobId, os.getId());
 			if(applyService.exist(apply)){
-				result = Result.fail("Have applied");
+				result = Result.fail("Already applied");
 			}
 			else{
 				applyService.create(Apply.newApply(jobId, os.getId()));
@@ -143,12 +151,16 @@ public class OnlineStarController extends BaseController{
     	return result;
 	}
 	
-	@RequestMapping(value = "/job/apply/list", produces = TEXT, method = RequestMethod.GET)
+	@RequestMapping(value = "/job/apply/list", produces = TEXT, method = RequestMethod.POST)
 	@ResponseBody
-    public Object applyList(HttpSession session){
+    public Object applyList(HttpSession session, @RequestBody Map<String, Object> map){
 		Auth auth = checkAndGetAuth(session);
 		OnlineStar os = getProfile(auth);
-		List<Apply> applyList = applyService.getApplyList(os.getId());
+		int page = getParamInt("page", map);
+		int statusId = getParamInt("status_id", map);
+		int startRow = page * Constant.PAGE_SIZE;
+		List<ApplyWithJob> applyList = 
+				applyService.selectWithJob(startRow, os.getId(), statusId);
     	return Result.ok(applyList);
 	}
 	
@@ -162,7 +174,7 @@ public class OnlineStarController extends BaseController{
 		if(apply == null || apply.getOsId() != os.getId()){
 			return Result.fail("Permission denied");
 		}
-		applyService.handleApply(applyId, 2);
+		applyService.handleApply(applyId, 4);
     	return Result.OK;
 	}
 	
@@ -227,5 +239,13 @@ public class OnlineStarController extends BaseController{
 		OnlineStar os = getProfile(auth);
 		Wallet wallet = walletService.getByOsId(os.getId());
     	return Result.ok(wallet);
+	}
+	
+	@RequestMapping(value = "/wallet/bankcard/list", method = RequestMethod.GET)
+	@ResponseBody
+    public Object walletBankcardList(HttpSession session){
+		Auth auth = checkAndGetAuth(session);
+		OnlineStar os = getProfile(auth);
+    	return Result.ok(walletService.getBankcardList(os.getId()));
 	}
 }

@@ -1,6 +1,7 @@
 package com.os.model;
 
 public class OnlineStar {
+	
     private Long id;
 
     private Long authId;
@@ -30,6 +31,8 @@ public class OnlineStar {
     private Float hipline;
 
     private String expierence;
+    
+    private Long accountId;
 
     public Long getId() {
         return id;
@@ -150,4 +153,12 @@ public class OnlineStar {
     public void setExpierence(String expierence) {
         this.expierence = expierence == null ? null : expierence.trim();
     }
+
+	public Long getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
+	}
 }

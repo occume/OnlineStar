@@ -4,6 +4,16 @@
 
 <mapper namespace="com.os.mapper.CommonMapper">
 
+	<select id="bankcardTypeList" parameterType="String" resultType="WalletBankcardType">  
+		select id, name, bank_name as bankName, prefix from wallet_bankcard_type
+			where prefix like '%6226%' limit 20
+	</select>
+	
+	<select id="bannerImageList" resultType="BannerImage">  
+		select b.id, i.name as imageName, b.link from banner b
+			left join image i on b.image_id = i.id
+	</select>
+
 	<select id="jobTypeList" resultType="JobType">  
 		select * from `job_type`
 	</select>

@@ -17,6 +17,10 @@ public interface OnlineStarWorkMapper {
     int insertSelective(OnlineStarWork record);
 
     List<OnlineStarWork> selectByExample(OnlineStarWorkExample example);
+    
+    List<OnlineStarWork> selectPopularWorks();
+    
+    List<OnlineStarWork> selectFreshWorks();
 
     OnlineStarWork selectByPrimaryKey(Long id);
 

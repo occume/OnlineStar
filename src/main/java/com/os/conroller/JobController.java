@@ -40,7 +40,8 @@ public class JobController extends BaseController{
 	@ResponseBody
     public Object createJob(HttpSession session, @Valid @RequestBody Job job){
 		checkAndGetAuth(session);
-		jobService.insert(job);
+//		jobService.insert(job);
+		System.out.println(job.getImageList());
     	return Result.OK;
 	}
 

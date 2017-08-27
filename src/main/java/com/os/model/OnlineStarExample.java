@@ -3,7 +3,7 @@ package com.os.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OnlineStarExample {
+public class OnlineStarExample extends BaseExample{
     protected String orderByClause;
 
     protected boolean distinct;

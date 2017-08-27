@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.os.mapper.WalletBankcardMapper">
+  <resultMap id="BaseResultMap" type="com.os.model.WalletBankcard">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="os_id" jdbcType="BIGINT" property="osId" />
+    <result column="card_type_id" jdbcType="INTEGER" property="cardTypeId" />
+    <result column="card_owner" jdbcType="VARCHAR" property="cardOwner" />
+    <result column="default_id" jdbcType="INTEGER" property="defaultId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.os.model.WalletBankcard">
+    <result column="card_number" jdbcType="LONGVARCHAR" property="cardNumber" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, os_id, card_type_id, card_owner, default_id
+  </sql>
+  <sql id="Blob_Column_List">
+    card_number
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.os.model.WalletBankcardExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from wallet_bankcard
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.os.model.WalletBankcardExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from wallet_bankcard
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from wallet_bankcard
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from wallet_bankcard
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.os.model.WalletBankcardExample">
+    delete from wallet_bankcard
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.os.model.WalletBankcard">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into wallet_bankcard (os_id, card_type_id, card_owner, 
+      default_id, card_number)
+    values (#{osId,jdbcType=BIGINT}, #{cardTypeId,jdbcType=INTEGER}, #{cardOwner,jdbcType=VARCHAR}, 
+      #{defaultId,jdbcType=INTEGER}, #{cardNumber,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.os.model.WalletBankcard">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into wallet_bankcard
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="osId != null">
+        os_id,
+      </if>
+      <if test="cardTypeId != null">
+        card_type_id,
+      </if>
+      <if test="cardOwner != null">
+        card_owner,
+      </if>
+      <if test="defaultId != null">
+        default_id,
+      </if>
+      <if test="cardNumber != null">
+        card_number,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="osId != null">
+        #{osId,jdbcType=BIGINT},
+      </if>
+      <if test="cardTypeId != null">
+        #{cardTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="cardOwner != null">
+        #{cardOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultId != null">
+        #{defaultId,jdbcType=INTEGER},
+      </if>
+      <if test="cardNumber != null">
+        #{cardNumber,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.os.model.WalletBankcardExample" resultType="java.lang.Long">
+    select count(*) from wallet_bankcard
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update wallet_bankcard
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.osId != null">
+        os_id = #{record.osId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cardTypeId != null">
+        card_type_id = #{record.cardTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cardOwner != null">
+        card_owner = #{record.cardOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="record.defaultId != null">
+        default_id = #{record.defaultId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cardNumber != null">
+        card_number = #{record.cardNumber,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update wallet_bankcard
+    set id = #{record.id,jdbcType=INTEGER},
+      os_id = #{record.osId,jdbcType=BIGINT},
+      card_type_id = #{record.cardTypeId,jdbcType=INTEGER},
+      card_owner = #{record.cardOwner,jdbcType=VARCHAR},
+      default_id = #{record.defaultId,jdbcType=INTEGER},
+      card_number = #{record.cardNumber,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update wallet_bankcard
+    set id = #{record.id,jdbcType=INTEGER},
+      os_id = #{record.osId,jdbcType=BIGINT},
+      card_type_id = #{record.cardTypeId,jdbcType=INTEGER},
+      card_owner = #{record.cardOwner,jdbcType=VARCHAR},
+      default_id = #{record.defaultId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.os.model.WalletBankcard">
+    update wallet_bankcard
+    <set>
+      <if test="osId != null">
+        os_id = #{osId,jdbcType=BIGINT},
+      </if>
+      <if test="cardTypeId != null">
+        card_type_id = #{cardTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="cardOwner != null">
+        card_owner = #{cardOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultId != null">
+        default_id = #{defaultId,jdbcType=INTEGER},
+      </if>
+      <if test="cardNumber != null">
+        card_number = #{cardNumber,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.os.model.WalletBankcard">
+    update wallet_bankcard
+    set os_id = #{osId,jdbcType=BIGINT},
+      card_type_id = #{cardTypeId,jdbcType=INTEGER},
+      card_owner = #{cardOwner,jdbcType=VARCHAR},
+      default_id = #{defaultId,jdbcType=INTEGER},
+      card_number = #{cardNumber,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.os.model.WalletBankcard">
+    update wallet_bankcard
+    set os_id = #{osId,jdbcType=BIGINT},
+      card_type_id = #{cardTypeId,jdbcType=INTEGER},
+      card_owner = #{cardOwner,jdbcType=VARCHAR},
+      default_id = #{defaultId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

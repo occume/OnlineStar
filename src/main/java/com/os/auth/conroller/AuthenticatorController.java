@@ -75,15 +75,19 @@ public class AuthenticatorController {
 	    return response;  
 	}
 	
+	@ResponseStatus(value = HttpStatus.OK)
+	@ExceptionHandler(NoSignInException.class)
+	@ResponseBody
+	public Object noSignInHandle(NoSignInException e){
+		System.out.println("-- errorHandle");
+		return Result.fail(e.getMessage());
+	}
+	
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
 	public Object errorHandle(Exception e){
-		System.out.println("-- errorHandle");
-		//e.printStackTrace();
-		if(e instanceof NoSignInException){
-			return Result.fail(e.getMessage());
-		}
+		System.out.println("------ error happen");
 		e.printStackTrace();
 		return Result.fail("Oh, programmer is ran!");
 	}

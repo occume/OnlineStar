@@ -18,6 +18,14 @@
     <result column="hipline" jdbcType="REAL" property="hipline" />
     <result column="expierence" jdbcType="VARCHAR" property="expierence" />
   </resultMap>
+  
+  <resultMap id="RecommendMap" type="com.os.model.OnlineStarRecommend">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="os_id" jdbcType="BIGINT" property="osId" />
+    <result column="name" property="name" />
+    <result column="avatar_image_name" property="avatarImageName" />
+  </resultMap>
+  
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -81,6 +89,7 @@
     platform_name, fans_count, gift_to_money, height, weight, breast, waistline, hipline, 
     expierence
   </sql>
+  
   <select id="selectByExample" parameterType="com.os.model.OnlineStarExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -91,9 +100,14 @@
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
+    
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
+    
+    <if test="pageSize != 0">
+		limit #{startRow},#{pageSize}
+	</if>
   </select>
   
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -108,6 +122,20 @@
     <include refid="Base_Column_List" />
     from online_star
     where auth_id = #{authId,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectPopular" resultMap="RecommendMap">
+    select os.id as os_id, a.name, i.name as avatar_image_name from online_star os 
+    	left join account a on a.auth_id = os.auth_id
+    	left join image i on i.id = a.avatar_image_id
+    	order by os.fans_count desc limit 6
+  </select>
+  
+  <select id="selectFresh" resultMap="RecommendMap">
+    select os.id as os_id, a.name, i.name as avatar_image_name from online_star os 
+    	left join account a on a.auth_id = os.auth_id
+    	left join image i on i.id = a.avatar_image_id
+    	order by os.update_at desc limit 6
   </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

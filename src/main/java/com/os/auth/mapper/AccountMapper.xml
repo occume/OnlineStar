@@ -8,14 +8,21 @@
         <id property="id" column="id"/>   
         <result property="authId" column="auth_id"/>  
         <result property="provinceId" column="province_id"/>   
-		<result property="cityId" column="city_id"/>   
+		<result property="cityId" column="city_id"/>
+		<result property="genderId" column="gender_id"/>   
+		<result property="avatarImageId" column="avatar_image_id"/>   
+		<result property="groupId" column="group_id"/>   
 	</resultMap> 
 
 	<insert id="save" parameterType="Account">  
-		INSERT INTO account (name, city_id, province_id, gender) VALUES (#{name}, #{cityId}, #{provinceId}, #{gender})
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+	      SELECT LAST_INSERT_ID()
+	    </selectKey>
+		INSERT INTO account (name, city_id, province_id, gender_id, avatar_image_name) 
+		VALUES (#{name}, #{cityId}, #{provinceId}, #{genderId}, #{avatarImageName})
 	</insert>
   
-	<select id="get" parameterType="long" resultType="Account" resultMap="accResultMap">  
+	<select id="getByAuthId" parameterType="long" resultType="Account" resultMap="accResultMap">  
 		select * from account where auth_id = #{authId}
 	</select>
 
@@ -23,7 +30,7 @@
 		update account set group_id = #{groupId} where auth_id = #{authId}
 	</update>
 	
-	<update id="updateByPrimaryKey" parameterType="com.os.auth.model.Account">
+	<update id="updateById" parameterType="com.os.auth.model.Account">
     update account
     <set>
       <if test="name != null">
@@ -32,11 +39,14 @@
       <if test="provinceId != null">
         province_id = #{provinceId,jdbcType=INTEGER},
       </if>
-      <if test="provinceId != null">
+      <if test="cityId != null">
         city_id = #{cityId,jdbcType=INTEGER},
       </if>
-      <if test="provinceId != null">
-        gender = #{gender}
+      <if test="genderId != null">
+        gender_id = #{gender}
+      </if>
+      <if test="avatarImageName != null">
+        avatar_image_name = #{avatarImageName}
       </if>
     </set> 
     where auth_id = #{authId,jdbcType=BIGINT}

@@ -6,10 +6,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.os.Constant;
+import com.os.mapper.JobImageMapper;
 import com.os.mapper.JobMapper;
 import com.os.mapper.OnlineStarMapper;
 import com.os.model.Job;
 import com.os.model.JobExample;
+import com.os.model.JobImage;
+import com.os.model.JobImageExample;
 import com.os.model.JobWithMerchant;
 import com.os.model.JobExample.Criteria;
 import com.os.model.OnlineStar;
@@ -19,6 +23,8 @@ public class JobService {
 
 	@Autowired
 	private JobMapper jobMapper;
+	@Autowired
+	private JobImageMapper imageMapper;
 	
 	public int insert(Job job){
 		return jobMapper.insert(job);
@@ -28,10 +34,26 @@ public class JobService {
 		return jobMapper.updateByPrimaryKeySelective(job);
 	}
 	
-	public List<Job> jobListOfMerchant(long merchantId){
+	public int insert(JobImage image){
+		return imageMapper.insert(image);
+	}
+	
+	public List<Job> jobListOfMerchant(int page, long merchantId){
 		JobExample example = new JobExample();
-		example.createCriteria().andMerchantIdEqualTo(merchantId);
-		return jobMapper.selectByExample(example);
+		example.setStartRow(page);
+		example.setPageSize(Constant.PAGE_SIZE);
+		Criteria criteria = example.createCriteria();
+		criteria.andMerchantIdEqualTo(merchantId);
+		
+		List<Job> jobList = jobMapper.selectByExample(example);
+		for(Job job: jobList){
+			JobImageExample imageExample = new JobImageExample();
+			JobImageExample.Criteria c = imageExample.createCriteria();
+			c.andJobIdEqualTo(job.getId());
+			List<JobImage> imageList = imageMapper.selectByExample(imageExample);
+			job.setImageList(imageList);
+		}
+		return jobList;
 	}
 	
 	public List<Job> jobList(Map<String, Object> conditionMap){

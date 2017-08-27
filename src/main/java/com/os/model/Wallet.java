@@ -3,9 +3,9 @@ package com.os.model;
 public class Wallet {
     private Integer id;
 
-    private Long osId;
+    private Long authId;
 
-    private Double balance;
+    private Double balance = 0.0;
 
     private String password;
 
@@ -21,12 +21,12 @@ public class Wallet {
         this.id = id;
     }
 
-    public Long getOsId() {
-        return osId;
+    public Long getAuthId() {
+        return authId;
     }
 
-    public void setOsId(Long osId) {
-        this.osId = osId;
+    public void setAuthId(Long authId) {
+        this.authId = authId;
     }
 
     public Double getBalance() {

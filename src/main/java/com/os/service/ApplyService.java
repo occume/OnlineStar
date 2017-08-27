@@ -2,13 +2,14 @@ package com.os.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.os.Constant;
 import com.os.mapper.ApplyMapper;
 import com.os.model.Apply;
 import com.os.model.ApplyExample;
+import com.os.model.ApplyWithJob;
 import com.os.model.ApplyWithOnlineStar;
 
 @Service
@@ -34,9 +35,16 @@ public class ApplyService {
 	}
 	
 //	public Apply getByJobId(long jobId){
-//		Apply
-//		return applyMapper.selectByExample(example);
+//		return applyMapper.selectWithJob(osId)
 //	}
+	
+	public List<ApplyWithJob> selectWithJob(int startRow, long osId, int statusId){
+		return selectWithJob(startRow, Constant.PAGE_SIZE, osId, statusId);
+	}
+	
+	public List<ApplyWithJob> selectWithJob(int startRow, int pageSize, long osId, int statusId){
+		return applyMapper.selectWithJob(startRow, pageSize, osId, statusId);
+	}
 	
 	public List<ApplyWithOnlineStar> selectWithOnlineStar(long jobId){
 		return applyMapper.selectWithOnlineStar(jobId);

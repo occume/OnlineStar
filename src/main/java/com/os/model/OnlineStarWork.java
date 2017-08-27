@@ -1,17 +1,24 @@
 package com.os.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class OnlineStarWork {
+	
     private Long id;
 
+    @JsonProperty("os_id")
     private Long osId;
 
-    private String name;
+    @JsonProperty("image_id")
+    private Long imageId;
 
-    private String originalName;
+    @JsonProperty("type_id")
+    private Integer typeId;
 
-    private String contentType;
-
-    private Long size;
+    private String explain;
+    
+    @JsonProperty("image_name")
+    private String imageName;
 
     public Long getId() {
         return id;
@@ -29,35 +36,36 @@ public class OnlineStarWork {
         this.osId = osId;
     }
 
-    public String getName() {
-        return name;
+    public Long getImageId() {
+        return imageId;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
     }
 
-    public String getOriginalName() {
-        return originalName;
+    public Integer getTypeId() {
+        return typeId;
     }
 
-    public void setOriginalName(String originalName) {
-        this.originalName = originalName == null ? null : originalName.trim();
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
     }
 
-    public String getContentType() {
-        return contentType;
+    public String getExplain() {
+        return explain;
     }
 
-    public void setContentType(String contentType) {
-        this.contentType = contentType == null ? null : contentType.trim();
+    public void setExplain(String explain) {
+        this.explain = explain == null ? null : explain.trim();
     }
 
-    public Long getSize() {
-        return size;
-    }
+	public String getImageName() {
+		return imageName;
+	}
 
-    public void setSize(Long size) {
-        this.size = size;
-    }
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+    
 }

@@ -19,11 +19,11 @@ public class AccountService {
 	}
 	
 	public void update(Account acc){
-		accMapper.updateByPrimaryKey(acc);
+		accMapper.updateById(acc);
 	}
 	
 	public Account get(long authId){
-		return accMapper.get(authId);
+		return accMapper.getByAuthId(authId);
 	}
 	
 	public void selectGroup(long authId, int groupId){

@@ -42,8 +42,8 @@ public class MybatisTest {
 //		List<OnlineStar> osList = osMapper.selectByExample(osExample);
 //		System.out.println(osList);
 //		
-//		applyTest();
-		jobTest();
+		applyTest();
+//		jobTest();
 //		
 //		Apply apply = applyMapper.selectByJobOnlineStar(2l, 1l);
 //		System.out.println(apply);
@@ -78,6 +78,7 @@ public class MybatisTest {
 		
 		JobWithMerchant job = jobMapper.selectWithMerchant(1l);
 		System.out.println(job);
+		
 	}
 	
 	public static void saveFollow(){

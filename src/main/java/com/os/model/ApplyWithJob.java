@@ -2,13 +2,28 @@ package com.os.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ApplyWithJob {
 
+	private long id;
+	
+	@JsonProperty("status_id")
+	private int statusId;
+	
 	private String title;
 	private float price;
+	
+	@JsonProperty("start_time")
 	private Date startTime;
+	
+	@JsonProperty("end_time")
 	private Date endTime;
+	
+	@JsonProperty("type_name")
 	private String typeName;
+	
+	@JsonProperty("city_name")
 	private String cityName;
 	
 	public String getTitle() {
@@ -46,6 +61,18 @@ public class ApplyWithJob {
 	}
 	public void setCityName(String cityName) {
 		this.cityName = cityName;
+	}
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public int getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(int statusId) {
+		this.statusId = statusId;
 	}
 
 }

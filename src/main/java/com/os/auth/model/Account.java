@@ -17,7 +17,7 @@ public class Account {
 	private long authId;
 	
 	@NotNull
-	//@Size(min=1, max=20)
+	@Size(min=1, max=20)
 	private String name;
 	
 	@Column(name = "province_id")
@@ -26,7 +26,15 @@ public class Account {
 	
 	@JsonProperty("city_id")
 	private int cityId;
-	private byte gender;
+	
+	@JsonProperty("gender_id")
+	private int genderId;
+	
+	@JsonProperty("avatar_image_name")
+	private String avatarImageName;
+	
+	@JsonProperty("group_id")
+	private int groupId;
 	
 	public long getId() {
 		return id;
@@ -53,12 +61,6 @@ public class Account {
 	public void setCityId(int cityId) {
 		this.cityId = cityId;
 	}
-	public byte getGender() {
-		return gender;
-	}
-	public void setGender(byte gender) {
-		this.gender = gender;
-	}
 	
 	public long getAuthId() {
 		return authId;
@@ -66,11 +68,30 @@ public class Account {
 	public void setAuthId(long authId) {
 		this.authId = authId;
 	}
+	public int getGenderId() {
+		return genderId;
+	}
+	public void setGenderId(int genderId) {
+		this.genderId = genderId;
+	}
+	
+	public String getAvatarImageName() {
+		return avatarImageName;
+	}
+	public void setAvatarImageName(String avatarImageName) {
+		this.avatarImageName = avatarImageName;
+	}
+	public int getGroupId() {
+		return groupId;
+	}
+	public void setGroupId(int groupId) {
+		this.groupId = groupId;
+	}
 	@Override
 	public String toString() {
-		return "Account [id=" + id + ", name=" + name + ", provinceId="
-				+ provinceId + ", cityId=" + cityId + ", gender=" + gender
-				+ "]";
+		return "Account [authId=" + authId + ", name=" + name + ", genderId="
+				+ genderId + ", avatarImageName=" + avatarImageName + ", groupId="
+				+ groupId + "]";
 	}
 	
 }

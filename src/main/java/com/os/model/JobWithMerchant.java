@@ -43,7 +43,7 @@ public class JobWithMerchant {
     private String merchantName;
     
     @JsonProperty("merchant_avatar")
-    private String avatar;
+    private Integer avatarImageId;
     
     @Override
 	public String toString() {
@@ -179,14 +179,6 @@ public class JobWithMerchant {
 		this.merchantName = merchantName;
 	}
 
-	public String getAvatar() {
-		return avatar;
-	}
-
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
-	}
-
 	public String getCityName() {
 		return cityName;
 	}
@@ -201,6 +193,14 @@ public class JobWithMerchant {
 
 	public void setProvinceName(String provinceName) {
 		this.provinceName = provinceName;
+	}
+
+	public Integer getAvatarImageId() {
+		return avatarImageId;
+	}
+
+	public void setAvatarImageId(Integer avatarImageId) {
+		this.avatarImageId = avatarImageId;
 	}
     
 }

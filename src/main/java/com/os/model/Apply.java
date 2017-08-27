@@ -8,7 +8,7 @@ public class Apply {
 
     private Long osId;
 
-    private Integer applyStatusId;
+    private Integer statusId;
 
     private String reason;
     
@@ -21,12 +21,12 @@ public class Apply {
     public Apply(long jobId, long osId){
     	this.jobId = jobId;
     	this.osId = osId;
-    	this.applyStatusId = 1;
+    	this.statusId = 1;
     }
     
     public Apply(long id, int applyStatusId){
     	this.id = id;
-    	this.applyStatusId = applyStatusId;
+    	this.statusId = applyStatusId;
     }
 
     public Long getId() {
@@ -53,12 +53,12 @@ public class Apply {
         this.osId = osId;
     }
 
-    public Integer getApplyStatusId() {
-        return applyStatusId;
+    public Integer getStatusId() {
+        return statusId;
     }
 
-    public void setApplyStatusId(Integer applyStatusId) {
-        this.applyStatusId = applyStatusId;
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
     }
 
     public String getReason() {

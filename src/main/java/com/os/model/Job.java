@@ -1,6 +1,7 @@
 package com.os.model;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -38,6 +39,9 @@ public class Job {
 
     @JsonProperty("status_id")
     private Integer statusId;
+    
+    @JsonProperty("image_list")
+    private List<JobImage> imageList;
 
     public Long getId() {
         return id;
@@ -150,4 +154,13 @@ public class Job {
     public void setStatusId(Integer statusId) {
         this.statusId = statusId;
     }
+
+	public List<JobImage> getImageList() {
+		return imageList;
+	}
+
+	public void setImageList(List<JobImage> imageList) {
+		this.imageList = imageList;
+	}
+    
 }

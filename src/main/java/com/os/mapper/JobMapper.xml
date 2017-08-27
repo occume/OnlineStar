@@ -36,7 +36,7 @@
           
         <!--  -->  
         <result column="merchant_name" property="merchantName" />
-        <result column="avatar" property="avatar" />
+        <result column="avatar_image_id" property="avatarImageId" />
         <result column="city_name" property="cityName" />
         <result column="province_name" property="provinceName" />
     </resultMap>  
@@ -120,13 +120,13 @@
       <include refid="Example_Where_Clause" />
     </if>
     
-    <if test="startRow != null and pageSize != null and pageSize != 0">
-	    limit #{startRow},#{pageSize}
-	</if>
-    
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
+    
+    <if test="startRow != 0 and pageSize != 0">
+		limit #{startRow},#{pageSize}
+	</if>
   </select>
   
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -140,7 +140,7 @@
     select 
     j.id, j.merchant_id, j.title, j.content, j.job_type_id, j.city_id, j.start_time, j.end_time, j.address, 
     j.expect_count, j.price, j.gender_id, j.phone, j.status_id,
-    a.name as merchant_name, a.avatar, c.name as city_name, p.name as province_name
+    a.name as merchant_name, a.avatar_image_id, c.name as city_name, p.name as province_name
     from job j
     left join merchant m on m.id = j.merchant_id
     left join account a on m.auth_id = a.auth_id

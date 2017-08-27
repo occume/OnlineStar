@@ -2,30 +2,17 @@ package com.os.auth.conroller;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.os.Constant.GroupType;
 import com.os.auth.model.Account;
@@ -33,16 +20,18 @@ import com.os.auth.model.Auth;
 import com.os.auth.service.AccountService;
 import com.os.auth.service.AuthService;
 import com.os.conroller.BaseController;
-import com.os.exception.NoSignInException;
+import com.os.model.AdvertCompany;
+import com.os.model.Broker;
 import com.os.model.Merchant;
 import com.os.model.OnlineStar;
 import com.os.model.Result;
 import com.os.model.Wallet;
+import com.os.service.AdvertCompanyService;
+import com.os.service.BrokerService;
 import com.os.service.CommonService;
 import com.os.service.MerchantService;
 import com.os.service.OnlineStarService;
 import com.os.service.WalletService;
-import com.os.validator.Validator;
 
 @Controller
 @RequestMapping("/passport/v1")
@@ -65,8 +54,12 @@ public class AccountController extends BaseController{
 	private WalletService walletService;
 	@Autowired
 	private MerchantService merchantService;
+	@Autowired
+	private BrokerService brokerService;
+	@Autowired
+	private AdvertCompanyService advertService;
 	
-	@RequestMapping(value = "/info", produces = TEXT, method = RequestMethod.POST)
+	@RequestMapping(value = "/profile", produces = TEXT, method = RequestMethod.GET)
 	@ResponseBody
     public Object info(HttpSession session){
 		Auth auth = checkAndGetAuth(session);
@@ -79,8 +72,8 @@ public class AccountController extends BaseController{
     public Object profileUpdate(HttpSession session, @Valid @RequestBody Account acc){
 		Auth auth = checkAndGetAuth(session);
 		Account account = accService.get(auth.getId());
+		acc.setAuthId(auth.getId());
 		if(account == null){
-			acc.setAuthId(auth.getId());
 			accService.save(acc);
 		}
 		else{
@@ -93,6 +86,10 @@ public class AccountController extends BaseController{
 	@ResponseBody
     public Object selectGroup(HttpSession session, @RequestBody Map<String, Integer> map){
 		Auth auth = checkAndGetAuth(session);
+		Account account = accService.get(auth.getId());
+		if(account.getGroupId() <= 0){
+			return Result.fail("Group selected");
+		}
 		int groupId = map.get("group_id");
 		accService.selectGroup(auth.getId(), groupId);
 		if(groupId == GroupType.ONLINE_STAR){
@@ -101,12 +98,12 @@ public class AccountController extends BaseController{
 			 */
 			OnlineStar os = new OnlineStar();
 			os.setAuthId(auth.getId());
-			osService.insert(os);
+			osService.save(os);
 			/**
 			 * Create Wallet
 			 */
 			Wallet wallet = new Wallet();
-			wallet.setOsId(os.getId());
+			wallet.setAuthId(auth.getId());
 			walletService.insert(wallet);
 		}
 		else if(groupId == GroupType.MERCHANT){
@@ -116,6 +113,29 @@ public class AccountController extends BaseController{
 			Merchant merchant = new Merchant();
 			merchant.setAuthId(auth.getId());
 			merchantService.insert(merchant);
+		}
+		else if(groupId == GroupType.BROKER_COMPANY){
+			/**
+			 * Create Broker
+			 */
+			Broker broker = new Broker();
+			broker.setAuthId(auth.getId());
+			brokerService.insert(broker);
+		}
+		else if(groupId == GroupType.ADV_COMPANY){
+			/**
+			 * Create AdvertCompany
+			 */
+			AdvertCompany advert = new AdvertCompany();
+			advert.setAuthId(auth.getId());
+			advertService.insert(advert);
+			
+			/**
+			 * Create Wallet
+			 */
+			Wallet wallet = new Wallet();
+			wallet.setAuthId(auth.getId());
+			walletService.insert(wallet);
 		}
     	return Result.OK;
 	}

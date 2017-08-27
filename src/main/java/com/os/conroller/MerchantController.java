@@ -3,13 +3,9 @@ package com.os.conroller;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.apache.catalina.loader.WebappClassLoader;
-import org.apache.tomcat.util.http.fileupload.UploadContext;
-import org.d3.wx.util.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,22 +13,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.google.common.base.Strings;
+import com.os.Constant;
 import com.os.auth.model.Auth;
 import com.os.model.Apply;
 import com.os.model.ApplyWithOnlineStar;
 import com.os.model.Job;
+import com.os.model.JobImage;
 import com.os.model.Merchant;
-import com.os.model.OnlineStar;
 import com.os.model.Result;
 import com.os.service.ApplyService;
 import com.os.service.JobService;
 import com.os.service.MerchantService;
-import com.os.service.OnlineStarService;
 
 @Controller
 @RequestMapping("/merchant/v1")
@@ -59,6 +52,14 @@ public class MerchantController extends BaseController{
 		if(merchant == null) return Result.fail("Group is not selected");
 		job.setMerchantId(merchant.getId());
 		jobService.insert(job);
+		if(job.getImageList() != null){
+			for(JobImage image: job.getImageList()){
+				image.setJobId(job.getId());
+				jobService.insert(image);
+			}
+		}
+//		System.out.println(job.getImageList());
+//		jobService.insert(job);
     	return Result.OK;
 	}
 	
@@ -67,10 +68,11 @@ public class MerchantController extends BaseController{
     public Object jobList(HttpSession session, @RequestBody Map<String, Object> map){
 		Auth auth = checkAndGetAuth(session);
 		Merchant merchant = getProfile(auth);
+		int page = getParamInt("page", map);
 		Result result;
 		if(merchant != null){
 			LOG.info("{}", map);
-			List<Job> data = jobService.jobListOfMerchant(merchant.getId());
+			List<Job> data = jobService.jobListOfMerchant(page, merchant.getId());
 			result = Result.ok(data);
 		}
 		else{
@@ -98,11 +100,8 @@ public class MerchantController extends BaseController{
 		
 		long applyId = map.get("apply_id");
 		Apply apply = applyService.getById(applyId);
-		if(apply == null || apply.getOsId() != os.getId()){
-			return Result.fail("Permission denied");
-		}
-		applyService.handleApply(applyId, 2);
+		applyService.handleApply(applyId, Constant.ApplyStatus.RUNNING);
 		
-    	return result;
+    	return Result.OK;
 	}
 }

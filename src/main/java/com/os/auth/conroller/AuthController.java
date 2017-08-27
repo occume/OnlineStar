@@ -35,7 +35,6 @@ import com.os.auth.model.Auth;
 import com.os.auth.service.AuthService;
 import com.os.model.OnlineStar;
 import com.os.model.Result;
-import com.os.validator.Validator;
 
 @Controller
 @RequestMapping("/passport/v" + Constant.API_VERSION)
@@ -65,12 +64,13 @@ public class AuthController {
 	
 	@RequestMapping(value = "/reg", produces = TEXT, method = RequestMethod.POST)
 	@ResponseBody
-    public Result regitster(@Valid @RequestBody Auth auth){
+    public Result regitster(HttpSession session, @Valid @RequestBody Auth auth){
 		Result r;
 		if(authService.exist(auth.getPhone())){
 			r = Result.fail("Exist phone");
 		}else{
 			authService.save(auth);
+			session.setAttribute("acc", auth);
 			r = Result.OK;
 		}
     	return r;
@@ -91,7 +91,7 @@ public class AuthController {
 					r = Result.OK;
 				}
 				else{
-					r = Result.fail("V-code is incorrect");
+					r = Result.fail("V-code is not correct");
 				}
 			}
 			

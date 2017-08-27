@@ -8,9 +8,9 @@ public interface AccountMapper {
 
 	void save(Account account);
 	
-	Account get(long authId);
+	Account getByAuthId(long authId);
 	
 	void setGroup(@Param(value = "groupId")int groupId, @Param(value = "authId") long authId);
 	
-	void updateByPrimaryKey(Account account);
+	void updateById(Account account);
 }

@@ -28,7 +28,8 @@ public interface ApplyMapper {
     
     List<ApplyWithOnlineStar> selectWithOnlineStar(@Param("jobId")Long jobId);
     
-    List<ApplyWithJob> selectWithJob(Long osId);
+    List<ApplyWithJob> selectWithJob(@Param("startRow")int startRow, @Param("pageSize")int pageSize,
+    		@Param("osId")Long osId, @Param("statusId")Integer statusId);
 
     int updateByExampleSelective(@Param("record") Apply record, @Param("example") ApplyExample example);
 

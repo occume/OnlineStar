@@ -4,10 +4,9 @@
   <resultMap id="BaseResultMap" type="com.os.model.OnlineStarWork">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="os_id" jdbcType="BIGINT" property="osId" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="original_name" jdbcType="VARCHAR" property="originalName" />
-    <result column="content_type" jdbcType="VARCHAR" property="contentType" />
-    <result column="size" jdbcType="BIGINT" property="size" />
+    <result column="image_id" jdbcType="BIGINT" property="imageId" />
+    <result column="type_id" jdbcType="INTEGER" property="typeId" />
+    <result column="explain" jdbcType="VARCHAR" property="explain" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,8 +67,27 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, os_id, name, original_name, content_type, size
+    id, os_id, image_id, type_id, `explain`
   </sql>
+  
+  <select id="selectPopularWorks" resultType="OnlineStarWork">
+  	select w.os_id as osId, i.`name` as imageName, w.`explain`, w.type_id as typeId from online_star_work w 
+	join(
+    select os.id from online_star os 
+    	order by os.fans_count desc limit 6) o ON o.id = w.os_id
+	left join image i on i.id = w.image_id
+	GROUP BY w.os_id
+  </select>
+  
+  <select id="selectFreshWorks" resultType="OnlineStarWork">
+  	select w.os_id as osId, i.`name` as imageName, w.`explain`, w.type_id as typeId from online_star_work w 
+	join(
+    select os.id from online_star os 
+    	order by os.update_at desc limit 6) o ON o.id = w.os_id
+	left join image i on i.id = w.image_id
+	GROUP BY w.os_id
+  </select>
+  
   <select id="selectByExample" parameterType="com.os.model.OnlineStarWorkExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -104,10 +122,10 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into online_star_work (os_id, name, original_name, 
-      content_type, size)
-    values (#{osId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{originalName,jdbcType=VARCHAR}, 
-      #{contentType,jdbcType=VARCHAR}, #{size,jdbcType=BIGINT})
+    insert into online_star_work (os_id, image_id, type_id, 
+      explain)
+    values (#{osId,jdbcType=BIGINT}, #{imageId,jdbcType=BIGINT}, #{typeId,jdbcType=INTEGER}, 
+      #{explain,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.os.model.OnlineStarWork">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -118,34 +136,28 @@
       <if test="osId != null">
         os_id,
       </if>
-      <if test="name != null">
-        name,
+      <if test="imageId != null">
+        image_id,
       </if>
-      <if test="originalName != null">
-        original_name,
+      <if test="typeId != null">
+        type_id,
       </if>
-      <if test="contentType != null">
-        content_type,
-      </if>
-      <if test="size != null">
-        size,
+      <if test="explain != null">
+        explain,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="osId != null">
         #{osId,jdbcType=BIGINT},
       </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
+      <if test="imageId != null">
+        #{imageId,jdbcType=BIGINT},
       </if>
-      <if test="originalName != null">
-        #{originalName,jdbcType=VARCHAR},
+      <if test="typeId != null">
+        #{typeId,jdbcType=INTEGER},
       </if>
-      <if test="contentType != null">
-        #{contentType,jdbcType=VARCHAR},
-      </if>
-      <if test="size != null">
-        #{size,jdbcType=BIGINT},
+      <if test="explain != null">
+        #{explain,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -164,17 +176,14 @@
       <if test="record.osId != null">
         os_id = #{record.osId,jdbcType=BIGINT},
       </if>
-      <if test="record.name != null">
-        name = #{record.name,jdbcType=VARCHAR},
+      <if test="record.imageId != null">
+        image_id = #{record.imageId,jdbcType=BIGINT},
       </if>
-      <if test="record.originalName != null">
-        original_name = #{record.originalName,jdbcType=VARCHAR},
+      <if test="record.typeId != null">
+        type_id = #{record.typeId,jdbcType=INTEGER},
       </if>
-      <if test="record.contentType != null">
-        content_type = #{record.contentType,jdbcType=VARCHAR},
-      </if>
-      <if test="record.size != null">
-        size = #{record.size,jdbcType=BIGINT},
+      <if test="record.explain != null">
+        explain = #{record.explain,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -185,10 +194,9 @@
     update online_star_work
     set id = #{record.id,jdbcType=BIGINT},
       os_id = #{record.osId,jdbcType=BIGINT},
-      name = #{record.name,jdbcType=VARCHAR},
-      original_name = #{record.originalName,jdbcType=VARCHAR},
-      content_type = #{record.contentType,jdbcType=VARCHAR},
-      size = #{record.size,jdbcType=BIGINT}
+      image_id = #{record.imageId,jdbcType=BIGINT},
+      type_id = #{record.typeId,jdbcType=INTEGER},
+      explain = #{record.explain,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -199,17 +207,14 @@
       <if test="osId != null">
         os_id = #{osId,jdbcType=BIGINT},
       </if>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
+      <if test="imageId != null">
+        image_id = #{imageId,jdbcType=BIGINT},
       </if>
-      <if test="originalName != null">
-        original_name = #{originalName,jdbcType=VARCHAR},
+      <if test="typeId != null">
+        type_id = #{typeId,jdbcType=INTEGER},
       </if>
-      <if test="contentType != null">
-        content_type = #{contentType,jdbcType=VARCHAR},
-      </if>
-      <if test="size != null">
-        size = #{size,jdbcType=BIGINT},
+      <if test="explain != null">
+        explain = #{explain,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -217,10 +222,9 @@
   <update id="updateByPrimaryKey" parameterType="com.os.model.OnlineStarWork">
     update online_star_work
     set os_id = #{osId,jdbcType=BIGINT},
-      name = #{name,jdbcType=VARCHAR},
-      original_name = #{originalName,jdbcType=VARCHAR},
-      content_type = #{contentType,jdbcType=VARCHAR},
-      size = #{size,jdbcType=BIGINT}
+      image_id = #{imageId,jdbcType=BIGINT},
+      type_id = #{typeId,jdbcType=INTEGER},
+      explain = #{explain,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

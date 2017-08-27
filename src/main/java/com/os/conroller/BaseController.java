@@ -1,5 +1,7 @@
 package com.os.conroller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import com.os.Constant.SessionKey;
@@ -28,5 +30,10 @@ public class BaseController {
 			throw new NoSignInException("Not sign in");
 		}
 		return auth;
+	}
+	
+	protected int getParamInt(String name, Map<String, Object> map){
+		if(!map.containsKey(name)) return 0;
+		return (int) map.get(name);
 	}
 }

@@ -1,11 +1,17 @@
 package com.os.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ApplyWithOnlineStar {
 
 	private long id;
 	private String name;
+	
+	@JsonProperty("gender_id")
 	private int genderId;
-	private String avatar;
+	
+	@JsonProperty("avatar_image_id")
+	private int avatarImageId;
 
 	public String getName() {
 		return name;
@@ -31,12 +37,12 @@ public class ApplyWithOnlineStar {
 		this.genderId = genderId;
 	}
 
-	public String getAvatar() {
-		return avatar;
+	public int getAvatarImageId() {
+		return avatarImageId;
 	}
 
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
+	public void setAvatarImageId(int avatarImageId) {
+		this.avatarImageId = avatarImageId;
 	}
-	
+
 }

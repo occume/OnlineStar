@@ -2,7 +2,10 @@ package com.os.mapper;
 
 import com.os.model.OnlineStar;
 import com.os.model.OnlineStarExample;
+import com.os.model.OnlineStarRecommend;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface OnlineStarMapper {
@@ -17,10 +20,12 @@ public interface OnlineStarMapper {
     int insertSelective(OnlineStar record);
 
     List<OnlineStar> selectByExample(OnlineStarExample example);
+    
+    List<OnlineStarRecommend> selectPopular();
+    
+    List<OnlineStarRecommend> selectFresh();
 
     OnlineStar selectByPrimaryKey(Long id);
-    
-    OnlineStar selectByAuthId(Long authId);
 
     int updateByExampleSelective(@Param("record") OnlineStar record, @Param("example") OnlineStarExample example);
 
