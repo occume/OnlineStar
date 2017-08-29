@@ -84,6 +84,7 @@
       </foreach>
     </where>
   </sql>
+  
   <sql id="Base_Column_List">
     id, auth_id, online_live_price, offline_live_price, brand_spoke_price, platform, 
     platform_name, fans_count, gift_to_money, height, weight, breast, waistline, hipline, 
@@ -138,6 +139,13 @@
     	order by os.update_at desc limit 6
   </select>
   
+  <select id="selectLabelByOsId" parameterType="java.lang.Long" resultType="OnlineStarLabel">
+    select 
+    *
+    from online_star_label
+    where os_id = #{osId,jdbcType=BIGINT}
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from online_star
     where id = #{id,jdbcType=BIGINT}
@@ -148,6 +156,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
+  
   <insert id="insert" parameterType="com.os.model.OnlineStar">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
@@ -163,6 +172,15 @@
       #{weight,jdbcType=REAL}, #{breast,jdbcType=REAL}, #{waistline,jdbcType=REAL}, #{hipline,jdbcType=REAL}, 
       #{expierence,jdbcType=VARCHAR})
   </insert>
+  
+  <insert id="insertLabel" parameterType="com.os.model.OnlineStarLabel">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into online_star_label (os_id, name)
+    values (#{osId,jdbcType=BIGINT},  #{name,jdbcType=VARCHAR})
+  </insert>
+  
   <insert id="insertSelective" parameterType="com.os.model.OnlineStar">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()

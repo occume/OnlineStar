@@ -1,6 +1,7 @@
 package com.os.model;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -44,6 +45,11 @@ public class JobWithMerchant {
     
     @JsonProperty("merchant_avatar")
     private Integer avatarImageId;
+    
+    private Apply apply;
+    
+    @JsonProperty("image_list")
+    private List<JobImage> imageList;
     
     @Override
 	public String toString() {
@@ -202,5 +208,21 @@ public class JobWithMerchant {
 	public void setAvatarImageId(Integer avatarImageId) {
 		this.avatarImageId = avatarImageId;
 	}
-    
+
+	public List<JobImage> getImageList() {
+		return imageList;
+	}
+
+	public void setImageList(List<JobImage> imageList) {
+		this.imageList = imageList;
+	}
+
+	public Apply getApply() {
+		return apply;
+	}
+
+	public void setApply(Apply apply) {
+		this.apply = apply;
+	}
+
 }

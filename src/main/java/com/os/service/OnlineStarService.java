@@ -9,6 +9,7 @@ import com.os.mapper.OnlineStarMapper;
 import com.os.mapper.OnlineStarWorkMapper;
 import com.os.model.OnlineStar;
 import com.os.model.OnlineStarExample;
+import com.os.model.OnlineStarLabel;
 import com.os.model.OnlineStarRecommend;
 import com.os.model.OnlineStarWork;
 import com.os.model.OnlineStarWorkExample;
@@ -35,25 +36,52 @@ public class OnlineStarService {
 	}
 	
 	public int save(OnlineStar os){
+		addLabels(os);
 		return osMapper.insert(os);
 	}
 	
 	public int update(OnlineStar os){
+		addLabels(os);
 		return osMapper.updateByPrimaryKeySelective(os);
+	}
+	
+	public void addLabels(OnlineStar os){
+		if(os.getLabelList() != null){
+			for(OnlineStarLabel label: os.getLabelList()){
+				label.setOsId(os.getId());
+				osMapper.insertLabel(label);
+			}
+		}
+	}
+	
+	public void addLabels(List<OnlineStarLabel> labelList){
+		if(labelList != null){
+			for(OnlineStarLabel label: labelList){
+				osMapper.insertLabel(label);
+			}
+		}
 	}
 	
 	public OnlineStar getByAuthId(long authId){
 		OnlineStarExample example = new OnlineStarExample();
 		example.createCriteria().andAuthIdEqualTo(authId);
 		List<OnlineStar> list = osMapper.selectByExample(example);
-		return list.size() > 0 ? list.get(0) : null;
+		OnlineStar os = list.size() > 0 ? list.get(0) : null;
+		if(os != null){
+			os.setLabelList(osMapper.selectLabelByOsId(os.getId()));
+		}
+		return os;
 	}
 	
 	public OnlineStar getByOsId(long osId){
 		OnlineStarExample example = new OnlineStarExample();
 		example.createCriteria().andIdEqualTo(osId);
 		List<OnlineStar> list = osMapper.selectByExample(example);
-		return list.size() > 0 ? list.get(0) : null;
+		OnlineStar os = list.size() > 0 ? list.get(0) : null;
+		if(os != null){
+			os.setLabelList(osMapper.selectLabelByOsId(os.getId()));
+		}
+		return os;
 	}
 	
 	public List<OnlineStarRecommend> popularList(){

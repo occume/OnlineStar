@@ -61,6 +61,7 @@ public class OnlineStarController extends BaseController{
 	@ResponseBody
     public Object profileUpdate(HttpSession session, @Valid @RequestBody OnlineStar os){
 		checkAndGetAuth(session);
+		LOG.info("{}", os);
 		osService.update(os);
     	return Result.OK;
 	}
@@ -88,7 +89,9 @@ public class OnlineStarController extends BaseController{
 	@ResponseBody
     public Object workAdd(HttpSession session, @RequestBody List<OnlineStarWork> workList){
 		Auth auth = checkAndGetAuth(session);
+		System.out.println(auth.getId());
 		OnlineStar os = getProfile(auth);
+		System.out.println(os);
 		if(os == null) return Result.fail("Group is not selected");
 		
 		for(OnlineStarWork work: workList){
@@ -122,9 +125,10 @@ public class OnlineStarController extends BaseController{
 	@RequestMapping(value = "/job/detail", method = RequestMethod.POST)
 	@ResponseBody
     public Object jobDetail(HttpSession session, @RequestBody Map<String, Long> map){
-		checkAndGetAuth(session);
+		Auth auth = checkAndGetAuth(session);
+		OnlineStar os = getProfile(auth);
 		long jobId = map.get("job_id");
-		JobWithMerchant data = jobService.jobDetail(jobId);
+		JobWithMerchant data = jobService.jobDetail(jobId, os.getId());
     	return Result.ok(data);
 	}
 	
@@ -248,4 +252,12 @@ public class OnlineStarController extends BaseController{
 		OnlineStar os = getProfile(auth);
     	return Result.ok(walletService.getBankcardList(os.getId()));
 	}
+//	
+//	@RequestMapping(value = "/wallet/bankcard/list", method = RequestMethod.GET)
+//	@ResponseBody
+//    public Object walletBankcardList(HttpSession session){
+//		Auth auth = checkAndGetAuth(session);
+//		OnlineStar os = getProfile(auth);
+//    	return Result.ok(walletService.getBankcardList(os.getId()));
+//	}
 }

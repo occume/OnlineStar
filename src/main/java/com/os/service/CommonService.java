@@ -9,6 +9,7 @@ import com.os.mapper.CommonMapper;
 import com.os.mapper.ImageMapper;
 import com.os.model.BannerImage;
 import com.os.model.City;
+import com.os.model.Feedback;
 import com.os.model.Group;
 import com.os.model.Image;
 import com.os.model.JobType;
@@ -59,5 +60,9 @@ public class CommonService {
 	
 	public List<WalletBankcardType> getBankcardTypeList(String prefix){
 		return commonMapper.bankcardTypeList(prefix);
+	}
+	
+	public int feedbackAdd(Feedback feedback){
+		return commonMapper.feedbackAdd(feedback);
 	}
 }

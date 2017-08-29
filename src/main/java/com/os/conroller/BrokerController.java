@@ -26,7 +26,9 @@ import com.os.model.BrokerOnlineStar;
 import com.os.model.Job;
 import com.os.model.Merchant;
 import com.os.model.OnlineStar;
+import com.os.model.OnlineStarWork;
 import com.os.model.Result;
+import com.os.model.request.BrokerOnlineStarWork;
 import com.os.service.ApplyService;
 import com.os.service.BrokerService;
 import com.os.service.JobService;
@@ -100,5 +102,26 @@ public class BrokerController extends BaseController{
 		int page = getParamInt("page", map);
 		
     	return Result.ok(brokerService.onlineStarList(broker.getId()));
+	}
+	
+	/**
+	 * 上传作品
+	 * @param session
+	 * @param workList
+	 * @return
+	 */
+	@RequestMapping(value = "/os/work/add", method = RequestMethod.POST)
+	@ResponseBody
+    public Object workAdd(HttpSession session, @RequestBody BrokerOnlineStarWork bos){
+		Auth auth = checkAndGetAuth(session);
+		System.out.println(auth.getId());
+		long osId = bos.osId;
+		List<OnlineStarWork> workList = bos.workList;
+//		if(os == null) return Result.fail("Group is not selected");
+		for(OnlineStarWork work: workList){
+			work.setOsId(osId);
+			osService.save(work);
+		}
+    	return Result.OK;
 	}
 }

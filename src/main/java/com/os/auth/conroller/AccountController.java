@@ -73,6 +73,8 @@ public class AccountController extends BaseController{
 		Auth auth = checkAndGetAuth(session);
 		Account account = accService.get(auth.getId());
 		acc.setAuthId(auth.getId());
+		System.out.println(auth.getId());
+		System.out.println(account);
 		if(account == null){
 			accService.save(acc);
 		}
@@ -87,7 +89,12 @@ public class AccountController extends BaseController{
     public Object selectGroup(HttpSession session, @RequestBody Map<String, Integer> map){
 		Auth auth = checkAndGetAuth(session);
 		Account account = accService.get(auth.getId());
-		if(account.getGroupId() <= 0){
+		
+		if(account == null){
+			return Result.fail("Profile not completed");
+		}
+		
+		if(account.getGroupId() > 0){
 			return Result.fail("Group selected");
 		}
 		int groupId = map.get("group_id");

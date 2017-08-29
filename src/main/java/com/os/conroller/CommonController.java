@@ -1,10 +1,7 @@
 package com.os.conroller;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,8 +22,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.collect.Lists;
+import com.os.auth.model.Auth;
+import com.os.model.Feedback;
 import com.os.model.Image;
 import com.os.model.Result;
+import com.os.model.response.AboutUs;
 import com.os.service.CommonService;
 import com.os.util.FileUtil;
 
@@ -118,5 +119,20 @@ public class CommonController extends BaseController{
 	@ResponseBody
     public Object cityListByProvinceId(@PathVariable String prefix){
 		return Result.ok(commonService.getBankcardTypeList(prefix));
+	}
+	
+	@RequestMapping(value = "/feedback/add", method = RequestMethod.POST)
+	@ResponseBody
+    public Object feedbackAdd(HttpSession session, @RequestBody Feedback feedback){
+		Auth auth = checkAndGetAuth(session);
+		feedback.setAuthId(auth.getId());
+		commonService.feedbackAdd(feedback);
+		return Result.OK;
+	}
+	
+	@RequestMapping(value = "/about", method = RequestMethod.GET)
+	@ResponseBody
+    public Object about(){
+		return Result.ok(AboutUs.about);
 	}
 }

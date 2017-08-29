@@ -1,23 +1,34 @@
 package com.os.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class OnlineStar {
+	
 	
     private Long id;
 
     private Long authId;
 
+    @JsonProperty("online_live_price")
     private Float onlineLivePrice;
 
+    @JsonProperty("offline_live_price")
     private Float offlineLivePrice;
 
+    @JsonProperty("brand_spoke_price")
     private Float brandSpokePrice;
 
     private String platform;
 
+    @JsonProperty("plantform_name")
     private String platformName;
 
+    @JsonProperty("fans_cuont")
     private Integer fansCount;
 
+    @JsonProperty("gift_to_money")
     private Float giftToMoney;
 
     private Float height;
@@ -32,7 +43,11 @@ public class OnlineStar {
 
     private String expierence;
     
+    @JsonProperty("account_id")
     private Long accountId;
+    
+    @JsonProperty("label_list")
+    private List<OnlineStarLabel> labelList;
 
     public Long getId() {
         return id;
@@ -161,4 +176,21 @@ public class OnlineStar {
 	public void setAccountId(Long accountId) {
 		this.accountId = accountId;
 	}
+
+	public List<OnlineStarLabel> getLabelList() {
+		return labelList;
+	}
+
+	public void setLabelList(List<OnlineStarLabel> labelList) {
+		this.labelList = labelList;
+	}
+
+	@Override
+	public String toString() {
+		return "OnlineStar [id=" + id + ", authId=" + authId
+				+ ", onlineLivePrice=" + onlineLivePrice + ", platform="
+				+ platform + ", platformName=" + platformName + ", fansCount="
+				+ fansCount + ", labelList=" + labelList + "]";
+	}
+	
 }

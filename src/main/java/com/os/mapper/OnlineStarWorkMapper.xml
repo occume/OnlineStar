@@ -123,7 +123,7 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into online_star_work (os_id, image_id, type_id, 
-      explain)
+      `explain`)
     values (#{osId,jdbcType=BIGINT}, #{imageId,jdbcType=BIGINT}, #{typeId,jdbcType=INTEGER}, 
       #{explain,jdbcType=VARCHAR})
   </insert>

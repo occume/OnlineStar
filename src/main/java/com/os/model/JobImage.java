@@ -3,15 +3,17 @@ package com.os.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class JobImage {
+	
+	@JsonProperty("_id")
     private Long id;
 
     @JsonProperty("job_id")
     private Long jobId;
 
-    @JsonProperty("image_id")
+    @JsonProperty("id")
     private Long imageId;
 
-    @JsonProperty("image_name")
+    @JsonProperty("name")
     private String imageName;
 
     public Long getId() {

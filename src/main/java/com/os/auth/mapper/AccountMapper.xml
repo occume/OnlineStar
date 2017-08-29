@@ -18,8 +18,8 @@
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
 	      SELECT LAST_INSERT_ID()
 	    </selectKey>
-		INSERT INTO account (name, city_id, province_id, gender_id, avatar_image_name) 
-		VALUES (#{name}, #{cityId}, #{provinceId}, #{genderId}, #{avatarImageName})
+		INSERT INTO account (auth_id, name, city_id, province_id, gender_id, avatar_image_name) 
+		VALUES (#{authId}, #{name}, #{cityId}, #{provinceId}, #{genderId}, #{avatarImageName})
 	</insert>
   
 	<select id="getByAuthId" parameterType="long" resultType="Account" resultMap="accResultMap">  
@@ -43,7 +43,7 @@
         city_id = #{cityId,jdbcType=INTEGER},
       </if>
       <if test="genderId != null">
-        gender_id = #{gender}
+        gender_id = #{genderId},
       </if>
       <if test="avatarImageName != null">
         avatar_image_name = #{avatarImageName}

@@ -36,4 +36,9 @@ public class BaseController {
 		if(!map.containsKey(name)) return 0;
 		return (int) map.get(name);
 	}
+	
+	protected long getParamLong(String name, Map<String, Object> map){
+		if(!map.containsKey(name)) return 0l;
+		return Long.valueOf(map.get(name).toString());
+	}
 }

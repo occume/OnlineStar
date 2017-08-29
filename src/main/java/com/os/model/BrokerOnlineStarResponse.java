@@ -18,7 +18,7 @@ public class BrokerOnlineStarResponse {
 	@JsonProperty("gender_id")
 	private int genderId;
 	
-	@JsonProperty("avatar_name")
+	@JsonProperty("avatar_image_name")
 	private String avatarName;
 
 	public String getName() {

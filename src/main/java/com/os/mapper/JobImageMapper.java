@@ -2,7 +2,9 @@ package com.os.mapper;
 
 import com.os.model.JobImage;
 import com.os.model.JobImageExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface JobImageMapper {

@@ -7,16 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.os.Constant;
+import com.os.mapper.ApplyMapper;
 import com.os.mapper.JobImageMapper;
 import com.os.mapper.JobMapper;
-import com.os.mapper.OnlineStarMapper;
+import com.os.model.Apply;
+import com.os.model.ApplyExample;
 import com.os.model.Job;
 import com.os.model.JobExample;
 import com.os.model.JobImage;
 import com.os.model.JobImageExample;
 import com.os.model.JobWithMerchant;
 import com.os.model.JobExample.Criteria;
-import com.os.model.OnlineStar;
 
 @Service
 public class JobService {
@@ -25,6 +26,8 @@ public class JobService {
 	private JobMapper jobMapper;
 	@Autowired
 	private JobImageMapper imageMapper;
+	@Autowired
+	private ApplyMapper applyMapper;
 	
 	public int insert(Job job){
 		return jobMapper.insert(job);
@@ -78,9 +81,22 @@ public class JobService {
 		return jobMapper.selectByExample(example);
 	}
 	
-	public JobWithMerchant jobDetail(long jobId){
+	public JobWithMerchant jobDetail(long jobId, long osId){
+		JobImageExample imageExample = new JobImageExample();
+		imageExample.createCriteria().andJobIdEqualTo(jobId);
+		List<JobImage> jobImageList = imageMapper.selectByExample(imageExample);
+		JobWithMerchant jobWithMerchant = jobMapper.selectWithMerchant(jobId);
+		jobWithMerchant.setImageList(jobImageList);
 		
-		return jobMapper.selectWithMerchant(jobId);
+		ApplyExample applyExample = new ApplyExample();
+		ApplyExample.Criteria c = applyExample.createCriteria();
+		c.andJobIdEqualTo(jobId);
+		c.andOsIdEqualTo(osId);
+		List<Apply> applyList = applyMapper.selectByExample(applyExample);
+		Apply apply = applyList.size() > 0 ? applyList.get(0) : null;
+		
+		jobWithMerchant.setApply(apply);
+		return jobWithMerchant;
 	}
 	
 	public Job getById(long id){

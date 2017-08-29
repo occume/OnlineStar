@@ -38,5 +38,7 @@
 		update account set group_id = #{groupId} where auth_id = #{authId}
 	</update>
 	
-	
+	<insert id="feedbackAdd" parameterType="Feedback">
+		insert into feedback (auth_id, content, contact) values (#{authId}, #{content}, #{contact})
+	</insert>
 </mapper>

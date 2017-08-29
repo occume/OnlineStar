@@ -5,6 +5,9 @@
 <mapper namespace="com.os.auth.mapper.AuthMapper">
 
 	<insert id="save" parameterType="Auth">  
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+	      SELECT LAST_INSERT_ID()
+	    </selectKey>
 		INSERT INTO auth (phone, password) VALUES (#{phone}, #{password})
 	</insert>
 	
