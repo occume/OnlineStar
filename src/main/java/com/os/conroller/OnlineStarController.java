@@ -62,6 +62,7 @@ public class OnlineStarController extends BaseController{
     public Object profileUpdate(HttpSession session, @Valid @RequestBody OnlineStar os){
 		checkAndGetAuth(session);
 		LOG.info("{}", os);
+		os.setAuthId(null);
 		osService.update(os);
     	return Result.OK;
 	}

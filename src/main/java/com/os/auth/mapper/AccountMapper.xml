@@ -10,7 +10,7 @@
         <result property="provinceId" column="province_id"/>   
 		<result property="cityId" column="city_id"/>
 		<result property="genderId" column="gender_id"/>   
-		<result property="avatarImageId" column="avatar_image_id"/>   
+		<result property="avatarImageName" column="avatar_image_name"/>   
 		<result property="groupId" column="group_id"/>   
 	</resultMap> 
 

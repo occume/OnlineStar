@@ -32,6 +32,8 @@ public interface OnlineStarMapper {
     OnlineStar selectByPrimaryKey(Long id);
     
     List<OnlineStarLabel> selectLabelByOsId(Long osId);
+    
+    List<OnlineStarLabel> selectLabelByName(OnlineStarLabel label);
 
     int updateByExampleSelective(@Param("record") OnlineStar record, @Param("example") OnlineStarExample example);
 

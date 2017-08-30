@@ -2,9 +2,12 @@ package com.os.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.os.conroller.OnlineStarController;
 import com.os.mapper.OnlineStarMapper;
 import com.os.mapper.OnlineStarWorkMapper;
 import com.os.model.OnlineStar;
@@ -16,6 +19,8 @@ import com.os.model.OnlineStarWorkExample;
 
 @Service
 public class OnlineStarService {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(OnlineStarService.class);
 
 	@Autowired
 	private OnlineStarMapper osMapper;
@@ -49,7 +54,13 @@ public class OnlineStarService {
 		if(os.getLabelList() != null){
 			for(OnlineStarLabel label: os.getLabelList()){
 				label.setOsId(os.getId());
-				osMapper.insertLabel(label);
+				List<OnlineStarLabel> list = osMapper.selectLabelByName(label);
+				if(list.size() > 0){
+					LOG.info("Exist label, {}, {}", os.getId(), label.getName());
+				}
+				else{
+					osMapper.insertLabel(label);
+				}
 			}
 		}
 	}

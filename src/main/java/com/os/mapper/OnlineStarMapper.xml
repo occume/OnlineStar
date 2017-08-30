@@ -146,6 +146,13 @@
     where os_id = #{osId,jdbcType=BIGINT}
   </select>
   
+  <select id="selectLabelByName" parameterType="OnlineStarLabel" resultType="OnlineStarLabel">
+    select 
+    *
+    from online_star_label
+    where os_id = #{osId,jdbcType=BIGINT} and name = #{name,jdbcType=BIGINT}
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from online_star
     where id = #{id,jdbcType=BIGINT}
@@ -400,7 +407,9 @@
       <if test="expierence != null">
         expierence = #{expierence,jdbcType=VARCHAR},
       </if>
+      update_at = now()
     </set>
+    
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.os.model.OnlineStar">

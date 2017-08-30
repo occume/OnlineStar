@@ -22,10 +22,10 @@ public class OnlineStar {
 
     private String platform;
 
-    @JsonProperty("plantform_name")
+    @JsonProperty("platform_name")
     private String platformName;
 
-    @JsonProperty("fans_cuont")
+    @JsonProperty("fans_count")
     private Integer fansCount;
 
     @JsonProperty("gift_to_money")
