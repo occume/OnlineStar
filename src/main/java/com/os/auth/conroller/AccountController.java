@@ -2,6 +2,7 @@ package com.os.auth.conroller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.os.Constant.GroupType;
+import com.os.Constant.HeaderName;
 import com.os.auth.model.Account;
 import com.os.auth.model.Auth;
 import com.os.auth.service.AccountService;
@@ -59,36 +61,53 @@ public class AccountController extends BaseController{
 	@Autowired
 	private AdvertCompanyService advertService;
 	
-	@RequestMapping(value = "/profile", produces = TEXT, method = RequestMethod.GET)
+	@RequestMapping(value = "/profile", method = RequestMethod.POST)
 	@ResponseBody
-    public Object info(HttpSession session){
-		Auth auth = checkAndGetAuth(session);
-		Account account = accService.get(auth.getId());
-    	return Result.ok(account);
+    public Object info(HttpServletRequest requet, @RequestBody Map<String, Object> map){
+		Account account   = checkAndGetAuth(requet);
+		long authId = getParamLong("auth_id", map);
+		if(authId == 0){
+			authId = account.getAuthId();
+		}
+		Account acc = accService.getByAuthId(authId);
+    	return Result.ok(acc);
     }
 	
 	@RequestMapping(value = "/profile/complete", method = RequestMethod.POST)
 	@ResponseBody
-    public Object profileUpdate(HttpSession session, @Valid @RequestBody Account acc){
-		Auth auth = checkAndGetAuth(session);
-		Account account = accService.get(auth.getId());
-		acc.setAuthId(auth.getId());
-		System.out.println(auth.getId());
+    public Object profileUpdate(HttpServletRequest request, @Valid @RequestBody Account acc){
+		Account account   = checkAndGetAuth(request);
+//		Account account = accService.getByAuthId(auth.getId());
+		acc.setAuthId(account.getAuthId());
+//		System.out.println(auth.getId());
 		System.out.println(account);
-		if(account == null){
-			accService.save(acc);
-		}
-		else{
+//		if(account == null){
+//			accService.save(acc);
+//		}
+//		else{
 			accService.update(acc);
-		}
+//		}
+    	return Result.OK;
+	}
+	
+	@RequestMapping(value = "/registionid/set", method = RequestMethod.POST)
+	@ResponseBody
+    public Object registionidSet(HttpServletRequest request, @RequestBody Map<String, String> map){
+		Account account = checkAndGetAuth(request);
+		String registionid = map.get("registionid");
+		accService.setRegistionid(account.getAuthId(), registionid);
+		
+		String token = request.getHeader(HeaderName.TOKEN);
+		account.setRegistionid(registionid);
+		request.getSession().setAttribute(token, account);
     	return Result.OK;
 	}
 	
 	@RequestMapping(value = "/group/select", method = RequestMethod.POST, consumes = "application/json")
 	@ResponseBody
-    public Object selectGroup(HttpSession session, @RequestBody Map<String, Integer> map){
-		Auth auth = checkAndGetAuth(session);
-		Account account = accService.get(auth.getId());
+    public Object selectGroup(HttpServletRequest request, @RequestBody Map<String, Integer> map){
+		Account account = checkAndGetAuth(request);
+//		Account account = accService.getByAuthId(auth.getId());
 		
 		if(account == null){
 			return Result.fail("Profile not completed");
@@ -98,19 +117,20 @@ public class AccountController extends BaseController{
 			return Result.fail("Group selected");
 		}
 		int groupId = map.get("group_id");
-		accService.selectGroup(auth.getId(), groupId);
+		accService.selectGroup(account.getAuthId(), groupId);
 		if(groupId == GroupType.ONLINE_STAR){
 			/**
 			 * Create OnlineStar
 			 */
 			OnlineStar os = new OnlineStar();
-			os.setAuthId(auth.getId());
+			os.setAuthId(account.getAuthId());
+			os.setAccountId(account.getId());
 			osService.save(os);
 			/**
 			 * Create Wallet
 			 */
 			Wallet wallet = new Wallet();
-			wallet.setAuthId(auth.getId());
+			wallet.setAuthId(account.getAuthId());
 			walletService.insert(wallet);
 		}
 		else if(groupId == GroupType.MERCHANT){
@@ -118,7 +138,7 @@ public class AccountController extends BaseController{
 			 * Create Merchant
 			 */
 			Merchant merchant = new Merchant();
-			merchant.setAuthId(auth.getId());
+			merchant.setAuthId(account.getAuthId());
 			merchantService.insert(merchant);
 		}
 		else if(groupId == GroupType.BROKER_COMPANY){
@@ -126,7 +146,7 @@ public class AccountController extends BaseController{
 			 * Create Broker
 			 */
 			Broker broker = new Broker();
-			broker.setAuthId(auth.getId());
+			broker.setAuthId(account.getAuthId());
 			brokerService.insert(broker);
 		}
 		else if(groupId == GroupType.ADV_COMPANY){
@@ -134,14 +154,14 @@ public class AccountController extends BaseController{
 			 * Create AdvertCompany
 			 */
 			AdvertCompany advert = new AdvertCompany();
-			advert.setAuthId(auth.getId());
+			advert.setAuthId(account.getAuthId());
 			advertService.insert(advert);
 			
 			/**
 			 * Create Wallet
 			 */
 			Wallet wallet = new Wallet();
-			wallet.setAuthId(auth.getId());
+			wallet.setAuthId(account.getAuthId());
 			walletService.insert(wallet);
 		}
     	return Result.OK;

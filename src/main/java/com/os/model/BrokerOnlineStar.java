@@ -1,5 +1,7 @@
 package com.os.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -28,12 +30,14 @@ public class BrokerOnlineStar {
 		os.setExpierence(expierence);
 		os.setFansCount(fansCount);
 		os.setGiftToMoney(giftToMoney);
+		os.setPlayAmount(playAmount);
 		os.setHipline(hipline);
 		os.setOfflineLivePrice(offlineLivePrice);
 		os.setOnlineLivePrice(onlineLivePrice);
 		os.setPlatform(platform);
 		os.setPlatformName(platformName);
 		os.setWaistline(waistline);
+		os.setLabelList(labelList);
 		return os;
 	}
 	
@@ -57,19 +61,28 @@ public class BrokerOnlineStar {
 	@JsonProperty("group_id")
 	private String groupId;
 
+	@JsonProperty("online_live_price")
     private Float onlineLivePrice;
 
+	@JsonProperty("offline_live_price")
     private Float offlineLivePrice;
 
+	@JsonProperty("brand_spoke_price")
     private Float brandSpokePrice;
 
     private String platform;
 
+	@JsonProperty("platform_name")
     private String platformName;
 
+	@JsonProperty("fans_count")
     private Integer fansCount;
 
+	@JsonProperty("gift_to_money")
     private Float giftToMoney;
+	
+	@JsonProperty("play_amount")
+    private Long playAmount;
 
     private Float height;
 
@@ -84,6 +97,9 @@ public class BrokerOnlineStar {
     private String expierence;
     
     private Long accountId;
+    
+    @JsonProperty("label_list")
+    private List<OnlineStarLabel> labelList;
 
     public Float getOnlineLivePrice() {
         return onlineLivePrice;
@@ -196,4 +212,69 @@ public class BrokerOnlineStar {
 	public void setAccountId(Long accountId) {
 		this.accountId = accountId;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getProvinceId() {
+		return provinceId;
+	}
+
+	public void setProvinceId(int provinceId) {
+		this.provinceId = provinceId;
+	}
+
+	public int getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(int cityId) {
+		this.cityId = cityId;
+	}
+
+	public int getGenderId() {
+		return genderId;
+	}
+
+	public void setGenderId(int genderId) {
+		this.genderId = genderId;
+	}
+
+	public String getAvatarImageName() {
+		return avatarImageName;
+	}
+
+	public void setAvatarImageName(String avatarImageName) {
+		this.avatarImageName = avatarImageName;
+	}
+
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	public Long getPlayAmount() {
+		return playAmount;
+	}
+
+	public void setPlayAmount(Long playAmount) {
+		this.playAmount = playAmount;
+	}
+
+	public List<OnlineStarLabel> getLabelList() {
+		return labelList;
+	}
+
+	public void setLabelList(List<OnlineStarLabel> labelList) {
+		this.labelList = labelList;
+	}
+	
 }

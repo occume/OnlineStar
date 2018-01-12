@@ -38,29 +38,30 @@ public class ApplyService {
 //		return applyMapper.selectWithJob(osId)
 //	}
 	
-	public List<ApplyWithJob> selectWithJob(int startRow, long osId, int statusId){
-		return selectWithJob(startRow, Constant.PAGE_SIZE, osId, statusId);
+	public List<ApplyWithJob> getWithJob(int startRow, long authId, int statusId, int typeId){
+		startRow = startRow * Constant.PAGE_SIZE;
+		return getWithJob(startRow, Constant.PAGE_SIZE, authId, statusId, typeId);
 	}
 	
-	public List<ApplyWithJob> selectWithJob(int startRow, int pageSize, long osId, int statusId){
-		return applyMapper.selectWithJob(startRow, pageSize, osId, statusId);
+	public List<ApplyWithJob> getWithJob(int startRow, int pageSize, long authId, int statusId, int typeId){
+		return applyMapper.selectWithJob(startRow, pageSize, authId, statusId, typeId);
 	}
 	
 	public List<ApplyWithOnlineStar> selectWithOnlineStar(long jobId){
 		return applyMapper.selectWithOnlineStar(jobId);
 	}
 	
-	public boolean exist(long jobId, long osId){
-		return applyMapper.selectByJobOnlineStar(jobId, osId) != null;
+	public boolean exist(long jobId, long authId){
+		return applyMapper.selectByJobOnlineStar(jobId, authId) != null;
 	}
 	
 	public boolean exist(Apply apply){
-		return applyMapper.selectByJobOnlineStar(apply.getJobId(), apply.getOsId()) != null;
+		return applyMapper.selectByJobOnlineStar(apply.getJobId(), apply.getAuthId()) != null;
 	}
 	
-	public List<Apply> getApplyList(long osId){
+	public List<Apply> getApplyList(long authId){
 		ApplyExample example = new ApplyExample();
-		example.createCriteria().andOsIdEqualTo(osId);
+		example.createCriteria().andAuthIdEqualTo(authId);
 		return applyMapper.selectByExample(example);
 	}
 	

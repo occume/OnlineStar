@@ -19,7 +19,7 @@ public class BrokerOnlineStarResponse {
 	private int genderId;
 	
 	@JsonProperty("avatar_image_name")
-	private String avatarName;
+	private String avatarImageName;
 
 	public String getName() {
 		return name;
@@ -53,12 +53,12 @@ public class BrokerOnlineStarResponse {
 		this.genderId = genderId;
 	}
 
-	public String getAvatarName() {
-		return avatarName;
+	public String getAvatarImageName() {
+		return avatarImageName;
 	}
 
-	public void setAvatarName(String avatarName) {
-		this.avatarName = avatarName;
+	public void setAvatarImageName(String avatarImageName) {
+		this.avatarImageName = avatarImageName;
 	}
 
 	public long getOsId() {

@@ -3,7 +3,7 @@ package com.os.conroller;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,15 +16,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
-
-
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.collect.Lists;
+import com.os.Constant;
+import com.os.auth.model.Account;
 import com.os.auth.model.Auth;
+import com.os.model.Broker;
 import com.os.model.Feedback;
 import com.os.model.Image;
+import com.os.model.Meta;
 import com.os.model.Result;
 import com.os.model.response.AboutUs;
 import com.os.service.CommonService;
@@ -41,7 +42,7 @@ public class CommonController extends BaseController{
 	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	@ResponseBody
-    public Object uploadFile(HttpSession session, @RequestParam("file") MultipartFile[] files){
+    public Object uploadFile(HttpServletRequest request, @RequestParam("file") MultipartFile[] files){
 
 		LOG.info("files.size: {}", files.length);
 		
@@ -82,7 +83,14 @@ public class CommonController extends BaseController{
 	@RequestMapping(value = "/meta", method = RequestMethod.GET)
 	@ResponseBody
     public Object meta(){
-    	return Result.ok(commonService.getGroupList());
+		
+		Meta meta = new Meta();
+		meta.groupList = commonService.getGroupList();
+		meta.jobSearchDates = Constant.JOB_SEARCH_DATE_CONDITION_LIST;
+		meta.jobSearchCommissions = Constant.JOB_SEARCH_COMMISSION_CONDITION_LIST;
+		meta.jobSearchGenders = Constant.JOB_SEARCH_GENDER_CONDITION_LIST;
+		
+    	return Result.ok(meta);
 	}
 	
 	@RequestMapping(value = "/group/list", method = RequestMethod.GET)
@@ -115,6 +123,12 @@ public class CommonController extends BaseController{
 		return Result.ok(commonService.getCityList(provinceId));
 	}
 	
+	@RequestMapping(value = "/district/list/{cityId}", method = RequestMethod.GET)
+	@ResponseBody
+    public Object districtListByCityId(@PathVariable int cityId){
+		return Result.ok(commonService.getDistrictList(cityId));
+	}
+	
 	@RequestMapping(value = "/bankcard-type/list/{prefix}", method = RequestMethod.GET)
 	@ResponseBody
     public Object cityListByProvinceId(@PathVariable String prefix){
@@ -123,9 +137,9 @@ public class CommonController extends BaseController{
 	
 	@RequestMapping(value = "/feedback/add", method = RequestMethod.POST)
 	@ResponseBody
-    public Object feedbackAdd(HttpSession session, @RequestBody Feedback feedback){
-		Auth auth = checkAndGetAuth(session);
-		feedback.setAuthId(auth.getId());
+    public Object feedbackAdd(HttpServletRequest request, @RequestBody Feedback feedback){
+		Account account = checkAndGetAuth(request);
+		feedback.setAuthId(account.getAuthId());
 		commonService.feedbackAdd(feedback);
 		return Result.OK;
 	}

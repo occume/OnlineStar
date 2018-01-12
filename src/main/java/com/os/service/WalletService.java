@@ -31,7 +31,7 @@ public class WalletService {
 		return walletMapper.updateByPrimaryKeySelective(wallet);
 	}
 	
-	public Wallet getByOsId(long authId){
+	public Wallet getByAuthId(long authId){
 		WalletExample example = new WalletExample();
 		example.createCriteria().andAuthIdEqualTo(authId);
 		return walletMapper.selectByExample(example).get(0);
@@ -41,10 +41,14 @@ public class WalletService {
 		walletMapper.updateByPrimaryKeySelective(wallet);
 	}
 	
-	public List<WalletBankcard> getBankcardList(long osId){
+	public List<WalletBankcard> getBankcardList(long authId){
 		WalletBankcardExample example = new WalletBankcardExample();
 		WalletBankcardExample.Criteria c = example.createCriteria();
-		c.andOsIdEqualTo(osId);
+		c.andauthIdEqualTo(authId);
 		return bankcardMapper.selectByExample(example);
+	}
+	
+	public int addBankcard(WalletBankcard bankcard){
+		return bankcardMapper.insert(bankcard);
 	}
 }

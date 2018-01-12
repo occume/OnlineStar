@@ -15,7 +15,7 @@
     <result column="city_name" jdbcType="VARCHAR" property="cityName" />
     <result column="province_name" jdbcType="VARCHAR" property="provinceName" />
     <result column="gender_id" property="genderId" />
-    <result column="avatar_name" jdbcType="VARCHAR" property="avatarName" />
+    <result column="avatar_image_name" jdbcType="VARCHAR" property="avatarImageName" />
   </resultMap>
   
   <sql id="Example_Where_Clause">
@@ -81,7 +81,7 @@
   </sql>
   
   <select id="selectAccount" parameterType="java.lang.Long" resultMap="AccountMap">
-    select os.id as os_id, a.`name`, c.name as city_name, p.name as province_name, a.`gender_id`, i.name as avatar_name from account a 
+    select os.id as os_id, a.`name`, c.name as city_name, p.name as province_name, a.`gender_id`, a.avatar_image_name from account a 
     	left join city c on c.id = a.city_id 
     	left join province p on p.id = a.province_id
     	left join image i on i.id = a.avatar_image_id 

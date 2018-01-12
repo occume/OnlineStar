@@ -6,19 +6,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class OnlineStar {
 	
-	
     private Long id;
 
     private Long authId;
 
     @JsonProperty("online_live_price")
-    private Float onlineLivePrice;
+    private Float onlineLivePrice = 0.0f;
 
     @JsonProperty("offline_live_price")
-    private Float offlineLivePrice;
+    private Float offlineLivePrice = 0.0f;
 
     @JsonProperty("brand_spoke_price")
-    private Float brandSpokePrice;
+    private Float brandSpokePrice = 0.0f;
 
     private String platform;
 
@@ -26,10 +25,13 @@ public class OnlineStar {
     private String platformName;
 
     @JsonProperty("fans_count")
-    private Integer fansCount;
+    private Integer fansCount = 0;
 
     @JsonProperty("gift_to_money")
-    private Float giftToMoney;
+    private Float giftToMoney = 0.0f;
+    
+    @JsonProperty("play_amount")
+    private Long playAmount = 0L;
 
     private Float height;
 
@@ -42,6 +44,9 @@ public class OnlineStar {
     private Float hipline;
 
     private String expierence;
+    
+    @JsonProperty("broker_id")
+    private Long brokerId;
     
     @JsonProperty("account_id")
     private Long accountId;
@@ -169,6 +174,14 @@ public class OnlineStar {
         this.expierence = expierence == null ? null : expierence.trim();
     }
 
+	public Long getBrokerId() {
+		return brokerId;
+	}
+
+	public void setBrokerId(Long brokerId) {
+		this.brokerId = brokerId;
+	}
+
 	public Long getAccountId() {
 		return accountId;
 	}
@@ -183,6 +196,14 @@ public class OnlineStar {
 
 	public void setLabelList(List<OnlineStarLabel> labelList) {
 		this.labelList = labelList;
+	}
+
+	public Long getPlayAmount() {
+		return playAmount;
+	}
+
+	public void setPlayAmount(Long playAmount) {
+		this.playAmount = playAmount;
 	}
 
 	@Override

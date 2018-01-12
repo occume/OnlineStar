@@ -1,12 +1,17 @@
 package com.os.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Broker {
     private Long id;
 
+    @JsonProperty("auth_id")
     private Long authId;
 
+    @JsonProperty("company_name")
     private String companyName;
 
+    @JsonProperty("company_qualification")
     private String companyQualification;
 
     public Long getId() {

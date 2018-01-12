@@ -8,11 +8,16 @@
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
 	      SELECT LAST_INSERT_ID()
 	    </selectKey>
-		INSERT INTO auth (phone, password) VALUES (#{phone}, #{password})
+		INSERT INTO auth (phone, password, open_key_wx, open_key_weibo, open_key_qq) 
+		VALUES (#{phone}, #{password}, #{openKeyWx}, #{openKeyWeibo}, #{openKeyQq})
 	</insert>
 	
 	<update id="resetPassword" parameterType="Auth">
 		update auth set password = #{password} where phone = #{phone}
+	</update>
+	
+	<update id="resetToken" parameterType="Auth">
+		update auth set token = #{token}, token_create_time = now() where id = #{id}
 	</update>
   
 	<select id="getAuthByPhone" parameterType="String" resultType="Auth">  
@@ -22,4 +27,28 @@
 	<select id="getAuth" resultType="Auth">  
     	select * from auth where phone = #{phone} and password = #{password} group by phone
   	</select>
+  	
+  	<select id="getByWx" resultType="Auth">  
+    	select * from auth where open_key_wx = #{openKey} group by phone
+  	</select>
+  	
+  	<select id="getByWeibo" resultType="Auth">  
+    	select * from auth where open_key_weibo = #{openKey} group by phone
+  	</select>
+  	
+  	<select id="getByQQ" resultType="Auth">  
+    	select * from auth where open_key_qq = #{openKey} group by phone
+  	</select>
+  	
+  	<update id="bindWx" parameterType="Auth">
+		update auth set open_key_wx = #{openKeyWx} where phone = #{phone}
+	</update>
+	
+	<update id="bindWeibo" parameterType="Auth">
+		update auth set open_key_weibo = #{openKeyWeibo} where phone = #{phone}
+	</update>
+	
+	<update id="bindQQ" parameterType="Auth">
+		update auth set open_key_qq = #{openKeyQq} where phone = #{phone}
+	</update>
 </mapper>

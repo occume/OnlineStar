@@ -6,7 +6,7 @@
 
 	<select id="bankcardTypeList" parameterType="String" resultType="WalletBankcardType">  
 		select id, name, bank_name as bankName, prefix from wallet_bankcard_type
-			where prefix like '%6226%' limit 20
+			where prefix like '%${prefix}%' limit 20
 	</select>
 	
 	<select id="bannerImageList" resultType="BannerImage">  
@@ -30,6 +30,10 @@
 		select * from city where province_id = #{provinceId}
 	</select>
 	
+	<select id="districtListByCityId" parameterType="int" resultType="District">  
+		select * from district where city_id = #{cityId}
+	</select>
+	
 	<select id="provinceList" resultType="Province">  
 		select * from province
 	</select>
@@ -41,4 +45,13 @@
 	<insert id="feedbackAdd" parameterType="Feedback">
 		insert into feedback (auth_id, content, contact) values (#{authId}, #{content}, #{contact})
 	</insert>
+	
+	<insert id="createOrder" parameterType="Order">
+		insert into `order` (trade_no, job_id, auth_id, advance_amount, remark, status_id) values 
+		(#{tradeNo}, #{jobId}, #{authId}, #{advanceAmount}, #{remark}, 1)
+	</insert>
+	
+	<update id="updateOrder" parameterType="Order">
+		update `order` set job_id = #{jobId}, result = #{result} where trade_no = #{tradeNo}
+	</update>
 </mapper>

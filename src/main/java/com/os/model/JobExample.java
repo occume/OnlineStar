@@ -165,63 +165,63 @@ public class JobExample extends BaseExample{
             return (Criteria) this;
         }
 
-        public Criteria andMerchantIdIsNull() {
-            addCriterion("merchant_id is null");
+        public Criteria andAuthIdIsNull() {
+            addCriterion("Auth_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andMerchantIdIsNotNull() {
-            addCriterion("merchant_id is not null");
+        public Criteria andAuthIdIsNotNull() {
+            addCriterion("Auth_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMerchantIdEqualTo(Long value) {
-            addCriterion("merchant_id =", value, "merchantId");
+        public Criteria andAuthIdEqualTo(Long value) {
+            addCriterion("Auth_id =", value, "AuthId");
             return (Criteria) this;
         }
 
-        public Criteria andMerchantIdNotEqualTo(Long value) {
-            addCriterion("merchant_id <>", value, "merchantId");
+        public Criteria andAuthIdNotEqualTo(Long value) {
+            addCriterion("Auth_id <>", value, "AuthId");
             return (Criteria) this;
         }
 
-        public Criteria andMerchantIdGreaterThan(Long value) {
-            addCriterion("merchant_id >", value, "merchantId");
+        public Criteria andAuthIdGreaterThan(Long value) {
+            addCriterion("Auth_id >", value, "AuthId");
             return (Criteria) this;
         }
 
-        public Criteria andMerchantIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("merchant_id >=", value, "merchantId");
+        public Criteria andAuthIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("Auth_id >=", value, "AuthId");
             return (Criteria) this;
         }
 
-        public Criteria andMerchantIdLessThan(Long value) {
-            addCriterion("merchant_id <", value, "merchantId");
+        public Criteria andAuthIdLessThan(Long value) {
+            addCriterion("Auth_id <", value, "AuthId");
             return (Criteria) this;
         }
 
-        public Criteria andMerchantIdLessThanOrEqualTo(Long value) {
-            addCriterion("merchant_id <=", value, "merchantId");
+        public Criteria andAuthIdLessThanOrEqualTo(Long value) {
+            addCriterion("Auth_id <=", value, "AuthId");
             return (Criteria) this;
         }
 
-        public Criteria andMerchantIdIn(List<Long> values) {
-            addCriterion("merchant_id in", values, "merchantId");
+        public Criteria andAuthIdIn(List<Long> values) {
+            addCriterion("Auth_id in", values, "AuthId");
             return (Criteria) this;
         }
 
-        public Criteria andMerchantIdNotIn(List<Long> values) {
-            addCriterion("merchant_id not in", values, "merchantId");
+        public Criteria andAuthIdNotIn(List<Long> values) {
+            addCriterion("Auth_id not in", values, "AuthId");
             return (Criteria) this;
         }
 
-        public Criteria andMerchantIdBetween(Long value1, Long value2) {
-            addCriterion("merchant_id between", value1, value2, "merchantId");
+        public Criteria andAuthIdBetween(Long value1, Long value2) {
+            addCriterion("Auth_id between", value1, value2, "AuthId");
             return (Criteria) this;
         }
 
-        public Criteria andMerchantIdNotBetween(Long value1, Long value2) {
-            addCriterion("merchant_id not between", value1, value2, "merchantId");
+        public Criteria andAuthIdNotBetween(Long value1, Long value2) {
+            addCriterion("Auth_id not between", value1, value2, "AuthId");
             return (Criteria) this;
         }
 

@@ -69,9 +69,9 @@ public class AuthenticatorController {
 	public Object errorBadSqlHandle(BadSqlGrammarException e){
 		System.out.println("-- errorBadSqlHandle");
 		System.out.println(e.getMessage());
-		Result response = new Result();  
-	    response.setErrCode(-22);  
-	    response.setErrMessage("Oh, programmer is ran!");  
+		Result response = new Result();
+	    response.setErrCode(-22);
+	    response.setErrMessage("Oh, programmer is ran!");
 	    return response;  
 	}
 	
@@ -89,6 +89,6 @@ public class AuthenticatorController {
 	public Object errorHandle(Exception e){
 		System.out.println("------ error happen");
 		e.printStackTrace();
-		return Result.fail("Oh, programmer is ran!");
+		return Result.fail(e);
 	}
 }

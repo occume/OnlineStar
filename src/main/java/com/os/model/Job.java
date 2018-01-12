@@ -4,12 +4,13 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.os.auth.model.Account;
 
 public class Job {
     private Long id;
 
-    @JsonProperty("merchant_id")
-    private Long merchantId;
+    @JsonProperty("auth_id")
+    private Long authId;
 
     private String title;
 
@@ -18,7 +19,18 @@ public class Job {
     @JsonProperty("job_type_id")
     private Integer jobTypeId;
 
+    @JsonProperty("city_id")
     private Integer cityId;
+    
+    @JsonProperty("city_name")
+    private Integer cityName;
+    
+    @JsonProperty("district_id")
+    private Integer districtId;
+    
+    @JsonProperty("district_name")
+    private Integer districtName;
+    
     @JsonProperty("start_time")
     private Date startTime;
     
@@ -42,6 +54,9 @@ public class Job {
     
     @JsonProperty("image_list")
     private List<JobImage> imageList;
+    
+    @JsonProperty("os_list")
+    private List<Account> osList;
 
     public Long getId() {
         return id;
@@ -51,15 +66,15 @@ public class Job {
         this.id = id;
     }
 
-    public Long getMerchantId() {
-        return merchantId;
-    }
+    public Long getAuthId() {
+		return authId;
+	}
 
-    public void setMerchantId(Long merchantId) {
-        this.merchantId = merchantId;
-    }
+	public void setAuthId(Long authId) {
+		this.authId = authId;
+	}
 
-    public String getTitle() {
+	public String getTitle() {
         return title;
     }
 
@@ -162,5 +177,37 @@ public class Job {
 	public void setImageList(List<JobImage> imageList) {
 		this.imageList = imageList;
 	}
-    
+
+	public List<Account> getOsList() {
+		return osList;
+	}
+
+	public void setOsList(List<Account> osList) {
+		this.osList = osList;
+	}
+
+	public Integer getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(Integer cityName) {
+		this.cityName = cityName;
+	}
+
+	public Integer getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Integer districtId) {
+		this.districtId = districtId;
+	}
+
+	public Integer getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(Integer districtName) {
+		this.districtName = districtName;
+	}
+
 }

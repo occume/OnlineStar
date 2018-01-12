@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.os.auth.mapper.AccountMapper;
-import com.os.auth.mapper.AuthMapper;
 import com.os.auth.model.Account;
-import com.os.auth.model.Auth;
 
 @Service
 public class AccountService {
@@ -22,11 +20,19 @@ public class AccountService {
 		accMapper.updateById(acc);
 	}
 	
-	public Account get(long authId){
+	public Account getByAuthId(long authId){
 		return accMapper.getByAuthId(authId);
+	}
+	
+	public Account getByToken(String token){
+		return accMapper.getByToken(token);
 	}
 	
 	public void selectGroup(long authId, int groupId){
 		accMapper.setGroup(groupId, authId);
+	}
+
+	public void setRegistionid(long authId, String registionid) {
+		accMapper.setRegistionid(authId, registionid);
 	}
 }

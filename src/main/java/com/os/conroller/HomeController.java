@@ -1,18 +1,13 @@
 package com.os.conroller;
 
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.os.model.Job;
 import com.os.model.Result;
 import com.os.service.CommonService;
 import com.os.service.OnlineStarService;
@@ -27,6 +22,17 @@ public class HomeController extends BaseController{
 	private CommonService commonService;
 	@Autowired
 	private OnlineStarService osService;
+	
+	@RequestMapping(value = "", method = RequestMethod.GET)
+    public Object home(){
+    	return "h5/index";
+	}
+	
+	@RequestMapping(value = "/on-service", method = RequestMethod.GET)
+	@ResponseBody
+    public Object onService(){
+    	return Result.ok(System.currentTimeMillis());
+	}
 	
 	@RequestMapping(value = "/banner/list", method = RequestMethod.GET)
 	@ResponseBody

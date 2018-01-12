@@ -24,12 +24,13 @@ public interface ApplyMapper {
 
     Apply selectByPrimaryKey(Long id);
     
-    Apply selectByJobOnlineStar(@Param("jobId")Long jobId, @Param("osId")Long osId);
+    Apply selectByJobOnlineStar(@Param("jobId")Long jobId, @Param("authId")Long authId);
     
     List<ApplyWithOnlineStar> selectWithOnlineStar(@Param("jobId")Long jobId);
     
     List<ApplyWithJob> selectWithJob(@Param("startRow")int startRow, @Param("pageSize")int pageSize,
-    		@Param("osId")Long osId, @Param("statusId")Integer statusId);
+    		@Param("authId")Long authId, @Param("statusId")Integer statusId,
+    		@Param("typeId")Integer typeId);
 
     int updateByExampleSelective(@Param("record") Apply record, @Param("example") ApplyExample example);
 

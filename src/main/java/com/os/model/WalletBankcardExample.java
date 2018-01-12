@@ -164,63 +164,63 @@ public class WalletBankcardExample {
             return (Criteria) this;
         }
 
-        public Criteria andOsIdIsNull() {
-            addCriterion("os_id is null");
+        public Criteria andauthIdIsNull() {
+            addCriterion("auth_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andOsIdIsNotNull() {
-            addCriterion("os_id is not null");
+        public Criteria andauthIdIsNotNull() {
+            addCriterion("auth_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOsIdEqualTo(Long value) {
-            addCriterion("os_id =", value, "osId");
+        public Criteria andauthIdEqualTo(Long value) {
+            addCriterion("auth_id =", value, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andOsIdNotEqualTo(Long value) {
-            addCriterion("os_id <>", value, "osId");
+        public Criteria andauthIdNotEqualTo(Long value) {
+            addCriterion("auth_id <>", value, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andOsIdGreaterThan(Long value) {
-            addCriterion("os_id >", value, "osId");
+        public Criteria andauthIdGreaterThan(Long value) {
+            addCriterion("auth_id >", value, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andOsIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("os_id >=", value, "osId");
+        public Criteria andauthIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("auth_id >=", value, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andOsIdLessThan(Long value) {
-            addCriterion("os_id <", value, "osId");
+        public Criteria andauthIdLessThan(Long value) {
+            addCriterion("auth_id <", value, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andOsIdLessThanOrEqualTo(Long value) {
-            addCriterion("os_id <=", value, "osId");
+        public Criteria andauthIdLessThanOrEqualTo(Long value) {
+            addCriterion("auth_id <=", value, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andOsIdIn(List<Long> values) {
-            addCriterion("os_id in", values, "osId");
+        public Criteria andauthIdIn(List<Long> values) {
+            addCriterion("auth_id in", values, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andOsIdNotIn(List<Long> values) {
-            addCriterion("os_id not in", values, "osId");
+        public Criteria andauthIdNotIn(List<Long> values) {
+            addCriterion("auth_id not in", values, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andOsIdBetween(Long value1, Long value2) {
-            addCriterion("os_id between", value1, value2, "osId");
+        public Criteria andauthIdBetween(Long value1, Long value2) {
+            addCriterion("auth_id between", value1, value2, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andOsIdNotBetween(Long value1, Long value2) {
-            addCriterion("os_id not between", value1, value2, "osId");
+        public Criteria andauthIdNotBetween(Long value1, Long value2) {
+            addCriterion("auth_id not between", value1, value2, "authId");
             return (Criteria) this;
         }
 

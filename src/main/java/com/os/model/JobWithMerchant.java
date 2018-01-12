@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class JobWithMerchant {
 	private Long id;
 
-    @JsonProperty("merchant_id")
-    private Long merchantId;
+    @JsonProperty("auth_id")
+    private Long authId;
 
     private String title;
 
@@ -17,8 +17,16 @@ public class JobWithMerchant {
 
     @JsonProperty("job_type_id")
     private Integer jobTypeId;
+    
+    @JsonProperty("job_type_name")
+    private String jobTypeName;
 
+    @JsonProperty("city_id")
     private Integer cityId;
+    
+    @JsonProperty("job_city_name")
+    private String jobCityName;
+    
     @JsonProperty("start_time")
     private Date startTime;
     
@@ -44,7 +52,7 @@ public class JobWithMerchant {
     private String merchantName;
     
     @JsonProperty("merchant_avatar")
-    private Integer avatarImageId;
+    private String avatarImageName;
     
     private Apply apply;
     
@@ -73,12 +81,12 @@ public class JobWithMerchant {
 		this.id = id;
 	}
 
-	public Long getMerchantId() {
-		return merchantId;
+	public Long getAuthId() {
+		return authId;
 	}
 
-	public void setMerchantId(Long merchantId) {
-		this.merchantId = merchantId;
+	public void setAuthId(Long authId) {
+		this.authId = authId;
 	}
 
 	public String getTitle() {
@@ -201,12 +209,12 @@ public class JobWithMerchant {
 		this.provinceName = provinceName;
 	}
 
-	public Integer getAvatarImageId() {
-		return avatarImageId;
+	public String getAvatarImageName() {
+		return avatarImageName;
 	}
 
-	public void setAvatarImageId(Integer avatarImageId) {
-		this.avatarImageId = avatarImageId;
+	public void setAvatarImageId(String avatarImageId) {
+		this.avatarImageName = avatarImageId;
 	}
 
 	public List<JobImage> getImageList() {
@@ -223,6 +231,26 @@ public class JobWithMerchant {
 
 	public void setApply(Apply apply) {
 		this.apply = apply;
+	}
+
+	public String getJobTypeName() {
+		return jobTypeName;
+	}
+
+	public void setJobTypeName(String jobTypeName) {
+		this.jobTypeName = jobTypeName;
+	}
+
+	public String getJobCityName() {
+		return jobCityName;
+	}
+
+	public void setJobCityName(String jobCityName) {
+		this.jobCityName = jobCityName;
+	}
+
+	public void setAvatarImageName(String avatarImageName) {
+		this.avatarImageName = avatarImageName;
 	}
 
 }

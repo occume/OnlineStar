@@ -10,7 +10,11 @@ public interface AccountMapper {
 	
 	Account getByAuthId(long authId);
 	
+	Account getByToken(@Param(value = "token")String token);
+	
 	void setGroup(@Param(value = "groupId")int groupId, @Param(value = "authId") long authId);
 	
 	void updateById(Account account);
+
+	void setRegistionid(@Param(value="authId")long authId, @Param(value="registionid")String registionid);
 }

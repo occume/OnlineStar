@@ -1,16 +1,21 @@
 package com.os.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class WalletBankcard {
     private Integer id;
 
-    private Long osId;
+    private Long authId;
 
+    @JsonProperty("card_type_id")
     private Integer cardTypeId;
 
+    @JsonProperty("card_owner")
     private String cardOwner;
 
     private Integer defaultId;
 
+    @JsonProperty("card_number")
     private String cardNumber;
 
     public Integer getId() {
@@ -21,15 +26,15 @@ public class WalletBankcard {
         this.id = id;
     }
 
-    public Long getOsId() {
-        return osId;
-    }
+    public Long getAuthId() {
+		return authId;
+	}
 
-    public void setOsId(Long osId) {
-        this.osId = osId;
-    }
+	public void setAuthId(Long authId) {
+		this.authId = authId;
+	}
 
-    public Integer getCardTypeId() {
+	public Integer getCardTypeId() {
         return cardTypeId;
     }
 

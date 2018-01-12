@@ -3,7 +3,7 @@
 <mapper namespace="com.os.mapper.WalletBankcardMapper">
   <resultMap id="BaseResultMap" type="com.os.model.WalletBankcard">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="os_id" jdbcType="BIGINT" property="osId" />
+    <result column="auth_id" jdbcType="BIGINT" property="authId" />
     <result column="card_type_id" jdbcType="INTEGER" property="cardTypeId" />
     <result column="card_owner" jdbcType="VARCHAR" property="cardOwner" />
     <result column="default_id" jdbcType="INTEGER" property="defaultId" />
@@ -70,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, os_id, card_type_id, card_owner, default_id
+    id, auth_id, card_type_id, card_owner, default_id
   </sql>
   <sql id="Blob_Column_List">
     card_number
@@ -127,9 +127,9 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into wallet_bankcard (os_id, card_type_id, card_owner, 
+    insert into wallet_bankcard (auth_id, card_type_id, card_owner, 
       default_id, card_number)
-    values (#{osId,jdbcType=BIGINT}, #{cardTypeId,jdbcType=INTEGER}, #{cardOwner,jdbcType=VARCHAR}, 
+    values (#{authId,jdbcType=BIGINT}, #{cardTypeId,jdbcType=INTEGER}, #{cardOwner,jdbcType=VARCHAR}, 
       #{defaultId,jdbcType=INTEGER}, #{cardNumber,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.os.model.WalletBankcard">
@@ -138,8 +138,8 @@
     </selectKey>
     insert into wallet_bankcard
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="osId != null">
-        os_id,
+      <if test="authId != null">
+        auth_id,
       </if>
       <if test="cardTypeId != null">
         card_type_id,
@@ -155,8 +155,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="osId != null">
-        #{osId,jdbcType=BIGINT},
+      <if test="authId != null">
+        #{authId,jdbcType=BIGINT},
       </if>
       <if test="cardTypeId != null">
         #{cardTypeId,jdbcType=INTEGER},
@@ -184,8 +184,8 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.osId != null">
-        os_id = #{record.osId,jdbcType=BIGINT},
+      <if test="record.authId != null">
+        auth_id = #{record.authId,jdbcType=BIGINT},
       </if>
       <if test="record.cardTypeId != null">
         card_type_id = #{record.cardTypeId,jdbcType=INTEGER},
@@ -207,7 +207,7 @@
   <update id="updateByExampleWithBLOBs" parameterType="map">
     update wallet_bankcard
     set id = #{record.id,jdbcType=INTEGER},
-      os_id = #{record.osId,jdbcType=BIGINT},
+      auth_id = #{record.authId,jdbcType=BIGINT},
       card_type_id = #{record.cardTypeId,jdbcType=INTEGER},
       card_owner = #{record.cardOwner,jdbcType=VARCHAR},
       default_id = #{record.defaultId,jdbcType=INTEGER},
@@ -219,7 +219,7 @@
   <update id="updateByExample" parameterType="map">
     update wallet_bankcard
     set id = #{record.id,jdbcType=INTEGER},
-      os_id = #{record.osId,jdbcType=BIGINT},
+      auth_id = #{record.authId,jdbcType=BIGINT},
       card_type_id = #{record.cardTypeId,jdbcType=INTEGER},
       card_owner = #{record.cardOwner,jdbcType=VARCHAR},
       default_id = #{record.defaultId,jdbcType=INTEGER}
@@ -230,8 +230,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.os.model.WalletBankcard">
     update wallet_bankcard
     <set>
-      <if test="osId != null">
-        os_id = #{osId,jdbcType=BIGINT},
+      <if test="authId != null">
+        auth_id = #{authId,jdbcType=BIGINT},
       </if>
       <if test="cardTypeId != null">
         card_type_id = #{cardTypeId,jdbcType=INTEGER},
@@ -250,7 +250,7 @@
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.os.model.WalletBankcard">
     update wallet_bankcard
-    set os_id = #{osId,jdbcType=BIGINT},
+    set auth_id = #{authId,jdbcType=BIGINT},
       card_type_id = #{cardTypeId,jdbcType=INTEGER},
       card_owner = #{cardOwner,jdbcType=VARCHAR},
       default_id = #{defaultId,jdbcType=INTEGER},
@@ -259,7 +259,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.os.model.WalletBankcard">
     update wallet_bankcard
-    set os_id = #{osId,jdbcType=BIGINT},
+    set auth_id = #{authId,jdbcType=BIGINT},
       card_type_id = #{cardTypeId,jdbcType=INTEGER},
       card_owner = #{cardOwner,jdbcType=VARCHAR},
       default_id = #{defaultId,jdbcType=INTEGER}

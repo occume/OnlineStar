@@ -1,5 +1,6 @@
 package com.os.mapper;
 
+import com.os.model.JobRecommendOnlineStar;
 import com.os.model.OnlineStar;
 import com.os.model.OnlineStarExample;
 import com.os.model.OnlineStarLabel;
@@ -34,6 +35,9 @@ public interface OnlineStarMapper {
     List<OnlineStarLabel> selectLabelByOsId(Long osId);
     
     List<OnlineStarLabel> selectLabelByName(OnlineStarLabel label);
+    
+    List<JobRecommendOnlineStar> selectRecommend(@Param("startRow")int startRow, 
+			@Param("pageSize")int pageSize, @Param("cityId")int cityId);
 
     int updateByExampleSelective(@Param("record") OnlineStar record, @Param("example") OnlineStarExample example);
 

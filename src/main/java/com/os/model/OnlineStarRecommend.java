@@ -1,6 +1,5 @@
 package com.os.model;
 
-import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
@@ -12,13 +11,11 @@ public class OnlineStarRecommend {
 	@GeneratedValue
 	private long id;
 	
-	@Column(name = "os_id")
 	@JsonProperty("os_id")
 	private long osId;
 	
 	private String name;
 	
-	@Column(name = "avatar_image_name")
 	@JsonProperty("avatar_image_name")
 	private String avatarImageName;
 

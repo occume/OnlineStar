@@ -5,14 +5,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.os.mapper.AlipayResultMapper;
 import com.os.mapper.CommonMapper;
 import com.os.mapper.ImageMapper;
+import com.os.model.AlipayResult;
 import com.os.model.BannerImage;
 import com.os.model.City;
+import com.os.model.District;
 import com.os.model.Feedback;
 import com.os.model.Group;
 import com.os.model.Image;
 import com.os.model.JobType;
+import com.os.model.Order;
 import com.os.model.Province;
 import com.os.model.WalletBankcardType;
 
@@ -23,6 +27,8 @@ public class CommonService {
 	private CommonMapper commonMapper;
 	@Autowired
 	private ImageMapper workMapper;
+	@Autowired
+	private AlipayResultMapper alipayResultMapper;
 	
 	public void saveImage(Image image){
 		workMapper.insert(image);
@@ -50,6 +56,10 @@ public class CommonService {
 		return commonMapper.cityListByProvinceId(provinceId);
 	}
 	
+	public List<District> getDistrictList(int cityId){
+		return commonMapper.districtListByCityId(cityId);
+	}
+	
 	public List<Province> getProvinceList(){
 		return commonMapper.provinceList();
 	}
@@ -64,5 +74,17 @@ public class CommonService {
 	
 	public int feedbackAdd(Feedback feedback){
 		return commonMapper.feedbackAdd(feedback);
+	}
+	
+	public int createOrder(Order order){
+		return commonMapper.createOrder(order);
+	}
+	
+	public int updateOrder(Order order){
+		return commonMapper.updateOrder(order);
+	}
+	
+	public int createAlipayResult(AlipayResult result){
+		return alipayResultMapper.insert(result);
 	}
 }

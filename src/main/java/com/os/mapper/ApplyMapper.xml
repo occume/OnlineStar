@@ -6,9 +6,10 @@
   <resultMap id="BaseResultMap" type="com.os.model.Apply">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="job_id" jdbcType="BIGINT" property="jobId" />
-    <result column="os_id" jdbcType="BIGINT" property="osId" />
+    <result column="auth_id" jdbcType="BIGINT" property="authId" />
     <result column="status_id" jdbcType="INTEGER" property="statusId" />
     <result column="reason" jdbcType="VARCHAR" property="reason" />
+    <result column="type" jdbcType="INTEGER" property="type" />
   </resultMap>
   
   <resultMap id="ApplyWithOnlineStar" type="com.os.model.ApplyWithOnlineStar">
@@ -21,6 +22,9 @@
   <resultMap id="ApplyWithJob" type="com.os.model.ApplyWithJob">
   	<result column="id" jdbcType="BIGINT" property="id" />
     <result column="status_id" jdbcType="INTEGER" property="statusId" />
+    <result column="job_id" jdbcType="BIGINT" property="jobId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="price" jdbcType="FLOAT" property="price" />
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
@@ -88,22 +92,26 @@
   </sql>
   
   <sql id="Base_Column_List">
-    id, job_id, os_id, status_id, reason
+    id, job_id, auth_id, status_id, reason, type
   </sql>
   
   <select id="selectWithOnlineStar" parameterType="java.lang.Long" resultMap="ApplyWithOnlineStar">
     select a.id, acc.name, acc.gender_id, acc.avatar_image_id from apply a
-    	left join online_star o on o.id = a.os_id
+    	left join online_star o on o.auth_id = a.auth_id
     	left join account acc on acc.auth_id = o.auth_id
     	where a.job_id = #{jobId}
   </select>
   
   <select id="selectWithJob" resultMap="ApplyWithJob">
-    select a.id, a.status_id, j.title, j.price, j.start_time, j.end_time, jt.name as type_name, c.name as city_name from apply a
+    select a.id, a.status_id, j.id, j.title, j.content, j.price, j.start_time, j.end_time, 
+    	jt.name as type_name, c.name as city_name from apply a
 	   	left join job j on j.id = a.job_id
 	   	left join job_type jt on jt.id = j.job_type_id
 	   	left join city c on c.id = j.city_id
-	   	where a.os_id = #{osId} 
+	   	where a.auth_id = #{authId}
+	   	<if test="typeId != 0">
+	      and a.type = #{typeId}
+	    </if>
 	   	<if test="statusId != 0">
 	      and a.status_id = #{statusId}
 	    </if>
@@ -113,7 +121,7 @@
   </select>
   
   <select id="selectByJobOnlineStar" resultMap="BaseResultMap">
-    select * from apply where job_id = #{jobId} and os_id = #{osId}
+    select * from apply where job_id = #{jobId} and auth_id = #{authId}
   </select>
   
   <select id="selectByExample" parameterType="com.os.model.ApplyExample" resultMap="BaseResultMap">
@@ -150,10 +158,10 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into apply (job_id, os_id, status_id, 
-      reason)
-    values (#{jobId,jdbcType=BIGINT}, #{osId,jdbcType=BIGINT}, #{statusId,jdbcType=INTEGER}, 
-      #{reason,jdbcType=VARCHAR})
+    insert into apply (job_id, auth_id, status_id, 
+      reason, type)
+    values (#{jobId,jdbcType=BIGINT}, #{authId,jdbcType=BIGINT}, #{statusId,jdbcType=INTEGER}, 
+      #{reason,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.os.model.Apply">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -164,8 +172,8 @@
       <if test="jobId != null">
         job_id,
       </if>
-      <if test="osId != null">
-        os_id,
+      <if test="authId != null">
+        auth_id,
       </if>
       <if test="statusId != null">
         status_id,
@@ -173,19 +181,25 @@
       <if test="reason != null">
         reason,
       </if>
+      <if test="type != null">
+        reason,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="jobId != null">
         #{jobId,jdbcType=BIGINT},
       </if>
-      <if test="osId != null">
-        #{osId,jdbcType=BIGINT},
+      <if test="authId != null">
+        #{authId,jdbcType=BIGINT},
       </if>
       <if test="statusId != null">
         #{statusId,jdbcType=INTEGER},
       </if>
       <if test="reason != null">
         #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -204,8 +218,8 @@
       <if test="record.jobId != null">
         job_id = #{record.jobId,jdbcType=BIGINT},
       </if>
-      <if test="record.osId != null">
-        os_id = #{record.osId,jdbcType=BIGINT},
+      <if test="record.authId != null">
+        auth_id = #{record.authId,jdbcType=BIGINT},
       </if>
       <if test="record.statusId != null">
         status_id = #{record.statusId,jdbcType=INTEGER},
@@ -222,7 +236,7 @@
     update apply
     set id = #{record.id,jdbcType=BIGINT},
       job_id = #{record.jobId,jdbcType=BIGINT},
-      os_id = #{record.osId,jdbcType=BIGINT},
+      auth_id = #{record.authId,jdbcType=BIGINT},
       status_id = #{record.statusId,jdbcType=INTEGER},
       reason = #{record.reason,jdbcType=VARCHAR}
     <if test="_parameter != null">
@@ -235,8 +249,8 @@
       <if test="jobId != null">
         job_id = #{jobId,jdbcType=BIGINT},
       </if>
-      <if test="osId != null">
-        os_id = #{osId,jdbcType=BIGINT},
+      <if test="authId != null">
+        auth_id = #{authId,jdbcType=BIGINT},
       </if>
       <if test="statusId != null">
         status_id = #{statusId,jdbcType=INTEGER},
@@ -250,7 +264,7 @@
   <update id="updateByPrimaryKey" parameterType="com.os.model.Apply">
     update apply
     set job_id = #{jobId,jdbcType=BIGINT},
-      os_id = #{osId,jdbcType=BIGINT},
+      auth_id = #{authId,jdbcType=BIGINT},
       status_id = #{statusId,jdbcType=INTEGER},
       reason = #{reason,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}

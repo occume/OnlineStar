@@ -35,10 +35,14 @@
  		<property name="jdbcUrl"><value>jdbc:mysql://127.0.0.1/hrz</value></property>
 		<property name="user"><value>root</value></property>
 		<property name="password"><value>5651403</value></property>
-		-->
+		
 		<property name="jdbcUrl"><value>jdbc:mysql://rm-bp1olsbs0n02l14t3o.mysql.rds.aliyuncs.com/hrz</value></property>
 		<property name="user"><value>root</value></property>
 		<property name="password"><value>hrz_5651403</value></property>
+		-->
+		<property name="jdbcUrl"><value>jdbc:mysql://127.0.0.1/hrz</value></property>
+		<property name="user"><value>root</value></property>
+		<property name="password"><value>5651403</value></property>
 	 </bean>
 
     <!-- transaction manager, use JtaTransactionManager for global tx -->

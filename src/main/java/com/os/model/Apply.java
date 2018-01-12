@@ -6,21 +6,34 @@ public class Apply {
 
     private Long jobId;
 
-    private Long osId;
+    private Long authId;
 
     private Integer statusId;
 
     private String reason;
     
-    public static Apply newApply(long jobId, long osId){
-    	return new Apply(jobId, osId);
+    private Integer type;
+    
+    public static Apply newApply(long jobId, long authId){
+    	return new Apply(jobId, authId);
+    }
+    
+    public static Apply newApply(long jobId, long authId, int type){
+    	return new Apply(jobId, authId, type);
     }
     
     public Apply(){}
     
-    public Apply(long jobId, long osId){
+    public Apply(long jobId, long authId, int type){
     	this.jobId = jobId;
-    	this.osId = osId;
+    	this.authId = authId;
+    	this.type = type;
+    	this.statusId = 1;
+    }
+    
+    public Apply(long jobId, long authId){
+    	this.jobId = jobId;
+    	this.authId = authId;
     	this.statusId = 1;
     }
     
@@ -45,15 +58,15 @@ public class Apply {
         this.jobId = jobId;
     }
 
-    public Long getOsId() {
-        return osId;
-    }
+    public Long getAuthId() {
+		return authId;
+	}
 
-    public void setOsId(Long osId) {
-        this.osId = osId;
-    }
+	public void setAuthId(Long authId) {
+		this.authId = authId;
+	}
 
-    public Integer getStatusId() {
+	public Integer getStatusId() {
         return statusId;
     }
 
@@ -68,4 +81,13 @@ public class Apply {
     public void setReason(String reason) {
         this.reason = reason == null ? null : reason.trim();
     }
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+    
 }

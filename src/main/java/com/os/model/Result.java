@@ -11,6 +11,14 @@ public class Result {
 	public static Result fail(String errMessage){
 		return new Result(1, errMessage);
 	}
+	
+	public static Result fail(int errCode, String errMessage){
+		return new Result(errCode, errMessage);
+	}
+	
+	public static Result fail(Exception e){
+		return new Result(1, e.getMessage(), null);
+	}
 
 	private int errCode;
 	private String errMessage;

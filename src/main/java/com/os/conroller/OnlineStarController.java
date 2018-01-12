@@ -3,7 +3,7 @@ package com.os.conroller;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.os.Constant;
-import com.os.auth.model.Auth;
+import com.os.auth.model.Account;
 import com.os.model.Apply;
 import com.os.model.ApplyWithJob;
-import com.os.model.Job;
 import com.os.model.JobWithMerchant;
 import com.os.model.OnlineStar;
 import com.os.model.OnlineStarWork;
 import com.os.model.Result;
-import com.os.model.Wallet;
+import com.os.model.response.JobResponse;
+import com.os.model.response.MerchantResponse;
 import com.os.service.ApplyService;
 import com.os.service.CommonService;
 import com.os.service.JobService;
@@ -48,19 +48,19 @@ public class OnlineStarController extends BaseController{
 	@Autowired
 	private JobService jobService;
 	
-	private OnlineStar getProfile(Auth auth){
-		return osService.getByAuthId(auth.getId());
+	private OnlineStar getProfile(Account account){
+		return osService.getByAuthId(account.getAuthId());
 	}
 	/**
 	 * 个人中心更新
-	 * @param session
+	 * @param request
 	 * @param os
 	 * @return
 	 */
 	@RequestMapping(value = "/profile/update", method = RequestMethod.POST)
 	@ResponseBody
-    public Object profileUpdate(HttpSession session, @Valid @RequestBody OnlineStar os){
-		checkAndGetAuth(session);
+    public Object profileUpdate(HttpServletRequest request, @Valid @RequestBody OnlineStar os){
+		checkAndGetAuth(request);
 		LOG.info("{}", os);
 		os.setAuthId(null);
 		osService.update(os);
@@ -69,12 +69,12 @@ public class OnlineStarController extends BaseController{
 	
 	@RequestMapping(value = "/profile", method = RequestMethod.POST)
 	@ResponseBody
-    public Object profile(HttpSession session, @RequestBody Map<String, Object> map){
-		Auth auth = checkAndGetAuth(session);
+    public Object profile(HttpServletRequest request, @RequestBody Map<String, Object> map){
+		Account account = checkAndGetAuth(request);
 		int osId = getParamInt("os_id", map);
 		OnlineStar os;
 		if(osId == 0)
-			os = osService.getByAuthId(auth.getId());
+			os = osService.getByAuthId(account.getAuthId());
 		else
 			os = osService.getByOsId(osId);
     	return Result.ok(os);
@@ -82,31 +82,30 @@ public class OnlineStarController extends BaseController{
 	
 	/**
 	 * 上传作品
-	 * @param session
+	 * @param request
 	 * @param workList
 	 * @return
 	 */
 	@RequestMapping(value = "/work/add", method = RequestMethod.POST)
 	@ResponseBody
-    public Object workAdd(HttpSession session, @RequestBody List<OnlineStarWork> workList){
-		Auth auth = checkAndGetAuth(session);
-		System.out.println(auth.getId());
-		OnlineStar os = getProfile(auth);
-		System.out.println(os);
+    public Object workAdd(HttpServletRequest request, @RequestBody List<OnlineStarWork> workList){
+		Account account = checkAndGetAuth(request);
+		OnlineStar os = getProfile(account);
+		
 		if(os == null) return Result.fail("Group is not selected");
 		
 		for(OnlineStarWork work: workList){
 			work.setOsId(os.getId());
-			osService.save(work);
+			osService.addWork(work);
 		}
     	return Result.OK;
 	}
 	
 	@RequestMapping(value = "/work/list", method = RequestMethod.POST)
 	@ResponseBody
-    public Object workList(HttpSession session, @RequestBody Map<String, Object> map){
-		Auth auth = checkAndGetAuth(session);
-		OnlineStar os = getProfile(auth);
+    public Object workList(HttpServletRequest request, @RequestBody Map<String, Object> map){
+		Account account = checkAndGetAuth(request);
+		OnlineStar os = getProfile(account);
 		if(os == null) Result.fail("Group is not selected");
 		
 		int typeId = getParamInt("type_id", map);
@@ -115,150 +114,83 @@ public class OnlineStarController extends BaseController{
     	return Result.ok(data);
 	}
 	
+	@RequestMapping(value = "/work/remove", method = RequestMethod.GET)
+	@ResponseBody
+    public Object removeWork(HttpServletRequest request, @RequestBody List<OnlineStarWork> workList){
+		checkAndGetAuth(request);
+		for(OnlineStarWork work: workList){
+			osService.removeWork(work.getId());
+		}
+    	return Result.OK;
+	}
+	
 	@RequestMapping(value = "/job/list", method = RequestMethod.POST)
 	@ResponseBody
-    public Object jobList(HttpSession session, @RequestBody Map<String, Object> map){
-		checkAndGetAuth(session);
-		List<Job> data = jobService.jobList(map);
+    public Object jobList(HttpServletRequest request, @RequestBody Map<String, Object> map){
+		checkAndGetAuth(request);
+		List<JobResponse> data = jobService.jobListOfOs(map);
+    	return Result.ok(data);
+	}
+	
+	@RequestMapping(value = "/job/merchant/profile", method = RequestMethod.POST)
+	@ResponseBody
+    public Object mechantProfile(HttpServletRequest request, @RequestBody Map<String, Long> map){
+		Account account = checkAndGetAuth(request);
+		
+		long jobId = map.get("job_id");
+		MerchantResponse data = jobService.jobMerchant(jobId, account.getAuthId());
     	return Result.ok(data);
 	}
 	
 	@RequestMapping(value = "/job/detail", method = RequestMethod.POST)
 	@ResponseBody
-    public Object jobDetail(HttpSession session, @RequestBody Map<String, Long> map){
-		Auth auth = checkAndGetAuth(session);
-		OnlineStar os = getProfile(auth);
+    public Object jobDetail(HttpServletRequest request, @RequestBody Map<String, Long> map){
+		Account account = checkAndGetAuth(request);
+		
 		long jobId = map.get("job_id");
-		JobWithMerchant data = jobService.jobDetail(jobId, os.getId());
+		JobWithMerchant data = jobService.jobDetail(jobId, account.getAuthId());
     	return Result.ok(data);
 	}
 	
-	@RequestMapping(value = "/job/apply", produces = TEXT, method = RequestMethod.POST)
-	@ResponseBody
-    public Object applyJob(HttpSession session, @RequestBody Map<String, Long> map){
-		Auth auth = checkAndGetAuth(session);
-		OnlineStar os = getProfile(auth);
-		Result result;
-		if(os != null){
-			long jobId = map.get("job_id");
-			Apply apply = Apply.newApply(jobId, os.getId());
-			if(applyService.exist(apply)){
-				result = Result.fail("Already applied");
-			}
-			else{
-				applyService.create(Apply.newApply(jobId, os.getId()));
-				result = Result.OK;
-			}
-		}
-		else{
-			result = Result.fail("Group is not selected");
-		}
-    	return result;
-	}
 	
-	@RequestMapping(value = "/job/apply/list", produces = TEXT, method = RequestMethod.POST)
+	
+	@RequestMapping(value = "/job/invite/list", method = RequestMethod.POST)
 	@ResponseBody
-    public Object applyList(HttpSession session, @RequestBody Map<String, Object> map){
-		Auth auth = checkAndGetAuth(session);
-		OnlineStar os = getProfile(auth);
+    public Object inviteList(HttpServletRequest request, @RequestBody Map<String, Object> map){
+		Account account = checkAndGetAuth(request);
+//		OnlineStar os = getProfile(auth);
+		System.out.println(account);
 		int page = getParamInt("page", map);
-		int statusId = getParamInt("status_id", map);
+//		int statusId = getParamInt("status_id", map);
 		int startRow = page * Constant.PAGE_SIZE;
 		List<ApplyWithJob> applyList = 
-				applyService.selectWithJob(startRow, os.getId(), statusId);
+				applyService.getWithJob(startRow, account.getAuthId(), 1, 2);
     	return Result.ok(applyList);
 	}
 	
-	@RequestMapping(value = "/job/apply/abolish", method = RequestMethod.POST)
+	@RequestMapping(value = "/job/invite/pass", method = RequestMethod.POST)
 	@ResponseBody
-    public Object applyAbolish(HttpSession session, @RequestBody Map<String, Long> map){
-		Auth auth = checkAndGetAuth(session);
-		OnlineStar os = getProfile(auth);
-		long applyId = map.get("apply_id");
-		Apply apply = applyService.getById(applyId);
-		if(apply == null || apply.getOsId() != os.getId()){
-			return Result.fail("Permission denied");
-		}
-		applyService.handleApply(applyId, 4);
-    	return Result.OK;
-	}
-	
-	@RequestMapping(value = "/job/apply/complete", method = RequestMethod.POST)
-	@ResponseBody
-    public Object applyComplete(HttpSession session, @RequestBody Map<String, Long> map){
-		Auth auth = checkAndGetAuth(session);
-		OnlineStar os = getProfile(auth);
-		long applyId = map.get("apply_id");
-		Apply apply = applyService.getById(applyId);
-		if(apply == null || apply.getOsId() != os.getId()){
-			return Result.fail("Permission denied");
-		}
-		applyService.handleApply(applyId, 3);
-    	return Result.OK;
-	}
-	
-	@RequestMapping(value = "/wallet", method = RequestMethod.GET)
-	@ResponseBody
-    public Object wallet(HttpSession session){
-		Auth auth = checkAndGetAuth(session);
-		OnlineStar os = getProfile(auth);
-		Wallet wallet = walletService.getByOsId(os.getId());
-    	return Result.ok(wallet);
-	}
-	
-	@RequestMapping(value = "/wallet/password/set", method = RequestMethod.POST)
-	@ResponseBody
-    public Object walletPasswordSet(HttpSession session, @RequestBody Map<String, String> map){
-		Auth auth = checkAndGetAuth(session);
-		OnlineStar os = getProfile(auth);
-		Wallet wallet = walletService.getByOsId(os.getId());
-		String password = map.get("password");
-		wallet.setPassword(password);
-		walletService.setPassword(wallet);
-    	return Result.ok(wallet);
-	}
-	
-	@RequestMapping(value = "/wallet/password/reset", method = RequestMethod.POST)
-	@ResponseBody
-    public Object walletPasswordReset(HttpSession session, @RequestBody Map<String, String> map){
-		Auth auth = checkAndGetAuth(session);
-		OnlineStar os = getProfile(auth);
-		Wallet wallet = walletService.getByOsId(os.getId());
-		String password = map.get("password");
-		String oldPassword = map.get("old_password");
-		if(oldPassword.equalsIgnoreCase(wallet.getPassword())){
-			wallet.setPassword(password);
-			walletService.setPassword(wallet);
-		}
-		else{
-			return Result.fail("Password incorrect");
-		}
+    public Object invitePass(HttpServletRequest request, @RequestBody Map<String, Long> map){
+		checkAndGetAuth(request);
+//		Merchant merchant = getProfile(auth);
 		
-    	return Result.ok(wallet);
+		long applyId = map.get("apply_id");
+		Apply apply = applyService.getById(applyId);
+		applyService.handleApply(applyId, Constant.ApplyStatus.RUNNING);
+		
+    	return Result.OK;
 	}
 	
-	@RequestMapping(value = "/wallet/bankcard/add", method = RequestMethod.POST)
+	@RequestMapping(value = "/job/invite/refuse", method = RequestMethod.POST)
 	@ResponseBody
-    public Object walletBankcardAdd(HttpSession session){
-		Auth auth = checkAndGetAuth(session);
-		OnlineStar os = getProfile(auth);
-		Wallet wallet = walletService.getByOsId(os.getId());
-    	return Result.ok(wallet);
+    public Object inviteRefuse(HttpServletRequest request, @RequestBody Map<String, Long> map){
+		checkAndGetAuth(request);
+		
+		long applyId = map.get("apply_id");
+		
+		Apply apply = applyService.getById(applyId);
+		applyService.handleApply(applyId, Constant.ApplyStatus.NO_PASS);
+		
+    	return Result.OK;
 	}
-	
-	@RequestMapping(value = "/wallet/bankcard/list", method = RequestMethod.GET)
-	@ResponseBody
-    public Object walletBankcardList(HttpSession session){
-		Auth auth = checkAndGetAuth(session);
-		OnlineStar os = getProfile(auth);
-    	return Result.ok(walletService.getBankcardList(os.getId()));
-	}
-//	
-//	@RequestMapping(value = "/wallet/bankcard/list", method = RequestMethod.GET)
-//	@ResponseBody
-//    public Object walletBankcardList(HttpSession session){
-//		Auth auth = checkAndGetAuth(session);
-//		OnlineStar os = getProfile(auth);
-//    	return Result.ok(walletService.getBankcardList(os.getId()));
-//	}
 }

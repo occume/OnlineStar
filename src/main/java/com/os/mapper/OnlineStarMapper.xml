@@ -11,6 +11,7 @@
     <result column="platform_name" jdbcType="VARCHAR" property="platformName" />
     <result column="fans_count" jdbcType="INTEGER" property="fansCount" />
     <result column="gift_to_money" jdbcType="REAL" property="giftToMoney" />
+    <result column="play_amount" jdbcType="BIGINT" property="playAmount" />
     <result column="height" jdbcType="REAL" property="height" />
     <result column="weight" jdbcType="REAL" property="weight" />
     <result column="breast" jdbcType="REAL" property="breast" />
@@ -87,7 +88,7 @@
   
   <sql id="Base_Column_List">
     id, auth_id, online_live_price, offline_live_price, brand_spoke_price, platform, 
-    platform_name, fans_count, gift_to_money, height, weight, breast, waistline, hipline, 
+    platform_name, fans_count, gift_to_money, play_amount, height, weight, breast, waistline, hipline, 
     expierence
   </sql>
   
@@ -125,17 +126,23 @@
     where auth_id = #{authId,jdbcType=BIGINT}
   </select>
   
+  <select id="selectRecommend" resultType="JobRecommendOnlineStar">
+    select acc.auth_id as authId, acc.avatar_image_name as avatarImageName, 
+    	acc.gender_id as genderId, acc.name from online_star os 
+    	left join account acc on acc.auth_id = os.auth_id
+    	where acc.city_id = #{cityId}
+		limit #{startRow}, #{pageSize}
+  </select>
+  
   <select id="selectPopular" resultMap="RecommendMap">
-    select os.id as os_id, a.name, i.name as avatar_image_name from online_star os 
-    	left join account a on a.auth_id = os.auth_id
-    	left join image i on i.id = a.avatar_image_id
+    select os.id as os_id, a.name, a.avatar_image_name from online_star os 
+    	left join account a on a.id = os.account_id
     	order by os.fans_count desc limit 6
   </select>
   
   <select id="selectFresh" resultMap="RecommendMap">
-    select os.id as os_id, a.name, i.name as avatar_image_name from online_star os 
-    	left join account a on a.auth_id = os.auth_id
-    	left join image i on i.id = a.avatar_image_id
+    select os.id as os_id, a.name, a.avatar_image_name from online_star os 
+    	left join account a on a.id = os.account_id
     	order by os.update_at desc limit 6
   </select>
   
@@ -170,14 +177,14 @@
     </selectKey>
     insert into online_star (auth_id, online_live_price, offline_live_price, 
       brand_spoke_price, platform, platform_name, 
-      fans_count, gift_to_money, height, 
+      fans_count, gift_to_money, play_amount, height, 
       weight, breast, waistline, hipline, 
-      expierence)
+      expierence, account_id, broker_id)
     values (#{authId,jdbcType=BIGINT}, #{onlineLivePrice,jdbcType=REAL}, #{offlineLivePrice,jdbcType=REAL}, 
       #{brandSpokePrice,jdbcType=REAL}, #{platform,jdbcType=VARCHAR}, #{platformName,jdbcType=VARCHAR}, 
-      #{fansCount,jdbcType=INTEGER}, #{giftToMoney,jdbcType=REAL}, #{height,jdbcType=REAL}, 
+      #{fansCount,jdbcType=INTEGER}, #{giftToMoney,jdbcType=REAL}, #{playAmount,jdbcType=BIGINT}, #{height,jdbcType=REAL}, 
       #{weight,jdbcType=REAL}, #{breast,jdbcType=REAL}, #{waistline,jdbcType=REAL}, #{hipline,jdbcType=REAL}, 
-      #{expierence,jdbcType=VARCHAR})
+      #{expierence,jdbcType=VARCHAR}, #{accountId,jdbcType=BIGINT}, #{brokerId,jdbcType=BIGINT})
   </insert>
   
   <insert id="insertLabel" parameterType="com.os.model.OnlineStarLabel">
@@ -217,6 +224,9 @@
       </if>
       <if test="giftToMoney != null">
         gift_to_money,
+      </if>
+      <if test="playAmount !=null">
+      	play_amount,
       </if>
       <if test="height != null">
         height,
@@ -261,6 +271,9 @@
       </if>
       <if test="giftToMoney != null">
         #{giftToMoney,jdbcType=REAL},
+      </if>
+      <if test="playAmount != null">
+      	#{playAmount, jdbcType=BIGINT}
       </if>
       <if test="height != null">
         #{height,jdbcType=REAL},
@@ -318,6 +331,9 @@
       <if test="record.giftToMoney != null">
         gift_to_money = #{record.giftToMoney,jdbcType=REAL},
       </if>
+      <if test="record.playAmount != null">
+        play_amount = #{record.playAmount,jdbcType=BIGINT},
+      </if>
       <if test="record.height != null">
         height = #{record.height,jdbcType=REAL},
       </if>
@@ -352,6 +368,7 @@
       platform_name = #{record.platformName,jdbcType=VARCHAR},
       fans_count = #{record.fansCount,jdbcType=INTEGER},
       gift_to_money = #{record.giftToMoney,jdbcType=REAL},
+      play_amount = #{record.playAmount,jdbcType=REAL},
       height = #{record.height,jdbcType=REAL},
       weight = #{record.weight,jdbcType=REAL},
       breast = #{record.breast,jdbcType=REAL},
@@ -389,6 +406,9 @@
       <if test="giftToMoney != null">
         gift_to_money = #{giftToMoney,jdbcType=REAL},
       </if>
+      <if test="playAmount != null">
+        play_amount = #{playAmount,jdbcType=REAL},
+      </if>
       <if test="height != null">
         height = #{height,jdbcType=REAL},
       </if>
@@ -422,6 +442,7 @@
       platform_name = #{platformName,jdbcType=VARCHAR},
       fans_count = #{fansCount,jdbcType=INTEGER},
       gift_to_money = #{giftToMoney,jdbcType=REAL},
+      play_amount = #{playAmount,jdbcType=BIGINT},
       height = #{height,jdbcType=REAL},
       weight = #{weight,jdbcType=REAL},
       breast = #{breast,jdbcType=REAL},

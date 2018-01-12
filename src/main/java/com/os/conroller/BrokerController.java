@@ -3,7 +3,7 @@ package com.os.conroller;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -52,31 +52,32 @@ public class BrokerController extends BaseController{
 	@Autowired
 	private ApplyService applyService;
 	
-	private Broker getProfile(Auth auth) {
-		return brokerService.getByAuthId(auth.getId());
+	private Broker getProfile(Account account) {
+		return brokerService.getByAuthId(account.getAuthId());
 	}
 	
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	@ResponseBody
-    public Object profile(HttpSession session){
-		Auth auth = checkAndGetAuth(session);
-		Broker broker = brokerService.getByAuthId(auth.getId());
+    public Object profile(HttpServletRequest request){
+		Account account = checkAndGetAuth(request);
+		
+		Broker broker = brokerService.getByAuthId(account.getAuthId());
     	return Result.ok(broker);
 	}
 	
 	@RequestMapping(value = "/profile/update", method = RequestMethod.POST)
 	@ResponseBody
-    public Object profileUpdate(HttpSession session, @Valid @RequestBody Broker broker){
-		checkAndGetAuth(session);
+    public Object profileUpdate(HttpServletRequest request, @Valid @RequestBody Broker broker){
+		checkAndGetAuth(request);
 		brokerService.update(broker);
     	return Result.OK;
 	}
 	
 	@RequestMapping(value = "/os/add", method = RequestMethod.POST)
 	@ResponseBody
-    public Object onlineStarAdd(HttpSession session, @RequestBody BrokerOnlineStar bos){
-		Auth auth = checkAndGetAuth(session);
-		Broker broker = getProfile(auth);
+    public Object onlineStarAdd(HttpServletRequest request, @RequestBody BrokerOnlineStar bos){
+		Account account = checkAndGetAuth(request);
+		Broker broker = getProfile(account);
 		if(broker == null) return Result.fail("Group Broker is not selected");
 		
 		Account acc = bos.account();
@@ -85,6 +86,7 @@ public class BrokerController extends BaseController{
 		OnlineStar os = bos.onlineStar();
 		os.setAuthId(0l);
 		os.setAccountId(acc.getId());
+		os.setBrokerId(broker.getId());
 		osService.save(os);
 
 		brokerService.addOnlineStar(broker.getId(), os.getId());
@@ -94,9 +96,9 @@ public class BrokerController extends BaseController{
 	
 	@RequestMapping(value = "/os/list", method = RequestMethod.POST)
 	@ResponseBody
-    public Object onlineStarList(HttpSession session, @RequestBody Map<String, Object> map){
-		Auth auth = checkAndGetAuth(session);
-		Broker broker = getProfile(auth);
+    public Object onlineStarList(HttpServletRequest request, @RequestBody Map<String, Object> map){
+		Account account = checkAndGetAuth(request);
+		Broker broker = getProfile(account);
 		if(broker == null) return Result.fail("Group Broker is not selected");
 		
 		int page = getParamInt("page", map);
@@ -106,21 +108,22 @@ public class BrokerController extends BaseController{
 	
 	/**
 	 * 上传作品
-	 * @param session
+	 * @param request
 	 * @param workList
 	 * @return
 	 */
 	@RequestMapping(value = "/os/work/add", method = RequestMethod.POST)
 	@ResponseBody
-    public Object workAdd(HttpSession session, @RequestBody BrokerOnlineStarWork bos){
-		Auth auth = checkAndGetAuth(session);
-		System.out.println(auth.getId());
+    public Object workAdd(HttpServletRequest request, @RequestBody BrokerOnlineStarWork bos){
+		Account account = checkAndGetAuth(request);
+		
+//		System.out.println(auth.getId());
 		long osId = bos.osId;
 		List<OnlineStarWork> workList = bos.workList;
 //		if(os == null) return Result.fail("Group is not selected");
 		for(OnlineStarWork work: workList){
 			work.setOsId(osId);
-			osService.save(work);
+			osService.addWork(work);
 		}
     	return Result.OK;
 	}

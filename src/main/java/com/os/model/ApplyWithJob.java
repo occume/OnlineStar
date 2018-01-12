@@ -11,7 +11,11 @@ public class ApplyWithJob {
 	@JsonProperty("status_id")
 	private int statusId;
 	
+	@JsonProperty("job_id")
+	private long jobId;
+	
 	private String title;
+	private String content;
 	private float price;
 	
 	@JsonProperty("start_time")
@@ -73,6 +77,18 @@ public class ApplyWithJob {
 	}
 	public void setStatusId(int statusId) {
 		this.statusId = statusId;
+	}
+	public long getJobId() {
+		return jobId;
+	}
+	public void setJobId(long jobId) {
+		this.jobId = jobId;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 }

@@ -57,7 +57,7 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.os.mapper"  targetProject="D:/log">
             <property name="enableSubPackages" value="false" />
         </javaClientGenerator>
-		<table tableName="wallet_bankcard" domainObjectName="WalletBankcard">
+		<table tableName="alipay_result" domainObjectName="AlipayResult">
         	<generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
         	<ignoreColumn column="create_at"/>
         	<ignoreColumn column="update_at"/>

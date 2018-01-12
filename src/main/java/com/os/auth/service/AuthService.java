@@ -20,12 +20,40 @@ public class AuthService {
 		authMapper.resetPassword(auth);
 	}
 	
+	public int resetToken(Auth auth){
+		return authMapper.resetToken(auth);
+	}
+	
 	public Auth getAuth(String phone){
 		return authMapper.getAuthByPhone(phone);
 	}
 	
 	public Auth getAuth(String phone, String password){
 		return authMapper.getAuth(phone, password);
+	}
+	
+	public Auth getByOpenKeyWx(String openKey){
+		return authMapper.getByWx(openKey);
+	}
+	
+	public Auth getByOpenKeyWeibo(String openKey){
+		return authMapper.getByWeibo(openKey);
+	}
+	
+	public Auth getByOpenKeyQQ(String openKey){
+		return authMapper.getByQQ(openKey);
+	}
+	
+	public int bindOpenKeyWx(Auth auth){
+		return authMapper.bindWx(auth);
+	}
+	
+	public int bindOpenKeyWeibo(Auth auth){
+		return authMapper.bindWeibo(auth);
+	}
+	
+	public int bindOpenKeyQQ(Auth auth){
+		return authMapper.bindQQ(auth);
 	}
 	
 	public boolean exist(String phone){

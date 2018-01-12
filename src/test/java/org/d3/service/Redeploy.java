@@ -32,35 +32,27 @@ public class Redeploy {
 	}
 	
 	protected static class KEYS{
-		public static final String PORTAL_FAT = "porta_fat";
-		public static final String PORTAL_UAT = "porta_uat";
-		public static final String PORTAL_PROD = "porta_prod";
-		
-		public static final String PORTAL_PROD_NEW = "porta_prod";
 		public static final String MYCITY = "mycity";
-		
 		public static final String SERVER178 = "server178";
-		public static final String SERVER179 = "server179";
 	}
+	
+	private static final String PROJECT_PATH = "/apache-tomcat-8.5.16/webapps/";
 	
 	protected static Map<String, Node> nodes = new HashMap<String, Redeploy.Node>();
 	
 	static{
-//		nodeList.add(new Node("10.8.90.86", 1022, 	"deploy", 	"654321WY_654321wy"));
-//		nodeList.add(new Node("10.8.90.87", 1022, 	"deploy", 	"654321WY_654321wy"));
-//		nodeList.add(new Node("10.8.74.8", 	1022,  	"op1",    	"1qaz2wsx#EDC$RFV"));
-//		nodeList.add(new Node("10.8.74.7", 	1022,  	"op1",    	"1qaz2wsx#EDC$RFV"));
-//		nodes.put(KEYS.PORTAL_FAT,  new Node("10.2.5.82", 	 22,  	"fxUser",   ")OKM9ijn"));
-		nodes.put(KEYS.PORTAL_FAT,  new Node("10.2.6.15", 	 22,  "op1",   "QATE@qa.nt.ctripcorp.com"));
-		nodes.put(KEYS.PORTAL_UAT,  new Node("10.2.26.90", 1022,  "sbuvadm",    "cVmyjcmnk8Df2fjj^"));
-//		nodes.put(KEYS.PORTAL_UAT,  new Node("10.2.254.205", 1022,  "op1",    	"Ctrip777"));
-		nodes.put(KEYS.PORTAL_PROD, new Node("10.8.74.7", 	 1022,  "op1",    	"1qaz2wsx#EDC$RFV"));
-		nodes.put(KEYS.PORTAL_PROD_NEW, new Node("10.8.92.9",1022,  "op1",    	"superoctopus1124"));
-		nodes.put(KEYS.MYCITY, new Node("112.124.115.136",		22,  "root",    	"Ggshop05221066"));
-		
 		nodes.put(KEYS.SERVER178, new Node("116.62.159.178",	22,  "root",    	"Hrz5651403"));
-		
-		nodes.put(KEYS.SERVER179, new Node("10.8.2.179",1022,  "op1",    	"s6zdzKuv,qMrobxt8"));
+	}
+	
+	public static void main(String...cmd) throws IOException{
+		SSHClient client = getClient(getNode(KEYS.SERVER178));
+		exec(client, "echo $JAVA_HOME");
+		exec(client, "ls");
+		upload(client, "D:/Server" + PROJECT_PATH + "OnlineStar.tar.gz", 
+						"/home" + PROJECT_PATH + "OnlineStar.tar.gz");
+		exec(client, "cd /home/" + PROJECT_PATH + ";"
+				+ "rm -rf OnlineStar;"
+				+ "tar -zxvf OnlineStar.tar.gz");
 	}
 	
 	public static Node getNode(String key){

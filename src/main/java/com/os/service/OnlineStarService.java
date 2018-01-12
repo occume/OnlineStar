@@ -2,14 +2,16 @@ package com.os.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.os.conroller.OnlineStarController;
+import com.os.Constant;
 import com.os.mapper.OnlineStarMapper;
 import com.os.mapper.OnlineStarWorkMapper;
+import com.os.model.JobRecommendOnlineStar;
 import com.os.model.OnlineStar;
 import com.os.model.OnlineStarExample;
 import com.os.model.OnlineStarLabel;
@@ -27,8 +29,12 @@ public class OnlineStarService {
 	@Autowired
 	private OnlineStarWorkMapper workMapper;
 	
-	public int save(OnlineStarWork work){
+	public int addWork(OnlineStarWork work){
 		return workMapper.insert(work);
+	}
+	
+	public int removeWork(long workId){
+		return workMapper.deleteByPrimaryKey(workId);
 	}
 	
 	public List<OnlineStarWork> getWorkList(long osId, int typeId){
@@ -41,8 +47,9 @@ public class OnlineStarService {
 	}
 	
 	public int save(OnlineStar os){
+		int affect = osMapper.insert(os);
 		addLabels(os);
-		return osMapper.insert(os);
+		return affect;
 	}
 	
 	public int update(OnlineStar os){
@@ -93,6 +100,12 @@ public class OnlineStarService {
 			os.setLabelList(osMapper.selectLabelByOsId(os.getId()));
 		}
 		return os;
+	}
+	
+	public List<JobRecommendOnlineStar> getRecommendList(
+			@Param("startRow")int startRow, 
+			@Param("cityId")int cityId){
+		return osMapper.selectRecommend(0, Constant.PAGE_SIZE, cityId);
 	}
 	
 	public List<OnlineStarRecommend> popularList(){
